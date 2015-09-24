@@ -38,8 +38,7 @@ object ScalarlibBuild extends Build {
       // Tests
 
       "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % "test",
-      "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test",
-      "junit" % "junit" % "4.11" % "test"
+      "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
     ),
 
     unmanagedJars in Compile ++= {
