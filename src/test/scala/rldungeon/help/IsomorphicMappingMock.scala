@@ -1,11 +1,12 @@
 package rldungeon.help
 
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{NegativeCondition, ElementEquivalence, IsomorphicMapping}
+import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, IsomorphicMapping, NegativeCondition}
+
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import scala.reflect.runtime.universe._
-import scala.reflect.ClassTag
-import scala.util.Random
 
 /**
  * Used instead of actual mocked objects since scalaMock doesn't play nice with context bound type tags for some reason.

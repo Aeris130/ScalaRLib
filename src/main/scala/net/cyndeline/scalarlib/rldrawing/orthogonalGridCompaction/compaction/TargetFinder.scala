@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction
 
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
-import net.cyndeline.scalarlib.rldrawing.util.Point
 
 /**
  * Computes the target coordinate that every area should be compacted against.

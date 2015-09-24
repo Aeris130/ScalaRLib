@@ -1,10 +1,10 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util
 
-import scala.reflect.runtime.universe._
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
+
 import scala.reflect.ClassTag
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{PartitionedArea}
-import net.cyndeline.scalarlib.rldrawing.util.Point
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
+import scala.reflect.runtime.universe._
 
 /**
  * Partitions a 2D grid into subsections of the same size and adds objects to all partitions that the objects

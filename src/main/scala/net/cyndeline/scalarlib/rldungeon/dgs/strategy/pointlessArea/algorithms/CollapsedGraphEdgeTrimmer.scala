@@ -1,10 +1,8 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.algorithms
 
-import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.PointlessAreaData
-import net.cyndeline.scalarlib.rldungeon.common.Room
-import net.cyndeline.scalarlib.rlgraph.pathfinding.Path
+
+import scalax.collection.immutable.Graph
 
 /**
  * For dependency injection.

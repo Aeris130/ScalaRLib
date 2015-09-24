@@ -1,17 +1,13 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rldrawing.common.{RectangleCoordinates, DrawnRoom}
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldrawing.util.Point
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{ImmutableGridDrawing, DrawnCorridor}
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{DrawnCorridor, ImmutableGridDrawing}
+import testHelpers.SpecImports
+
 import scalax.collection.GraphEdge.UnDiEdge
 
-@RunWith(classOf[JUnitRunner])
-class ImmutableGridDrawingSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+class ImmutableGridDrawingSpec extends SpecImports {
 
   private def roomWithCorridorToTheLeft = new {
     val room = mockRoom(Point(4, 3), Point(6, 6))

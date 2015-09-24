@@ -1,11 +1,8 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Geom, Point}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.{FloorIntersection, RoomArea}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.util.{Point, Direction, Geom}
-import scala.collection.mutable.ListBuffer
-import net.cyndeline.scalarlib.rldrawing.util.Direction.Direction
-import scala.collection.mutable
 
 /**
  * Reduces a single rectangle in a floor plan down to its target size, if doing so is possible without breaking

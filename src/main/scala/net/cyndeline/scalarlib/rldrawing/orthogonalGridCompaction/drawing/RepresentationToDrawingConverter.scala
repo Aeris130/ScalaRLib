@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.AreaRepresentation
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{RectangularArea, MutableArea, FullCorridor}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.common.{RectangleCoordinates, DrawnRoom}
-import net.cyndeline.scalarlib.rldrawing.util.{Connection, Point}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{FullCorridor, MutableArea, RectangularArea}
+import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 /**
  * Used for injection.

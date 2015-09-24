@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
 
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.RectangleCoordinates
 
 /**
  * An area representing the dimensions and positions of a piece of a map after it has been drawn orthogonally.

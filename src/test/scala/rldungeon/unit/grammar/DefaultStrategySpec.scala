@@ -1,25 +1,21 @@
 package rldungeon.unit.grammar
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import scala.util.Random
-import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
+import helperClasses.RandomMock
 import net.cyndeline.scalarlib.rldungeon.grammar.DefaultStrategy
-import scalax.collection.immutable.Graph
-import rldungeon.help.{GraphLevel, RoomVertex, CorridorEdge}
+import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class DefaultStrategySpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class DefaultStrategySpec extends SpecImports {
 
   describe("DefaultStrategy") {
 
     it ("should select a production at random and apply it to a graph") {
 
       Given("a default strategy with three productions that selects 2 productions, and a randomizer that selects the first and third production")
-      val random = mock[Random]
+      val random = RandomMock()
       val production1 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
       val production2 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
       val production3 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
@@ -29,9 +25,9 @@ class DefaultStrategySpec extends FunSpec with GivenWhenThen with ShouldMatchers
       val productions = Vector(production1, production2, production3)
       val strategy = new DefaultStrategy(random, productions, derivations, attempts, Set[RoomVertex]())
 
-      (random.nextInt(_: Int)) expects(productions.size) returns (0) once()
-      (random.nextInt(_: Int)) expects(productions.size) returns (2) once()
-      (random.nextGaussian _) expects() returns (1.0) once()
+      random.expects(productions.size).returns(0)
+      random.expects(productions.size).returns(2)
+      random.nextGaussianReturns(1.0)
 
       val room1 = new RoomVertex(1)
       val room2 = new RoomVertex(2)

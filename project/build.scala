@@ -5,10 +5,15 @@ object ScalarlibBuild extends Build {
   lazy val scalaToolsVersion = settingKey[String]("2.10.0")
 
   lazy val exampleProject = Project("ScalaRLib", file(".")) settings(
-    version       := "0.2",
-    scalaVersion  := "2.10.4",
+    version           := "1.0",
+    scalaVersion      := "2.11.7",
     scalaToolsVersion := "2.10",
-    scalacOptions := Seq("-deprecation"),
+    scalacOptions     := Seq("-deprecation"),
+    organization      := "net.cyndeline",
+    name              := "scalarlib",
+
+    // Needed to access user classes
+    resolvers += Resolver.mavenLocal,
 
     // Resolver for the archery R*Tree repository.
     resolvers += "bintray/meetup" at "http://dl.bintray.com/meetup/maven",
@@ -19,26 +24,22 @@ object ScalarlibBuild extends Build {
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value,
 
+      // User libraries
+      "net.cyndeline" % "rlcommon_2.11" % "1.0",
+      "net.cyndeline" % "rlgraph_2.11" % "1.0",
+
       // Scala Graph
-      "com.assembla.scala-incubator" % "graph-core_2.10" % "1.9.1",
+      "com.assembla.scala-incubator" % "graph-core_2.11" % "1.9.4",
       "org.jgrapht" % "jgrapht-core" % "0.9.0",
 
       // Dependency injection
       "com.escalatesoft.subcut" % "subcut_2.10" % "2.0",
 
-      // Linear programming solver
-      "choco" % "choco-solver" % "3.2.0",
-
-      // R*Trees
-      "com.meetup" % "archery_2.10" % "0.3.0",
-
       // Tests
 
-      "org.scalamock" % "scalamock-scalatest-support_2.10" % "3.0.1",
-      "org.scalamock" % "scalamock-core_2.10" % "3.0.1",
-      "junit" % "junit" % "4.11" % "test",
-      "org.specs2" % ("specs2_" + scalaToolsVersion.value) % "1.13" % "test",
-      "org.scalatest" % ("scalatest_" + scalaToolsVersion.value) % "2.0.M6-SNAP8" % "test"
+      "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % "test",
+      "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test",
+      "junit" % "junit" % "4.11" % "test"
     ),
 
     unmanagedJars in Compile ++= {

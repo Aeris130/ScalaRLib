@@ -1,9 +1,9 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help.ConnectionBoundary
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
 
 /**
  * Computes the coordinates and produces a corridor segment that connects two areas (either rooms or corridor bends)

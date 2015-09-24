@@ -1,25 +1,20 @@
 package rldungeon.integration.strategy
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import rldungeon.help._
-import scalax.collection.GraphEdge.UnDiEdge
-import rldungeon.help.parameters.RoomAmountEstimator
-import net.cyndeline.scalarlib.rldungeon.grammar.util.TopologyProduction
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.grammar.production.{LevelProduction, SingleProduction}
-import scala.util.Random
-import net.cyndeline.scalarlib.rldungeon.dgs.{ParameterEstimator, Parameter}
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
+import net.cyndeline.rlcommon.util.ProbabilityCollection
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
-import org.scalamock.scalatest.MockFactory
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
+import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
+import net.cyndeline.scalarlib.rldungeon.grammar.production.{LevelProduction, SingleProduction}
+import net.cyndeline.scalarlib.rldungeon.grammar.util.TopologyProduction
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
-import net.cyndeline.scalarlib.util.ProbabilityCollection
+import rldungeon.help._
+import rldungeon.help.parameters.RoomAmountEstimator
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class HillClimbingSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scala.util.Random
+import scalax.collection.immutable.Graph
+
+class HillClimbingSpec extends SpecImports {
 
   ProjectConfiguration.modifyBindings { implicit module =>  // implicit makes the test module default
 

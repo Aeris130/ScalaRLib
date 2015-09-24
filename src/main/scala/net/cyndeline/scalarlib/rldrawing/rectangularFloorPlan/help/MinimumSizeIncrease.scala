@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+
 import scalax.collection.GraphEdge.UnDiEdge
 
 /**

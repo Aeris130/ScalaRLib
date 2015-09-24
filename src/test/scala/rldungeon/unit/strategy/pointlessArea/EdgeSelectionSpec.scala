@@ -1,14 +1,10 @@
 package rldungeon.unit.strategy.pointlessArea
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.EdgeSelection
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class EdgeSelectionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class EdgeSelectionSpec extends SpecImports {
   private val selection = new EdgeSelection()
 
   private def nodes = new {

@@ -1,7 +1,6 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea
 
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.CollapsedNode
-import net.cyndeline.scalarlib.util.UnorderedPair
+import net.cyndeline.rlcommon.util.UnorderedPair
 
 /**
  * Stores data related to pointless vertices and edges in a level.

@@ -1,13 +1,14 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction
 
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.OrthogonalAreaFactory
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.orthogonal.OrthogonalRepresentation
-import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.GridDrawing
+import net.cyndeline.rlcommon.util.{HeightConstraint, WidthConstraint}
+import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.OrthogonalRepresentation
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.AreaCompaction
-import scala.util.Random
-import net.cyndeline.scalarlib.rldrawing.common.{HeightConstraint, WidthConstraint}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.GridDrawing
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.OrthogonalAreaFactory
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
+
+import scala.util.Random
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Compacts an orthogonal drawing into an immutable grid drawing.

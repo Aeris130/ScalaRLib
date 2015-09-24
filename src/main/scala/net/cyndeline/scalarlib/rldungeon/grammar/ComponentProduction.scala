@@ -1,8 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.grammar
 
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.util.Morphism
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Represents the right-hand side of a production rule, and modifies a level based on a morphism.

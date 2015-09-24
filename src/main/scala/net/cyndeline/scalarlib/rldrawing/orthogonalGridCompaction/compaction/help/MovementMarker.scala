@@ -1,8 +1,8 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.help
 
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.util.Point
 
 /**
  * Sets movement data in a set of areas, or returns false if one of them cannot move in the specified direction.

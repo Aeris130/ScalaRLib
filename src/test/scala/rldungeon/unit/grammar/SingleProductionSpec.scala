@@ -1,20 +1,16 @@
 package rldungeon.unit.grammar
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{NegativeCondition, ElementEquivalence}
+import helperClasses.RandomMock
+import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, NegativeCondition}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
-import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
-import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rldungeon.grammar.production.SingleProduction
-import scala.util.Random
-import rldungeon.help.{GraphLevel, CorridorEdge, RoomVertex, IsomorphicMappingMock}
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
+import rldungeon.help.{CorridorEdge, GraphLevel, IsomorphicMappingMock, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class SingleProductionSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class SingleProductionSpec extends SpecImports {
 
   describe("SingleProduction") {
 
@@ -38,7 +34,7 @@ class SingleProductionSpec extends FunSpec with GivenWhenThen with ShouldMatcher
       // Misc values that must be supplied
       val componentMock = mock[ComponentProduction[GraphLevel, RoomVertex, CorridorEdge]]
       val morphismMock = mock[MorphismFactory]
-      val random = mock[Random]
+      val random = RandomMock()
 
       When("applying the production onto a level")
       val level = GraphLevel(Graph[RoomVertex, CorridorEdge](room4, room5, room6))

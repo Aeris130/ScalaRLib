@@ -1,24 +1,21 @@
 package rldrawing.integration
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{BeforeAndAfter, GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.{AreaRepresentation, OrthogonalAreaFactory}
-import rldrawing.help.{ConstraintEdge, ConstraintRoom}
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.{TargetFinder, AreaCompaction}
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.util.RandomElementFinderInterface
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
-import scala.util.Random
+import helperClasses.RandomMock
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Point, RandomElementFinderInterface}
+import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.{AreaCompaction, TargetFinder}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{ImmutableGridDrawing, RepresentationToDrawingConverterI}
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.{AreaRepresentation, OrthogonalAreaFactory}
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
+import org.scalatest.BeforeAndAfter
+import rldrawing.help.{ConstraintEdge, ConstraintRoom}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class AreaCompactionSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory with BeforeAndAfter {
+import scala.util.Random
+
+class AreaCompactionSpec extends SpecImports with BeforeAndAfter {
   private val intersectingAreaFactory = new OrthogonalAreaFactory(true)
 
   ProjectConfiguration.modifyBindings { implicit module =>  // implicit makes the test module default
@@ -41,7 +38,7 @@ class AreaCompactionSpec extends FunSpec with GivenWhenThen with ShouldMatchers 
       (randomArea.area _) expects() returns(null) anyNumberOfTimes() // Avoids null pointers
       (randomCollectionFinder.findRandomElement[MutableArea] _) expects(*, *) returns(randomArea) once()
 
-      val random = mock[Random]
+      val random = RandomMock()
       val compaction = new AreaCompaction(areas, random)
     }
 
@@ -254,7 +251,7 @@ class AreaCompactionSpec extends FunSpec with GivenWhenThen with ShouldMatchers 
         bind[TargetFinder] toProvider { targetFinder }
 
         // Start test
-        new AreaCompaction(areas, mock[Random])
+        new AreaCompaction(areas, RandomMock())
 
       }
 

@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help
 
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
+
 import scala.collection.mutable.ListBuffer
 
 /**

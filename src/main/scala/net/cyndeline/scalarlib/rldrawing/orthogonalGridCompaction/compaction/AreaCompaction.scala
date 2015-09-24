@@ -1,15 +1,15 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction
 
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.AreaRepresentation
-import scala.util.Random
-import scala.collection.mutable
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import com.escalatesoft.subcut.inject.{Injectable, BindingModule}
-import net.cyndeline.scalarlib.util.{RandomElementFinder, RandomElementFinderInterface}
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{GridDrawing, RepresentationToDrawingConverter, RepresentationToDrawingConverterI}
+import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Point, RandomElementFinder, RandomElementFinderInterface}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.help.MovementMarker
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{GridDrawing, RepresentationToDrawingConverter, RepresentationToDrawingConverterI}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.AreaRepresentation
+
+import scala.collection.mutable
+import scala.util.Random
 
 /**
  * Compacts a set of areas, one step at the time, and can produce output based on the current compaction at any step.

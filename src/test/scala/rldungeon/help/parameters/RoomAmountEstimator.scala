@@ -1,9 +1,7 @@
 package rldungeon.help.parameters
 
 import net.cyndeline.scalarlib.rldungeon.dgs.ParameterEstimator
-import rldungeon.help.{RoomVertex, GraphLevel, CorridorEdge}
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
 
 /**
  * Checks how many rooms are in a graph.

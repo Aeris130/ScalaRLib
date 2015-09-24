@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction
 
-import net.cyndeline.scalarlib.rldrawing.common.WidthConstraint
+import net.cyndeline.rlcommon.util.WidthConstraint
 
 /**
  * Defines properties regarding position and size for corridor area segments.

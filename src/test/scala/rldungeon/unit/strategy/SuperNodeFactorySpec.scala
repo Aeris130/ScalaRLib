@@ -1,17 +1,14 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdgeAssoc, CollapsedEdge, CollapsedNode, SuperNodeFactory}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedEdgeAssoc, CollapsedNode, SuperNodeFactory}
+import rldungeon.help.RoomVertex
+import testHelpers.SpecImports
+
+import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
-import scalax.collection.GraphEdge.UnDiEdge
-import rldungeon.help.RoomVertex
 
-@RunWith(classOf[JUnitRunner])
-class SuperNodeFactorySpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class SuperNodeFactorySpec extends SpecImports {
   private implicit def edge2CollapsedEdgeAssoc[A <: CollapsedNode](e: UnDiEdge[A]) = new CollapsedEdgeAssoc(e)
   private val factory = new SuperNodeFactory()
 
@@ -77,7 +74,6 @@ class SuperNodeFactorySpec extends FunSpec with GivenWhenThen with ShouldMatcher
 
       Given("an empty graph")
       val f = vertices
-      import f._
       val g = Graph[RoomVertex, UnDiEdge]()
 
       When("collapsing all cycles")

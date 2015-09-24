@@ -1,9 +1,10 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help
 
+import net.cyndeline.rlgraph.pathfinding.{BFSPathfinder, Path}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
-import net.cyndeline.scalarlib.rlgraph.pathfinding.{BFSPathfinder, Path}
-import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.algorithms.CollapsedGraphEdgeTrimmer
+
+import scalax.collection.immutable.Graph
 
 /**
  * Used when assigning activators and responders. This object represents the current path through the level that

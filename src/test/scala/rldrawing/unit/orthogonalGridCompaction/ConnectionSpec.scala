@@ -1,15 +1,11 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, RectangularArea, RoomArea}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ConnectionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ConnectionSpec extends SpecImports {
 
   /**
    * A corridor connecting to the west side of a room, with a start y-coordinate that is equal to the

@@ -1,16 +1,12 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, RectangularArea, RoomArea}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.ConnectionFactory
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, RectangularArea, RoomArea}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ConnectionFactorySpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ConnectionFactorySpec extends SpecImports {
   private val factory = new ConnectionFactory()
 
   def twoAreasAndACorridor = new {

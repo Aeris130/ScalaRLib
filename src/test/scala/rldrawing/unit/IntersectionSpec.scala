@@ -1,14 +1,9 @@
 package rldrawing.unit
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
-import net.cyndeline.scalarlib.rldrawing.util.{Intersection, Point}
+import net.cyndeline.rlcommon.util.{Intersection, Point, RectangleCoordinates}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class IntersectionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class IntersectionSpec extends SpecImports {
 
   describe("Intersection") {
 

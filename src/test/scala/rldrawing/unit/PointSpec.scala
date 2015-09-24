@@ -1,13 +1,9 @@
 package rldrawing.unit
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.rlcommon.util.Point
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class PointSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class PointSpec extends SpecImports {
 
   describe("Point") {
 

@@ -1,8 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
-import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.RoomArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.FloorIntersection
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.{FloorIntersection, RoomArea}
 
 /**
  * Given an area with two sides (top/bottom or left/right) and a list of intervals, this object computes the coordinates

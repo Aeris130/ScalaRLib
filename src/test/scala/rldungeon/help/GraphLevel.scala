@@ -1,11 +1,10 @@
 package rldungeon.help
 
-import net.cyndeline.scalarlib.rldungeon.common.{Room, PointlessLevel, Level}
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.util.IDPool
-import net.cyndeline.scalarlib.rlgraph.util.VertexReplacer
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.rlcommon.util.IDPool
+import net.cyndeline.scalarlib.rldungeon.common.PointlessLevel
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
+
+import scalax.collection.immutable.Graph
 
 /**
  * Test level. Starts producing id's at the highest ID already found in the initial graph.

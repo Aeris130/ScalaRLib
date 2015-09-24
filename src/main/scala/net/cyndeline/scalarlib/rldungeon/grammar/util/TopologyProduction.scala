@@ -1,11 +1,11 @@
 package net.cyndeline.scalarlib.rldungeon.grammar.util
 
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.rlgraph.util.GraphCommons
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
+
+import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.util.{EdgeFactory, GraphCommons, VertexReplacer, EdgeCopyFactory}
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * Generic ComponentProduction that modifies the topology of a graph. Supports:

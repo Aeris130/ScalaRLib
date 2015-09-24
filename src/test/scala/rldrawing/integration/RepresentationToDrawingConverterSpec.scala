@@ -1,19 +1,15 @@
 package rldrawing.integration
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import rldrawing.help.{ConstraintEdge, ConstraintRoom}
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.OrthogonalAreaFactory
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.RepresentationToDrawingConverter
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.OrthogonalAreaFactory
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, RectangularArea}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
 import net.cyndeline.scalarlib.rldrawing.util.Connection
+import rldrawing.help.{ConstraintEdge, ConstraintRoom}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class RepresentationToDrawingConverterSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class RepresentationToDrawingConverterSpec extends SpecImports {
   private val intersectingAreaFactory = new OrthogonalAreaFactory(true)
   private val converter = new RepresentationToDrawingConverter()
 

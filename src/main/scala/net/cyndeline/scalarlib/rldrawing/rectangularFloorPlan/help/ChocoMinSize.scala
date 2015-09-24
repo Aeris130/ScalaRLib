@@ -1,12 +1,12 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
+import net.cyndeline.rlgraph.cartogram.rectangular.common.{Constraint, _}
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import solver.constraints.{IntConstraintFactory => ICF}
+import solver.variables.{IntVar, VariableFactory => VF}
 import solver.{ResolutionPolicy, Solver}
+
 import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.common._
-import solver.variables.{VariableFactory => VF, IntVar}
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.common.Constraint
-import solver.constraints.{ IntConstraintFactory => ICF }
 
 /**
  * Formulates the task of increasing the side of every rectangle in a rectangular dual to a minimum size as an

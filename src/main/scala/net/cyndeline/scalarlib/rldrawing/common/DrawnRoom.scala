@@ -1,5 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.common
 
+import net.cyndeline.rlcommon.util.RectangleCoordinates
+
 /**
  * A single room on the game map, along with the coordinates it occupies on the final map grid.
  */

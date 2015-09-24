@@ -1,17 +1,18 @@
 package net.cyndeline.scalarlib.rldrawing
 
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.segmentHeuristic.SegmentHeuristic
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.rlcommon.util.Geom
+import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
+import net.cyndeline.rlgraph.cartogram.rectangular.evolution.EvolutionaryOptimization
+import net.cyndeline.rlgraph.cartogram.rectangular.evolution.metrics.{AspectRatio, CartographicError}
+import net.cyndeline.rlgraph.cartogram.rectangular.segmentHeuristic.SegmentHeuristic
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.{RAlgorithmSettings, RectangularDualAlgorithm}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.FloorPlan
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.{RAlgorithmSettings, RectangularDualAlgorithm}
-import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.{SegmentReducer, MinimumSizeIncrease, ChocoMinSize}
-import scala.reflect.runtime.universe.TypeTag
+import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.{ChocoMinSize, MinimumSizeIncrease, SegmentReducer}
+
 import scala.reflect.ClassTag
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.common.MapArea
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.evolution.metrics.{AspectRatio, CartographicError}
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.evolution.EvolutionaryOptimization
-import net.cyndeline.scalarlib.rldrawing.util.Geom
+import scala.reflect.runtime.universe.TypeTag
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.immutable.Graph
 
 /**
  * This is the main factory object used to create floor plans. Only access the individual classes when sub-algorithms

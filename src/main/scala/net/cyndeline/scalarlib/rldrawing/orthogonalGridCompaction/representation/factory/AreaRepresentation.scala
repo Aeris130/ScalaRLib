@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{FullCorridor, MutableArea}
-import net.cyndeline.scalarlib.rldrawing.util.Point
 
 /**
  * Represents an entire map and every area in it.
@@ -23,6 +23,6 @@ case class AreaRepresentation[VType, EType](rooms: Set[MutableArea],
                                             corridorMap: Map[EType, FullCorridor],
                                             min: Point, max: Point) {
 
-  val allAreas: Vector[MutableArea] = (rooms ++ bends ++ corridors.map(c => c.areas).flatten).toVector
+  val allAreas: Vector[MutableArea] = (rooms ++ bends ++ corridors.flatMap(c => c.areas)).toVector
 
 }

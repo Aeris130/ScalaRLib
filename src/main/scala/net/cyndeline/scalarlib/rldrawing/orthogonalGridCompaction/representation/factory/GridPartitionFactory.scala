@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.util.Point
 
 /**
  * Creates partitioned grid structures.

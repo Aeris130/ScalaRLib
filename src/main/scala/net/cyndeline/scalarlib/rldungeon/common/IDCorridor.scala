@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldungeon.common
 
-import scalax.collection.GraphEdge.{EdgeCopy, UnDiEdge, NodeProduct}
+import scalax.collection.GraphEdge.{EdgeCopy, NodeProduct, UnDiEdge}
 import scalax.collection.GraphPredef.OuterEdge
 
 /**

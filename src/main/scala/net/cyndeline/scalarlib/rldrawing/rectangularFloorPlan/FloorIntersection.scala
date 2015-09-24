@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan
 
-import net.cyndeline.scalarlib.rldrawing.util.Direction.Direction
-import net.cyndeline.scalarlib.rldrawing.util.{Connection, Intersection, Point}
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 /**
  * Specifies a neighbor for a room in a rectangular floor plan, and how to draw it relative to the owner.

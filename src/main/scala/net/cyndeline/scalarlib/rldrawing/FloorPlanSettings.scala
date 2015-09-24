@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing
 
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.OuterFaceSelection
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.OuterFaceSelection
+
 import scalax.collection.GraphEdge.UnDiEdge
 
 /**

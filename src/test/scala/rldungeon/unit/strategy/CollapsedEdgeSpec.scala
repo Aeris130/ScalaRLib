@@ -1,15 +1,9 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
-import rldungeon.help.RoomVertex
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.PointlessAreaData
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class CollapsedEdgeSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class CollapsedEdgeSpec extends SpecImports {
 
   def fixture = new {
     val room1 = 1

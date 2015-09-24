@@ -1,11 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.help
 
-import scalax.collection.GraphEdge.{ExtendedKey, NodeProduct, EdgeCopy, UnDiEdge}
-import scalax.collection.GraphPredef.OuterEdge
-import scala.Option
-import net.cyndeline.scalarlib.rlgraph.util.EdgeCopyFactory
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.PointlessAreaData
 import net.cyndeline.scalarlib.rldungeon.common.Room
+
+import scalax.collection.GraphEdge.{EdgeCopy, NodeProduct, UnDiEdge}
+import scalax.collection.GraphPredef.OuterEdge
 
 /**
  * Connects vertices in a graph that folds biconnected components into super-nodes.

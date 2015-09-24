@@ -1,17 +1,12 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{RoomCorridorConnection, MutableArea, RectangularArea, RoomArea}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, RectangularArea, RoomArea, RoomCorridorConnection}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class RoomAreaSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+class RoomAreaSpec extends SpecImports {
 
   def gridRoom = new {
     val grid = mock[PartitionedArea[MutableArea]]

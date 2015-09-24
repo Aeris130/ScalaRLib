@@ -1,9 +1,8 @@
 package net.cyndeline.scalarlib.rldungeon.grammar
 
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+
 import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * Decides how a set of productions should be applied to construct a graph representing a game map. This includes

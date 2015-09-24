@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction
 
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.rlcommon.util.Point
 
 /**
  * Partitions a 2D grid into subsections of the same size and adds objects to all partitions that the objects

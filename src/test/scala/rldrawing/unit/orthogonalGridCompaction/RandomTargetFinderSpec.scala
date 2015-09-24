@@ -1,22 +1,19 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
-import scala.util.Random
+import helperClasses.RandomMock
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.RandomTargetFinder
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class RandomTargetFinderSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scala.util.Random
+
+class RandomTargetFinderSpec extends SpecImports {
 
   def random(x: Int, y: Int, area: RectangularArea): Random = {
-    val rMock = mock[Random]
-    (rMock.nextInt(_: Int)) expects(area.stop.x - area.start.x + 1) returns(x) once()
-    (rMock.nextInt(_: Int)) expects(area.stop.y - area.start.y + 1) returns(y) once()
+    val rMock = RandomMock()
+    rMock.expects(area.stop.x - area.start.x + 1) returns(x)
+    rMock.expects(area.stop.y - area.start.y + 1) returns(y)
     rMock
   }
   describe("RandomTargetFinder") {

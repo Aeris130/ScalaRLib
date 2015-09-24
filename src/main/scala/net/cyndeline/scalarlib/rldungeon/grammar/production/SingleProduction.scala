@@ -1,15 +1,16 @@
 package net.cyndeline.scalarlib.rldungeon.grammar.production
 
+import net.cyndeline.rlgraph.subgraph.isomorphism.jGraphT.SubGraphIsomorphismInspector
+import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, IsomorphicMapping, NegativeCondition}
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
+
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{IsomorphicMapping, NegativeCondition, ElementEquivalence}
-import net.cyndeline.scalarlib.rldungeon.grammar.util.{MorphismFactory, Morphism}
-import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
-import scala.reflect.runtime.universe._
-import scala.reflect.ClassTag
-import scala.util.Random
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.jGraphT.SubGraphIsomorphismInspector
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * Specifies a single left-hand side in a graph grammar production, and a single right-hand side.

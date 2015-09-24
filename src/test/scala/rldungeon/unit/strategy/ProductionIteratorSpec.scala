@@ -1,21 +1,17 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.{ValidatorI, ProductionIterator}
-import rldungeon.help.{GraphLevel, CorridorEdge, RoomVertex}
+import net.cyndeline.rlcommon.util.RandomCollection
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.{ProductionIterator, ValidatorI}
 import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
-import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
-import net.cyndeline.scalarlib.util.RandomCollection
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ProductionIteratorSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class ProductionIteratorSpec extends SpecImports {
 
   ProjectConfiguration.modifyBindings { implicit module =>  // implicit makes the test module default
     import module._

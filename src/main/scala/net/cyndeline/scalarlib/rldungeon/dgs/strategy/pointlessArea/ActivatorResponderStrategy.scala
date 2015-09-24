@@ -1,16 +1,17 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea
 
-import net.cyndeline.scalarlib.rldungeon.common.{Corridor, Room, PointlessLevel}
-import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.algorithms.{EdgeTrimmer, CollapsedGraphEdgeTrimmer}
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{SuperNodeFactory, CollapsedEdge, CollapsedNode, SuperNodeFactoryInterface}
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.pathfinding.{LongestTreePath, BFSPathfinder, Path}
-import net.cyndeline.scalarlib.rlgraph.util.GraphCommons
+import net.cyndeline.rlgraph.pathfinding.{BFSPathfinder, LongestTreePath, Path}
+import net.cyndeline.rlgraph.util.GraphCommons
+import net.cyndeline.scalarlib.rldungeon.common.{Corridor, PointlessLevel, Room}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode, SuperNodeFactory, SuperNodeFactoryInterface}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.algorithms.{CollapsedGraphEdgeTrimmer, EdgeTrimmer}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.{ClosestEdgeFinder, EdgeSelection, MainPath}
+import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
+
 import scala.reflect.runtime.universe.TypeTag
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.immutable.Graph
 
 /**
  * Adds activator- and responder pairs to a level in order to remove pointless areas by making the player diverge

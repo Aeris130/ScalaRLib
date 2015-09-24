@@ -1,15 +1,15 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.entityManager
 
-import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
-import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation.{ComponentVarIterator, ComponentFactoryFactory, ComponentFactory}
-import scala.collection.mutable.ArrayBuffer
+import net.cyndeline.rlcommon.util.IDPool
 import net.cyndeline.scalarlib.entityComponent.miranda._
-import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.eventCreation.{EventFactoryFactory, EventFactory}
+import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation.{ComponentFactory, ComponentFactoryFactory, ComponentVarIterator}
+import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.eventCreation.{EventFactory, EventFactoryFactory}
 import net.cyndeline.scalarlib.entityComponent.miranda.eventProcessing.EventReplyOrderProcessor
 import net.cyndeline.scalarlib.entityComponent.miranda.exceptions.InvalidEntityReferenceException
+import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
+
+import scala.collection.mutable.{ArrayBuffer, Cloneable => ScalaCloneable}
 import scala.reflect.runtime.universe._
-import net.cyndeline.scalarlib.util.IDPool
-import scala.collection.mutable.{ Cloneable => ScalaCloneable }
 
 /**
  * Interfaces with the user by storing and retrieving entity-component data.

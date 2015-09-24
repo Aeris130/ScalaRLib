@@ -1,9 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.levelPath
 
+import net.cyndeline.scalarlib.rldungeon.common.Room
+
 import scalax.collection.GraphEdge._
 import scalax.collection.GraphPredef.OuterEdge
-import scala.Some
-import net.cyndeline.scalarlib.rldungeon.common.Room
 
 /**
  * Connects two nodes in a Tree path. This edge doesn't represent a corridor in a level, it is only used to join

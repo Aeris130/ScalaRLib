@@ -1,14 +1,13 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules
 
-import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.GraphPredef.OuterEdge
+import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
+import net.cyndeline.rlcommon.util.RandomCollection
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
-import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
-import net.cyndeline.scalarlib.util.RandomCollection
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Used for injection.

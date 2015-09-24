@@ -1,21 +1,18 @@
 package rldrawing.integration.rectangularFloorPlan
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import rldrawing.help.ConstraintRoom
-import net.cyndeline.scalarlib.rldrawing.util.Geom
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphPredef._
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Geom
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.FloorPlan
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.SegmentReducer
+import rldrawing.help.ConstraintRoom
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class SegmentReducerSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef._
+import scalax.collection.immutable.Graph
+
+class SegmentReducerSpec extends SpecImports {
   private val defaultRoomAspect = 9999
   private val defaultGateAspect = 9999
   private val defaultRoomSize = 1

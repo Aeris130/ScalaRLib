@@ -1,7 +1,8 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.entityManager.eventCreation
 
-import net.cyndeline.scalarlib.entityComponent.miranda.Event
 import java.lang.reflect.Constructor
+
+import net.cyndeline.scalarlib.entityComponent.miranda.Event
 
 /**
  * Instantiates new events from scratch every time an event-instantiation is requested.

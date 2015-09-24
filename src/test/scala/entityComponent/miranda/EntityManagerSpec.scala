@@ -1,18 +1,13 @@
 package entityComponent.miranda
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
 import net.cyndeline.scalarlib.entityComponent.miranda._
 import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.EntityManager
 import net.cyndeline.scalarlib.entityComponent.miranda.exceptions.InvalidEntityReferenceException
-import scala.IllegalArgumentException
+import testHelpers.SpecImports
+
 import scala.collection.mutable.ListBuffer
 
-@RunWith(classOf[JUnitRunner])
-class EntityManagerSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+class EntityManagerSpec extends SpecImports {
 
 
 

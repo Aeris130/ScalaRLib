@@ -1,17 +1,13 @@
 package rldrawing.unit.rectangularFloorPlan
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Geom, Intersection, Point}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.RectangleScaler
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldrawing.util.{Connection, Point, Intersection, Geom}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.{FloorIntersection, RoomArea}
+import net.cyndeline.scalarlib.rldrawing.util.Connection
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class RectangleScalerSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+class RectangleScalerSpec extends SpecImports {
   private val scaler = new RectangleScaler(99.0, 1) // Large aspect ratio to prevent test interference
   private val defaultStartCoord = 5 // Gives some space to subtract without ending up with negative coordinates
 

@@ -1,8 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
 
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.util.Point
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
 
 /**
  * A rectangle with orthogonal sides defined by its starting and stopping coordinates.

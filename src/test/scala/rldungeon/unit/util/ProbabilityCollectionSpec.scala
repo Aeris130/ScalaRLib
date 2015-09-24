@@ -1,14 +1,11 @@
 package rldungeon.unit.util
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import scala.util.Random
-import net.cyndeline.scalarlib.util.ProbabilityCollection
+import net.cyndeline.rlcommon.util.ProbabilityCollection
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ProbabilityCollectionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+import scala.util.Random
+
+class ProbabilityCollectionSpec extends SpecImports {
 
   describe("ProbabilityCollection") {
 

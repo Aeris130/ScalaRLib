@@ -1,14 +1,15 @@
 package net.cyndeline.scalarlib.rldrawing
 
-import scala.reflect.runtime.universe.TypeTag
+import net.cyndeline.rlcommon.util.{HeightConstraint, WidthConstraint}
+import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.OrthogonalLayoutAlgorithm
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.GridDrawing
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{Compaction, CorridorProperties}
+
 import scala.reflect.ClassTag
+import scala.reflect.runtime.universe.TypeTag
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.GridDrawing
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.orthogonal.OrthogonalLayoutAlgorithm
-import scala.util.Random
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{CorridorProperties, Compaction}
-import net.cyndeline.scalarlib.rldrawing.common.{HeightConstraint, WidthConstraint}
 
 /**
  * The main object available to users when creating grid layouts from an orthogonal graph drawing.

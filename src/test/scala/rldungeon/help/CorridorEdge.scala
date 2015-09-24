@@ -1,9 +1,10 @@
 package rldungeon.help
 
-import scalax.collection.GraphEdge.{ExtendedKey, NodeProduct, EdgeCopy, UnDiEdge}
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rlgraph.util.{EdgeFactory, EdgeCopyFactory}
+import net.cyndeline.rlgraph.util.{EdgeCopyFactory, EdgeFactory}
 import net.cyndeline.scalarlib.rldungeon.common.{Corridor, Room}
+
+import scalax.collection.GraphEdge.{EdgeCopy, ExtendedKey, NodeProduct, UnDiEdge}
+import scalax.collection.GraphPredef.OuterEdge
 
 
 class CorridorEdge[N](nodes: Product, val cid: Int) extends UnDiEdge[N](nodes)

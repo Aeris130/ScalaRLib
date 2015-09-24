@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
+import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation._
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
 
 /**
  * Creates connections in both directions between two areas and a corridor.

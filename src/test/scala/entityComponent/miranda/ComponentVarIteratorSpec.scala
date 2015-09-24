@@ -1,15 +1,12 @@
 package entityComponent.miranda
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation.ComponentVarIterator
 import net.cyndeline.scalarlib.entityComponent.miranda.Component
+import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation.ComponentVarIterator
+import testHelpers.SpecImports
+
 import scala.reflect.runtime.universe._
 
-@RunWith(classOf[JUnitRunner])
-class ComponentVarIteratorSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ComponentVarIteratorSpec extends SpecImports {
 
   def varIterator = new {
     val iterator = new ComponentVarIterator()

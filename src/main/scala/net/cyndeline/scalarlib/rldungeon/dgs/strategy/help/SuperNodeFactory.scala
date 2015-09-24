@@ -1,18 +1,15 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.help
 
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphPredef._
-import scala.Predef._
-import scala.reflect.ClassTag
-import scala.reflect.runtime.universe._
-import net.cyndeline.scalarlib.rlgraph.cycles.cycleBase.UndirectedCycleBaseFinder
-import net.cyndeline.scalarlib.rlgraph.cycles.cycleBase.jGraphT.PatonCycle
-import net.cyndeline.scalarlib.rlgraph.util.GraphCommons
+import net.cyndeline.rlgraph.biconnectivity.BiconnectedComponentsOperation
+import net.cyndeline.rlgraph.biconnectivity.components.DFSComponentSearch
+import net.cyndeline.rlgraph.util.GraphCommons
 import net.cyndeline.scalarlib.rldungeon.common.Room
-import net.cyndeline.scalarlib.rlgraph.biconnectivity.BiconnectedComponentsOperation
-import net.cyndeline.scalarlib.rlgraph.biconnectivity.components.DFSComponentSearch
+
+import scala.Predef._
 import scala.collection.mutable
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef._
+import scalax.collection.immutable.Graph
 
 /**
  * Detects biconnected components in a graph, and collapses them into a graph where each node either represents a single

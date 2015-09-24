@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
 
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
+import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
 
 /**
@@ -72,7 +72,7 @@ class RoomArea(rectArea: RectangularArea, grid: PartitionedArea[MutableArea], in
     (for {
       connection <- c
       if connection.isDefined
-      if !connection.get.corridor.movement.isDefined
+      if connection.get.corridor.movement.isEmpty
       if !connection.get.roomCanMoveIndependently(direction)
     } yield connection.get.corridor).toSet
   }

@@ -1,6 +1,7 @@
 package rldungeon.help
 
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.ElementEquivalence
+import net.cyndeline.rlgraph.subgraph.isomorphism.ElementEquivalence
+
 import scalax.collection.immutable.Graph
 
 /**

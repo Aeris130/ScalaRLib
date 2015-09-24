@@ -1,17 +1,12 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.help.MovementMarker
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Area, RectangularArea, RoomCorridorConnection, MutableArea}
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.util.{Point, Direction}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Area, MutableArea, RectangularArea}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class MovementMarkerSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+class MovementMarkerSpec extends SpecImports {
 
   def targetWithAreaSouthwest = new {
     val target = Point(6, 2)
@@ -236,7 +231,7 @@ class MovementMarkerSpec extends FunSpec with GivenWhenThen with ShouldMatchers 
       // Don't need this for this test
       def isRoom: Boolean = ???
       def isBend: Boolean = ???
-      def canMove(direction: Direction.Direction): Set[MutableArea] = ???
+      def canMove(direction: Direction): Set[MutableArea] = ???
       def move(): Unit = ???
     }
 

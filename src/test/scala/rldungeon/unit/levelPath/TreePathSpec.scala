@@ -1,19 +1,16 @@
 package rldungeon.unit.levelPath
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import rldungeon.help.{CorridorEdgeAssoc, GraphLevel, CorridorEdge, RoomVertex}
+import net.cyndeline.rlgraph.pathfinding.{BFSPathfinder, Path}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode, SuperNodeFactory}
+import net.cyndeline.scalarlib.rldungeon.levelPath.{Branch, TreeNode, TreePath}
+import rldungeon.help.{CorridorEdge, CorridorEdgeAssoc, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
+
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedNode, CollapsedEdge, SuperNodeFactory}
-import net.cyndeline.scalarlib.rlgraph.pathfinding.{BFSPathfinder, Path}
-import net.cyndeline.scalarlib.rldungeon.levelPath.{Branch, TreeNode, TreePath}
 
-@RunWith(classOf[JUnitRunner])
-class TreePathSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class TreePathSpec extends SpecImports {
   private implicit def edge2Assoc(e: UnDiEdge[RoomVertex]) = new CorridorEdgeAssoc(e)
   private val superNFactory = new SuperNodeFactory()
   private val pathfinder = new BFSPathfinder()
@@ -231,7 +228,7 @@ class TreePathSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
       Given("a main path from room 1 to 3, with two pointless areas connected to room 2 (room 4 and 5)")
       val f = twoPointlessAreasSameConnection
       import f._
-       import f.rms._
+      import f.rms._
 
       When("constructing a tree path")
       val path = TreePath(level, collapsed, mainPath)
@@ -329,7 +326,6 @@ class TreePathSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
       Given("a main path with an edge 2->3 having id 2, and an edge 3->6 in a pointless area having id 5")
       val f = twoPointlessAreasDifferentConnection
       import f._
-      import f.rms._
 
       When("constructing a tree path")
       val path = TreePath(level, collapsed, mainPath)

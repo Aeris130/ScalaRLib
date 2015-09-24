@@ -1,8 +1,9 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction
 
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+
 import scala.util.Random
-import net.cyndeline.scalarlib.rldrawing.util.Point
 
 /**
  * Computes a random target coordinate.

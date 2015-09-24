@@ -1,9 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy
 
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.GraphPredef.OuterEdge
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Decides if a change to a level graph is considered valid by evaluating parameter responses to the change.

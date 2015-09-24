@@ -1,17 +1,12 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util.GridPartition
-import net.cyndeline.scalarlib.rldrawing.util.Point
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class GridPartitionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class GridPartitionSpec extends SpecImports {
 
-  private case class Element(val start: Point, val stop: Point) extends RectangleCoordinates
+  private case class Element(start: Point, stop: Point) extends RectangleCoordinates
 
   describe("GridPartition") {
 

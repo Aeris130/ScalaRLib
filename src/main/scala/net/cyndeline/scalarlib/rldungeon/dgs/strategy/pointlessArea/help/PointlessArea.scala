@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help
 
-import scalax.collection.immutable.Graph
+import net.cyndeline.rlgraph.pathfinding.Path
+import net.cyndeline.rlgraph.util.GraphCommons
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
-import net.cyndeline.scalarlib.rlgraph.pathfinding.{Path, BFSPathfinder}
-import net.cyndeline.scalarlib.rlgraph.util.GraphCommons
+
 import scala.collection.mutable.ListBuffer
+import scalax.collection.immutable.Graph
 
 /**
  * A set of nodes and edges that can be reached from each other without traversing a node on the main path.

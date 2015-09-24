@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation
 
 import java.lang.reflect.Constructor
+
 import net.cyndeline.scalarlib.entityComponent.miranda.Component
 
 /**

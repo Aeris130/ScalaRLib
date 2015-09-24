@@ -1,22 +1,18 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.ProductionIteratorI
-import rldungeon.help.{GraphLevel, CorridorEdge, RoomVertex}
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
-import scala.reflect.runtime.universe._
-import scala.reflect._
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.ProductionIteratorI
+import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class HillClimbingSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scala.reflect._
+import scala.reflect.runtime.universe._
+import scalax.collection.immutable.Graph
+
+class HillClimbingSpec extends SpecImports {
 
   ProjectConfiguration.modifyBindings { implicit module =>  // implicit makes the test module default
     import module._

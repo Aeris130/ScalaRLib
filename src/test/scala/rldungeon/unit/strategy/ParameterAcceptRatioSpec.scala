@@ -1,14 +1,10 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ParameterAcceptRatioSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ParameterAcceptRatioSpec extends SpecImports {
 
   def fixture = new {
     val p1 = makeParameter

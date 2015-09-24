@@ -1,7 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
 
 /**
  * The start and stop coordinates of a rectangle that's been modified somehow. Wrapped in a class rather than a

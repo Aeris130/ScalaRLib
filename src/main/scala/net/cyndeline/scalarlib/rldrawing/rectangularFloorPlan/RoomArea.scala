@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan
 
-import net.cyndeline.scalarlib.rldrawing.common.{RectangleCoordinates, DrawnRoom}
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 
 /**
  * An area to be drawn in a rectangular drawing. Construct using the accompanying factory object.

@@ -1,10 +1,10 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.help
 
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Validates a set of parameters if the accepting amount exceeds the rejecting amount by a specified ratio.

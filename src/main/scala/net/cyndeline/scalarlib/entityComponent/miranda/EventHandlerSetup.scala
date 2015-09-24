@@ -1,7 +1,8 @@
 package net.cyndeline.scalarlib.entityComponent.miranda
 
-import scala.collection.mutable.ArrayBuffer
 import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
+
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * Specifies setup methods for event handlers.

@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rldungeon.levelPath
 
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.common.{IDCorridor, Room, Corridor}
-import net.cyndeline.scalarlib.rlgraph.util.GraphConverter
+import net.cyndeline.rlgraph.util.GraphConverter
+import net.cyndeline.scalarlib.rldungeon.common.{Corridor, IDCorridor, Room}
+
 import scala.reflect.runtime.universe._
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.immutable.Graph
 
 /**
  * Represents a biconnected component in a levels topology or a cutpoint joining multiple components.

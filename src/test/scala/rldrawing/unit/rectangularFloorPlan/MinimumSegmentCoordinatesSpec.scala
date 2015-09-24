@@ -1,16 +1,12 @@
 package rldrawing.unit.rectangularFloorPlan
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Geom, Point}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.RoomArea
-import net.cyndeline.scalarlib.rldrawing.util.{Geom, Point}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.MinimumSegmentCoordinates
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class MinimumSegmentCoordinatesSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class MinimumSegmentCoordinatesSpec extends SpecImports {
 
   describe("MinimumSegmentCoordinates") {
 

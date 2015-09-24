@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
-import net.cyndeline.scalarlib.rldrawing.common.{RectangleCoordinates, DrawnRoom}
+import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 
 /**
  * Stores room drawing data.

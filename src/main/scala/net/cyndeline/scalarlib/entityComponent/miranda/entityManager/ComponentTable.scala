@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.entityManager
 
 import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
-import net.cyndeline.scalarlib.entityComponent.miranda.{ComponentType, Component}
+import net.cyndeline.scalarlib.entityComponent.miranda.{Component, ComponentType}
 
 /**
  * Stores an array of entities, where an entity is represented by its ID (its index in the array) mapped

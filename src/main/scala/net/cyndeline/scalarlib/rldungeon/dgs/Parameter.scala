@@ -1,9 +1,8 @@
 package net.cyndeline.scalarlib.rldungeon.dgs
 
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+
 import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * Represents an aspect of a level.

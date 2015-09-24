@@ -1,8 +1,5 @@
 package net.cyndeline.scalarlib.entityComponent.miranda
 
-import scala.collection.mutable.ArrayBuffer
-import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
-
 /**
  * Sends events and the entities they are being sent to into the system handlers.
  */

@@ -1,16 +1,15 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing
 
-import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
-import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
-import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphPredef.OuterEdge
 import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
+import net.cyndeline.rlcommon.util.RandomCollection
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.{ProductionIterator, ProductionIteratorI}
-import net.cyndeline.scalarlib.util.RandomCollection
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
+import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Applies productions randomly in a hill-climbing fashion according to the following algorithm:

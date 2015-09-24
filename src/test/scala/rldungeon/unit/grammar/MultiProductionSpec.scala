@@ -1,21 +1,17 @@
 package rldungeon.unit.grammar
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{NegativeCondition, ElementEquivalence}
+import helperClasses.RandomMock
+import net.cyndeline.rlcommon.util.RandomCollection
+import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, NegativeCondition}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
-import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
-import scala.util.Random
-import scalax.collection.immutable.Graph
-import rldungeon.help.{GraphLevel, CorridorEdge, RoomVertex, IsomorphicMappingMock}
 import net.cyndeline.scalarlib.rldungeon.grammar.production.MultiProduction
-import net.cyndeline.scalarlib.util.RandomCollection
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
+import rldungeon.help.{CorridorEdge, GraphLevel, IsomorphicMappingMock, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class MultiProductionSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class MultiProductionSpec extends SpecImports {
 
   describe("MultiProduction") {
 
@@ -39,7 +35,7 @@ class MultiProductionSpec extends FunSpec with GivenWhenThen with ShouldMatchers
       // Misc values that must be supplied
       val componentMock = mock[ComponentProduction[GraphLevel, RoomVertex, CorridorEdge]]
       val morphismMock = mock[MorphismFactory]
-      val random = mock[Random]
+      val random = RandomMock()
 
       val randomCollection = mock[RandomCollection[ComponentProduction[GraphLevel, RoomVertex, CorridorEdge]]]
 

@@ -1,18 +1,15 @@
 package rldrawing.unit.rectangularFloorPlan
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.rlcommon.util.Intersection
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.ChocoMinSize
-import scalax.collection.GraphPredef._
-import net.cyndeline.scalarlib.rldrawing.util.Intersection
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ChocoMinSizeSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef._
+import scalax.collection.immutable.Graph
+
+class ChocoMinSizeSpec extends SpecImports {
   private val miniSize = new ChocoMinSize()
 
   describe("ChocoMinSize") {

@@ -1,10 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.help
 
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.GraphPredef.OuterEdge
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * A strategy that always returns its input.

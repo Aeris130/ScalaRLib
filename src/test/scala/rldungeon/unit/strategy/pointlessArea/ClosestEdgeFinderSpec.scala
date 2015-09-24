@@ -1,15 +1,11 @@
 package rldungeon.unit.strategy.pointlessArea
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.PointlessAreaData
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.ClosestEdgeFinder
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ClosestEdgeFinderSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ClosestEdgeFinderSpec extends SpecImports {
   private val edgeFinder = new ClosestEdgeFinder()
 
   private def edges = new {

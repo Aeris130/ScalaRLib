@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
-import net.cyndeline.scalarlib.rldrawing.util.{Connection, Point}
-import net.cyndeline.scalarlib.rldrawing.common.RectangleCoordinates
+import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 /**
  * Stores corridor drawing data.

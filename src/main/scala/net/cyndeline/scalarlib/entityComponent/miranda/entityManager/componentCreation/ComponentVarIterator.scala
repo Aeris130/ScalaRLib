@@ -1,9 +1,10 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation
 
 import net.cyndeline.scalarlib.entityComponent.miranda.Component
-import scala.reflect.runtime.{universe => ru}
-import scala.reflect.runtime.universe._
+
 import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
+import scala.reflect.runtime.{universe => ru}
 
 /**
  * Iterates over every public, non-final var in a component class and calls a method

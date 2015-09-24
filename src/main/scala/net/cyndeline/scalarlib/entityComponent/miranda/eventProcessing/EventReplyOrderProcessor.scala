@@ -1,8 +1,9 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.eventProcessing
 
 import net.cyndeline.scalarlib.entityComponent.miranda._
-import scala.collection.mutable.ArrayBuffer
 import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
+
+import scala.collection.mutable.ArrayBuffer
 
 /**
  * Respects the order that response-events are sent in when deciding the processing order of all events.

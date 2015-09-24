@@ -1,17 +1,13 @@
 package entityComponent.miranda
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.entityComponent.miranda.eventProcessing.EventReplyOrderProcessor
 import net.cyndeline.scalarlib.entityComponent.miranda._
-import scala.collection.mutable.ArrayBuffer
+import net.cyndeline.scalarlib.entityComponent.miranda.eventProcessing.EventReplyOrderProcessor
 import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class EventReplyOrderProcessorSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scala.collection.mutable.ArrayBuffer
+
+class EventReplyOrderProcessorSpec extends SpecImports {
 
   class TestEvent(order: Int) extends Event {
     def this() = this(0)

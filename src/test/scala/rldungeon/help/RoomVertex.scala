@@ -1,8 +1,9 @@
 package rldungeon.help
 
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.ElementEquivalence
-import scalax.collection.immutable.Graph
+import net.cyndeline.rlgraph.subgraph.isomorphism.ElementEquivalence
 import net.cyndeline.scalarlib.rldungeon.common.Room
+
+import scalax.collection.immutable.Graph
 
 /**
  * Used in graph tests with rooms.

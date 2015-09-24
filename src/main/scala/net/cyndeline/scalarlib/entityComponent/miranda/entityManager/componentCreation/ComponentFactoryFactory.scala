@@ -1,9 +1,11 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.entityManager.componentCreation
 
 import java.lang.reflect.Constructor
+
 import net.cyndeline.scalarlib.entityComponent.miranda.Component
-import scala.reflect.runtime.{universe => ru}
+
 import scala.reflect.runtime.universe._
+import scala.reflect.runtime.{universe => ru}
 
 /**
  * A factory that uses reflection to build component factories that trigger an empty constructor

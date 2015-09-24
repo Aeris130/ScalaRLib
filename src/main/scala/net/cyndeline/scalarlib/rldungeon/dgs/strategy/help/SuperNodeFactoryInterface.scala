@@ -1,10 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.help
 
-import scala.reflect.ClassTag
+import net.cyndeline.scalarlib.rldungeon.common.Room
+
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import scala.reflect.runtime.universe._
-import net.cyndeline.scalarlib.rldungeon.common.Room
 
 /**
  * Responsible for merging cycles of a graph into super-nodes representing every vertex in the cycle.

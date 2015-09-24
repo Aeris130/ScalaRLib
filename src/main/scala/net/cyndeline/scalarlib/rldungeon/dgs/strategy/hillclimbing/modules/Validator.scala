@@ -1,10 +1,9 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules
 
-import net.cyndeline.scalarlib.rldungeon.dgs.{Rejected, Accepted, Parameter}
-import scalax.collection.immutable.Graph
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+import net.cyndeline.scalarlib.rldungeon.dgs.{Accepted, Parameter, Rejected}
+
 import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * Used for injection.

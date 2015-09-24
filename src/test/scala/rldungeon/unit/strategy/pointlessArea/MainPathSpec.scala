@@ -1,18 +1,15 @@
 package rldungeon.unit.strategy.pointlessArea
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import net.cyndeline.rlgraph.pathfinding.Path
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.{PointlessArea, MainPath}
-import net.cyndeline.scalarlib.rlgraph.pathfinding.Path
-import scalax.collection.GraphPredef._
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.{MainPath, PointlessArea}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class MainPathSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef._
+import scalax.collection.immutable.Graph
+
+class MainPathSpec extends SpecImports {
   private implicit def undiToCollapsed(e: UnDiEdge[CollapsedNode]): CollapsedEdge[CollapsedNode] = CollapsedEdge(e._1, e._2)
 
   private def nodes = new {

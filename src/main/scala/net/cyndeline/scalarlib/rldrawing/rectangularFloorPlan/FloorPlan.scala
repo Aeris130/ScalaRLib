@@ -1,14 +1,16 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan
 
-import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
-import net.cyndeline.scalarlib.rldrawing.util.{Connection, Geom, Intersection, Point}
-import net.cyndeline.scalarlib.rlgraph.util.GraphCommons
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import scala.collection.mutable.ListBuffer
-import scala.collection.mutable
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{Geom, Intersection, Point}
+import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
+import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import net.cyndeline.rlgraph.util.GraphCommons
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.ModifiedCoordinates
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.common.MapArea
+import net.cyndeline.scalarlib.rldrawing.util.Connection
+
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Parses a rectangular dual layout into a floor plan consisting of rectangular room areas and the intersecting

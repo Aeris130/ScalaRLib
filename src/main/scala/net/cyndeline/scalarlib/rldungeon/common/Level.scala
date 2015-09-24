@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldungeon.common
 
-import scalax.collection.immutable.Graph
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.immutable.Graph
 
 /**
  * Extended by objects representing a single level. Note to users: Multiple copies produced by the implementing

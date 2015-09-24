@@ -1,17 +1,17 @@
 package net.cyndeline.scalarlib.rldungeon.grammar.production
 
+import net.cyndeline.rlcommon.util.{ProbabilityCollection, RandomCollection}
+import net.cyndeline.rlgraph.subgraph.isomorphism.jGraphT.SubGraphIsomorphismInspector
+import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, IsomorphicMapping, NegativeCondition}
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
+
+import scala.reflect.ClassTag
+import scala.reflect.runtime.universe._
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{IsomorphicMapping, NegativeCondition, ElementEquivalence}
-import scala.util.Random
-import net.cyndeline.scalarlib.rldungeon.grammar.util.{MorphismFactory, Morphism}
-import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
-import scala.reflect.runtime.universe._
-import scala.reflect.ClassTag
-import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.jGraphT.SubGraphIsomorphismInspector
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.util.{ProbabilityCollection, RandomCollection}
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * Specifies a single left-hand side of a graph grammar, and multiple right-hand side ComponentProductions.

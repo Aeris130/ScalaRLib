@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.entityComponent.miranda
 
 import net.cyndeline.scalarlib.entityComponent.miranda.entityManager.eventCreation.EventFactory
+
 import scala.reflect.runtime.universe._
 
 /**

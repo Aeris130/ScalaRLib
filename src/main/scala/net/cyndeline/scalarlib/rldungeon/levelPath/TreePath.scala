@@ -1,14 +1,15 @@
 package net.cyndeline.scalarlib.rldungeon.levelPath
 
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedNode, CollapsedEdge}
-import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.pathfinding.Path
+import net.cyndeline.rlgraph.pathfinding.Path
+import net.cyndeline.rlgraph.util.GraphCommons
 import net.cyndeline.scalarlib.rldungeon.common.{Corridor, Level, Room}
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
+
 import scala.collection.mutable
-import net.cyndeline.scalarlib.rlgraph.util.GraphCommons
-import scala.reflect.runtime.universe._
 import scala.collection.mutable.ListBuffer
+import scala.reflect.runtime.universe._
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.immutable.Graph
 
 /**
  * This class represents levels by folding biconnected components of the levels graph structure into super-nodes

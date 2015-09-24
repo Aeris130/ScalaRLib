@@ -1,19 +1,14 @@
 package rldungeon.unit.grammar
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.rldungeon.grammar.util.{RoomModification, Morphism, TopologyProduction}
-import scalax.collection.GraphEdge.UnDiEdge
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, RoomModification, TopologyProduction}
 import rldungeon.help._
-import scalax.collection.immutable.Graph
-import scalax.collection.GraphPredef._
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-import net.cyndeline.scalarlib.rlgraph.util.{EdgeFactory, EdgeCopyFactory}
-import net.cyndeline.scalarlib.rldungeon.common.Level
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class TopologyProductionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef._
+import scalax.collection.immutable.Graph
+
+class TopologyProductionSpec extends SpecImports {
   private implicit def edge2CorridorEdgeAssoc(e: UnDiEdge[RoomVertex]) = CorridorEdge(e._1, e._2)
 
   /**

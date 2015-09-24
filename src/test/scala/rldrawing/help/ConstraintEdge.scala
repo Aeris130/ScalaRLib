@@ -1,7 +1,8 @@
 package rldrawing.help
 
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.CorridorProperties
-import scalax.collection.GraphEdge.{NodeProduct, EdgeCopy, UnDiEdge}
+
+import scalax.collection.GraphEdge.{EdgeCopy, NodeProduct, UnDiEdge}
 import scalax.collection.GraphPredef.OuterEdge
 
 /**

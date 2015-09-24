@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
-import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.{RoomArea, FloorPlan}
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.Geom
+import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
+import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.{FloorPlan, RoomArea}
+
 import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.common.MapArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.util.Geom
 
 /**
  * Reduces the size of areas that exceed their target size by moving individual sides of the area inwards. This

@@ -1,12 +1,12 @@
 package net.cyndeline.scalarlib.rldungeon.grammar
 
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
+import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
+
+import scala.collection.mutable.ArrayBuffer
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
-import scala.util.Random
-import scala.collection.mutable.ArrayBuffer
-import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**
  * A basic map-generating strategy that randomly selects individual productions without probabilities.

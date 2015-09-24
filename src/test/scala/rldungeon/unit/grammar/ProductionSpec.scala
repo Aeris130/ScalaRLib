@@ -1,16 +1,12 @@
 package rldungeon.unit.grammar
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import net.cyndeline.scalarlib.rldungeon.grammar.production.Production
-import scalax.collection.immutable.Graph
-import rldungeon.help.{GraphLevel, CorridorEdge, RoomVertex}
-import net.cyndeline.scalarlib.rldungeon.common.Level
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ProductionSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+import scalax.collection.immutable.Graph
+
+class ProductionSpec extends SpecImports {
 
   describe("Production") {
 

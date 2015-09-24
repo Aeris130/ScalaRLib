@@ -1,22 +1,18 @@
 package rldungeon.integration.strategy
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
+import net.cyndeline.rlgraph.pathfinding.Path
+import net.cyndeline.rlgraph.util.GraphCommons
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.ActivatorResponderStrategy
-import rldungeon.help.{CorridorEdgeAssoc, CorridorEdge, GraphLevel, RoomVertex}
+import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
+import rldungeon.help.{CorridorEdge, CorridorEdgeAssoc, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
+
+import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
-import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rlgraph.util.GraphCommons
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.MainPath
-import net.cyndeline.scalarlib.rlgraph.pathfinding.Path
-import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
 
-@RunWith(classOf[JUnitRunner])
-class ActivatorResponderStrategySpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ActivatorResponderStrategySpec extends SpecImports {
   private implicit def undirectedToCorridorEdge(e: UnDiEdge[RoomVertex]) = new CorridorEdgeAssoc(e)
   private val strategy = new ActivatorResponderStrategy[GraphLevel, RoomVertex, CorridorEdge]()
 

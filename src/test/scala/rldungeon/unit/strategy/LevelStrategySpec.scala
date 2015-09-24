@@ -1,24 +1,13 @@
 package rldungeon.unit.strategy
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
-import rldungeon.help.{GraphLevel, RoomVertex, CorridorEdge}
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help._
-import net.cyndeline.scalarlib.rlgraph.util.EdgeCopyFactory
-import scala.util.Random
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.LevelStrategy
-import scalax.collection.immutable.Graph
-import org.scalamock.MockParameter
-import scala.reflect.ClassTag
-import scala.reflect.runtime.universe._
-import net.cyndeline.scalarlib.subcut.ProjectConfiguration
+import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class LevelStrategySpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class LevelStrategySpec extends SpecImports {
 
   describe("LevelStrategy") {
 

@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help
 
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedNode, CollapsedEdge}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.PointlessAreaData
 
 /**

@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help
 
+import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
 
 /**
  * Computes how much an area A connected to another area B is allowed to move along some side of B before A breaks

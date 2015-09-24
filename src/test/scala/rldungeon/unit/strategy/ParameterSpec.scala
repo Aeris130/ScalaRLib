@@ -1,16 +1,12 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import net.cyndeline.scalarlib.rldungeon.dgs._
-import rldungeon.help.{GraphLevel, RoomVertex, CorridorEdge}
-import scalax.collection.immutable.Graph
-import org.scalamock.scalatest.MockFactory
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ParameterSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class ParameterSpec extends SpecImports {
 
   def fixture = new {
     val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())

@@ -1,13 +1,9 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util.ClosestDivisor
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ClosestDivisorSpec extends FunSpec with GivenWhenThen with ShouldMatchers {
+class ClosestDivisorSpec extends SpecImports {
 
   def fixture = new {
     val finder = new ClosestDivisor()

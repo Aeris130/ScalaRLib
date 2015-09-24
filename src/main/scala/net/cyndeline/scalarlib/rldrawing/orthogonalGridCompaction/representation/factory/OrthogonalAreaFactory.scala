@@ -1,15 +1,14 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
-import scalax.collection.GraphEdge.UnDiEdge
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation._
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{PartitionedArea, CorridorProperties}
+import net.cyndeline.rlcommon.util.Direction._
+import net.cyndeline.rlcommon.util.{HeightConstraint, Point, WidthConstraint}
+import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.OrthogonalRepresentation
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help.ConnectionBoundary
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
-import net.cyndeline.scalarlib.rlgraph.planarGraphDrawing.orthogonal.OrthogonalRepresentation
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{RectangularArea, _}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{CorridorProperties, PartitionedArea}
+
 import scala.collection.mutable.ArrayBuffer
-import net.cyndeline.scalarlib.rldrawing.common.{HeightConstraint, WidthConstraint}
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Builds a grid of areas representing rooms and corridors by assigning each area coordinates on the grid based

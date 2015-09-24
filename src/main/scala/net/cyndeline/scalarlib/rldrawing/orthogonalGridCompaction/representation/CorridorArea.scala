@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
 
+import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.util.Direction._
 
 /**
  * Represents a straight rectangular corridor section. Corridors with bends are represented by multiple CorridorAreas,

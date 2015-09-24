@@ -1,7 +1,7 @@
 package rldrawing.help
 
-import net.cyndeline.scalarlib.rldrawing.common.{HeightConstraint, WidthConstraint}
-import net.cyndeline.scalarlib.rlgraph.cartogram.rectangular.common.MapArea
+import net.cyndeline.rlcommon.util.{HeightConstraint, WidthConstraint}
+import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
 
 /**
  * A room with width and height.

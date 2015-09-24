@@ -1,7 +1,8 @@
 package net.cyndeline.scalarlib.rldungeon.common
 
-import scalax.collection.GraphEdge.UnDiEdge
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
+
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Contains methods used to mark pointless areas in a level, and to examine the initial level before processing

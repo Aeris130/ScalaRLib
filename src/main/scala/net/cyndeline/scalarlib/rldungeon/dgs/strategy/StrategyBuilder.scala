@@ -1,17 +1,17 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy
 
+import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
+import net.cyndeline.rlcommon.util.ProbabilityCollection
+import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
-import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
-import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
-import scala.util.Random
-import net.cyndeline.scalarlib.util.ProbabilityCollection
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
-import scalax.collection.GraphEdge.UnDiEdge
-import scalax.collection.GraphPredef.OuterEdge
-import com.escalatesoft.subcut.inject.{Injectable, BindingModule}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
+import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
+import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
-import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
+
+import scala.util.Random
+import scalax.collection.GraphEdge.UnDiEdge
 
 /**
  * Contains productions and parameters that should be used for a single strategy.

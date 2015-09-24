@@ -1,9 +1,9 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util.{GridPartition}
+import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.util.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util.GridPartition
 
 /**
  * Creates a grid where each cell represents 30% of the total size for small room amounts, and 10% for higher

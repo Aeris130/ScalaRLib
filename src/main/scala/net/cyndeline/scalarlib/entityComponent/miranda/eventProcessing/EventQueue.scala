@@ -1,8 +1,9 @@
 package net.cyndeline.scalarlib.entityComponent.miranda.eventProcessing
 
-import scala.collection.mutable
-import net.cyndeline.scalarlib.entityComponent.miranda.{Entity, Event}
 import net.cyndeline.scalarlib.entityComponent.miranda.util.Bag
+import net.cyndeline.scalarlib.entityComponent.miranda.{Entity, Event}
+
+import scala.collection.mutable
 
 /**
  * Stores events in a queue and process them by sending them in the order they were received.

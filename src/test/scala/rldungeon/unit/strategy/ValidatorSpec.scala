@@ -1,17 +1,13 @@
 package rldungeon.unit.strategy
 
-import org.scalatest.{GivenWhenThen, FunSpec}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalamock.scalatest.MockFactory
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
-import rldungeon.help.{GraphLevel, CorridorEdge, RoomVertex}
-import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.Validator
+import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
+import testHelpers.SpecImports
 
-@RunWith(classOf[JUnitRunner])
-class ValidatorSpec extends FunSpec with GivenWhenThen with ShouldMatchers with MockFactory {
+import scalax.collection.immutable.Graph
+
+class ValidatorSpec extends SpecImports {
 
   def fixture = new {
     val validator = new Validator()
