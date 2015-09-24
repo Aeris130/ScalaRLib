@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.util
 
 /**
- * Responsible for producing vertices for a graph based on an input object.
+ * Responsible for producing vertices for a graph based on an input object..
  */
 trait VertexFactory[VType, Input] {
 
