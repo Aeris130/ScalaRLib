@@ -1,6 +1,7 @@
 package rlgraph.help
 
-import net.cyndeline.scalarlib.util.EdgeFactory
+import net.cyndeline.scalarlib.rlgraph.util.EdgeFactory
+
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef._
 

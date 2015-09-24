@@ -1,4 +1,6 @@
-package net.cyndeline.scalarlib.util.graphConverters.jgraphed
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.jgraphed
+
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.{ConverterData, GraphConverter}
 
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
@@ -6,7 +8,6 @@ import graphStructure.{Graph => JgraphEdGraph, Edge, Location, Node}
 import java.util
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.runtime.universe.TypeTag
-import net.cyndeline.scalarlib.util.graphConverters.{ConverterData, GraphConverter}
 
 /**
  * Converts graph structures between JGraphEd and scalax graphs. Edge adjacency order is not preserved.
@@ -33,20 +34,20 @@ class JGraphEdConverter[VType : TypeTag, EType[X] <: UnDiEdge[X]: ({type l[M[_]]
     /* Add every edge and its vertices. */
     for (edge <- graph.edges) {
       val outer = edge.toOuter
-      val from = verticesToNodes.get(outer._1).getOrElse {
+      val from = verticesToNodes.getOrElse(outer._1, {
         val n = jgraphedGraph.createNode(new Location(c, c))
         c += 1
         verticesToNodes += (outer._1 -> n)
         nodesToVertices += (n -> outer._1)
         n
-      }
-      val to = verticesToNodes.get(outer._2).getOrElse {
+      })
+      val to = verticesToNodes.getOrElse(outer._2, {
         val n = jgraphedGraph.createNode(new Location(c, c))
         c += 1
         verticesToNodes += (outer._2 -> n)
         nodesToVertices += (n -> outer._2)
         n
-      }
+      })
       jgraphedGraph.addEdge(from, to)
     }
 

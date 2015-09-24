@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.util.graphConverters
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters
 
 import scalax.collection.GraphPredef._
 

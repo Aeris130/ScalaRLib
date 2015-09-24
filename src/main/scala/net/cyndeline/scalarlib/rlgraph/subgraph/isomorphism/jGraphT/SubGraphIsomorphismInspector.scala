@@ -1,12 +1,13 @@
 package net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.jGraphT
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
+
 import scala.util.Random
 import scalax.collection.immutable.Graph
 import scalax.collection.GraphEdge.UnDiEdge
 import scala.reflect.runtime.universe._
 import scala.reflect.ClassTag
 import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{NegativeCondition, ElementEquivalence, IsomorphicMapping}
-import net.cyndeline.scalarlib.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
 
 /**
  * Computes a mapping between the vertices of a graph and the vertices of the graph it is a sub graph of.

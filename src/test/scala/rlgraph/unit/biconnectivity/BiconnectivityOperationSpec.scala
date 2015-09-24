@@ -7,7 +7,7 @@ import org.scalatest.matchers.ShouldMatchers
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rlgraph.biconnectivity.biconnect.KantBodlaenderBiconnection.BiconnectivityOperation
-import net.cyndeline.scalarlib.util.{UnorderedPair, EdgeFactory}
+import net.cyndeline.scalarlib.util.UnorderedPair
 import scalax.collection.GraphPredef._
 import net.cyndeline.scalarlib.rlgraph.biconnectivity.components.DFSComponentSearch
 import net.cyndeline.scalarlib.rlgraph.planar.demoucron.operation.DemoucronEmbedding

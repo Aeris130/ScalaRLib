@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.util
+package net.cyndeline.scalarlib.rlgraph.util
 
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef.OuterEdge

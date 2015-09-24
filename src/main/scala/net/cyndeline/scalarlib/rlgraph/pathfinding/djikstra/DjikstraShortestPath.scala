@@ -1,12 +1,13 @@
 package net.cyndeline.scalarlib.rlgraph.pathfinding.djikstra
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
+
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 import org.jgrapht.UndirectedGraph
 import org.jgrapht.graph.DefaultEdge
 import org.jgrapht.alg.DijkstraShortestPath
 import scala.collection.mutable.ArrayBuffer
-import net.cyndeline.scalarlib.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
 
 /**
  * Wraps JGraphTs path finding.

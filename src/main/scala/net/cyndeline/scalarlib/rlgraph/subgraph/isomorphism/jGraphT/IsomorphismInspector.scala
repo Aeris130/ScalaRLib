@@ -1,5 +1,7 @@
 package net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.jGraphT
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
+
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 import org.jgrapht.experimental.isomorphism.{IsomorphismRelation, AdaptiveIsomorphismInspectorFactory}
@@ -8,7 +10,6 @@ import org.jgrapht.{ Graph => JGraphT }
 import org.jgrapht.experimental.equivalence.EquivalenceComparator
 import scala.reflect.runtime.universe._
 import net.cyndeline.scalarlib.rlgraph.subgraph.isomorphism.{NegativeCondition, ElementEquivalence}
-import net.cyndeline.scalarlib.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
 
 /**
  * A scala-graph wrapper for isomorphism inspection of planar undirected graphs. Checks if two graphs share the

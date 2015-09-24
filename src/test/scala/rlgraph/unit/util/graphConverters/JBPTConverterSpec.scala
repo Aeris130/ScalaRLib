@@ -1,13 +1,15 @@
-package util.graphConverters
+package rlgraph.unit.util.graphConverters
 
+import net.cyndeline.scalarlib.rlgraph.util.VertexFactory
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.ConverterData
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt.JBPTConverter
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt.hashStructure.{JBPTHashGraph, VertexHash}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{GivenWhenThen, FunSpec}
 import org.scalatest.matchers.ShouldMatchers
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.util.graphConverters.jbpt.JBPTConverter
-import net.cyndeline.scalarlib.util.{EdgeFactory, VertexFactory}
 import org.jbpt.hypergraph.abs.Vertex
 import scalax.collection.GraphEdge.UnDiEdge
 import rlgraph.help.UndirectedEdgeFactory
@@ -16,8 +18,6 @@ import scala.collection.immutable.Iterable
 import java.util
 import org.jbpt.graph.Edge
 import org.jbpt.graph.{ Graph => JBPTGraph }
-import net.cyndeline.scalarlib.util.graphConverters.ConverterData
-import net.cyndeline.scalarlib.util.graphConverters.jbpt.hashStructure.{VertexHash, JBPTHashGraph}
 
 @RunWith(classOf[JUnitRunner])
 class JBPTConverterSpec extends FunSpec with GivenWhenThen with ShouldMatchers {

@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.util.graphConverters.jgraphed
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.jgraphed
 
 import graphStructure.{Node, NodeExtender}
 

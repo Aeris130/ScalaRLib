@@ -1,12 +1,13 @@
 package net.cyndeline.scalarlib.rlgraph.planar.boyerMyrwold
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.vinets.VinetsConverter
+
 import scala.reflect.runtime.universe.TypeTag
 import scala.reflect.ClassTag
 import net.cyndeline.scalarlib.rlgraph.planar.PlanarEmbedOperation
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rlgraph.embedding.{Embedding}
-import net.cyndeline.scalarlib.util.graphConverters.vinets.VinetsConverter
 import boyer.BoyerPlanarEmbedder
 import de.fhstralsund.vinets.algorithm.Parameter
 import java.util

@@ -1,16 +1,16 @@
-package util.graphConverters
+package rlgraph.unit.util.graphConverters
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.ConverterData
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jgraphed.{NodeWrapper, EdgeWrapper, JGraphEdConverter}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{GivenWhenThen, FunSpec}
 import org.scalatest.matchers.ShouldMatchers
-import net.cyndeline.scalarlib.util.graphConverters.jgraphed.{EdgeWrapper, NodeWrapper, JGraphEdConverter}
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 import collection.JavaConverters._
 import graphStructure.{Graph => JGraphEd, Edge, Node}
 import scalax.collection.GraphPredef._
-import net.cyndeline.scalarlib.util.graphConverters.ConverterData
 
 @RunWith(classOf[JUnitRunner])
 class JGraphEdConverterSpec extends FunSpec with GivenWhenThen with ShouldMatchers {

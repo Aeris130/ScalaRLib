@@ -1,5 +1,7 @@
 package net.cyndeline.scalarlib.rlgraph.cycles.cycleBase.jGraphT
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
+
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 import org.jgrapht.alg.cycle.PatonCycleBase
@@ -8,7 +10,6 @@ import org.jgrapht.graph.DefaultEdge
 import java.util
 import scala.collection.JavaConversions._
 import net.cyndeline.scalarlib.rlgraph.cycles.cycleBase.UndirectedCycleBaseFinder
-import net.cyndeline.scalarlib.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
 
 /**
  * Wrapper for the PatonCycleBase algorithm in the JGraphT library.

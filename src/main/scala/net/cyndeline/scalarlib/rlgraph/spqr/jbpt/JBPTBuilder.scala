@@ -1,16 +1,16 @@
 package net.cyndeline.scalarlib.rlgraph.spqr.jbpt
 
 import net.cyndeline.scalarlib.rlgraph.spqr._
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.ConverterData
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt.JBPTConverter
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt.hashStructure.JBPTHashGraph
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.util.graphConverters.jbpt.hashStructure.JBPTHashGraph
 import org.jbpt.hypergraph.abs.Vertex
 import org.jbpt.graph.Edge
-import net.cyndeline.scalarlib.util.graphConverters.jbpt.JBPTConverter
 import org.jbpt.algo.tree.tctree.{TCType, TCTreeNode, TCTree}
 import scala.reflect.runtime.universe.TypeTag
 import scala.collection.JavaConversions._
-import net.cyndeline.scalarlib.util.graphConverters.ConverterData
 import org.jbpt.graph.abs.AbstractEdge
 import scala.collection.mutable.ArrayBuffer
 

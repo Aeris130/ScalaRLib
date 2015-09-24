@@ -9,8 +9,7 @@ import scalax.collection.immutable.Graph
 import scalax.collection.GraphPredef._
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
-import net.cyndeline.scalarlib.rlgraph.util.EdgeCopyFactory
-import net.cyndeline.scalarlib.util.EdgeFactory
+import net.cyndeline.scalarlib.rlgraph.util.{EdgeFactory, EdgeCopyFactory}
 import net.cyndeline.scalarlib.rldungeon.common.Level
 
 @RunWith(classOf[JUnitRunner])

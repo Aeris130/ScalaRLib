@@ -1,14 +1,14 @@
-package net.cyndeline.scalarlib.util.graphConverters.jbpt
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt
 
-import net.cyndeline.scalarlib.util.graphConverters.{ConverterData, GraphConverter}
+import net.cyndeline.scalarlib.rlgraph.util.{VertexFactory, EdgeFactory}
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt.hashStructure.{JBPTHashGraph, VertexHash}
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.{ConverterData, GraphConverter}
 import scalax.collection.GraphEdge.UnDiEdge
 import org.jbpt.graph.Edge
 import org.jbpt.hypergraph.abs.Vertex
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.util.{VertexFactory, EdgeFactory}
 import java.util
 import scala.reflect.runtime.universe.TypeTag
-import net.cyndeline.scalarlib.util.graphConverters.jbpt.hashStructure.{VertexHash, JBPTHashGraph}
 
 /**
  * Converts scala-graphs to/from the graph structure used by the JBPT library.

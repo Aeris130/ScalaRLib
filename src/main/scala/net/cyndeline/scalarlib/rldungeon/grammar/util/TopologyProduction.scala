@@ -3,9 +3,8 @@ package net.cyndeline.scalarlib.rldungeon.grammar.util
 import scalax.collection.GraphEdge.UnDiEdge
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
 import scalax.collection.immutable.Graph
-import net.cyndeline.scalarlib.rlgraph.util.{GraphCommons, VertexReplacer, EdgeCopyFactory}
+import net.cyndeline.scalarlib.rlgraph.util.{EdgeFactory, GraphCommons, VertexReplacer, EdgeCopyFactory}
 import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.util.EdgeFactory
 import net.cyndeline.scalarlib.rldungeon.common.{Room, Level}
 
 /**

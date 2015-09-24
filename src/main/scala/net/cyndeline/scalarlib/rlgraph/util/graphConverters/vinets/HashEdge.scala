@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.util.graphConverters.vinets
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.vinets
 
 import de.fhstralsund.vinets.structure._
 import java.util

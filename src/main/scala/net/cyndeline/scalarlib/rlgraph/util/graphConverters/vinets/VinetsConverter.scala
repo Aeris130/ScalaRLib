@@ -1,6 +1,6 @@
-package net.cyndeline.scalarlib.util.graphConverters.vinets
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.vinets
 
-import net.cyndeline.scalarlib.util.graphConverters.{ConverterData, GraphConverter}
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.{ConverterData, GraphConverter}
 import scala.reflect.runtime.universe.TypeTag
 import scalax.collection.GraphEdge.UnDiEdge
 import de.fhstralsund.vinets.structure.{Link, Node}

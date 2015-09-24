@@ -2,8 +2,7 @@ package rldungeon.help
 
 import scalax.collection.GraphEdge.{ExtendedKey, NodeProduct, EdgeCopy, UnDiEdge}
 import scalax.collection.GraphPredef.OuterEdge
-import net.cyndeline.scalarlib.rlgraph.util.EdgeCopyFactory
-import net.cyndeline.scalarlib.util.EdgeFactory
+import net.cyndeline.scalarlib.rlgraph.util.{EdgeFactory, EdgeCopyFactory}
 import net.cyndeline.scalarlib.rldungeon.common.{Corridor, Room}
 
 

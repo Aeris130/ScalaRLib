@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rlgraph.planar.jgraphed
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jgraphed.{NodeWrapper, EdgeWrapper, JGraphEdConverter}
+
 import scalax.collection.GraphEdge.UnDiEdge
 import net.cyndeline.scalarlib.rlgraph.planar.PlanarEmbedOperation
 import scalax.collection.immutable.Graph
 import net.cyndeline.scalarlib.rlgraph.embedding.{Embedding}
-import net.cyndeline.scalarlib.util.graphConverters.jgraphed.{EdgeWrapper, NodeWrapper, JGraphEdConverter}
 import operation.{PlanarityOperation, EmbedOperation}
 import scala.reflect.runtime.universe.TypeTag
 import collection.JavaConverters._

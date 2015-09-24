@@ -1,5 +1,6 @@
 package rlgraph.unit.subgraph.isomorphism
 
+import net.cyndeline.scalarlib.rlgraph.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
 import org.scalatest.{GivenWhenThen, FunSpec}
 import org.scalatest.matchers.ShouldMatchers
 import org.junit.runner.RunWith
@@ -8,7 +9,6 @@ import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
 import scalax.collection.GraphEdge.UnDiEdge
 import scala.collection.JavaConversions._
-import net.cyndeline.scalarlib.util.graphConverters.jGraphT.ScalaGraphToJGraphTConverter
 
 @RunWith(classOf[JUnitRunner])
 class ScalaGraphToJGraphTConverterSpec extends FunSpec with GivenWhenThen with ShouldMatchers {

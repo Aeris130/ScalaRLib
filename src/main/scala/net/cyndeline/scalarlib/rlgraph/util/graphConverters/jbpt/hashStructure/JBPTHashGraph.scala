@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.util.graphConverters.jbpt.hashStructure
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.jbpt.hashStructure
 
 import org.jbpt.graph.{Edge, Graph}
 import org.jbpt.hypergraph.abs.Vertex

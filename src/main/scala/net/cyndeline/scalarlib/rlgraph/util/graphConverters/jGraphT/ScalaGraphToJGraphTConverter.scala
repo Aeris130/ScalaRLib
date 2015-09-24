@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.util.graphConverters.jGraphT
+package net.cyndeline.scalarlib.rlgraph.util.graphConverters.jGraphT
 
 import scalax.collection.immutable.{ Graph => ScalaGraph }
 import org.jgrapht.{DirectedGraph, UndirectedGraph}
