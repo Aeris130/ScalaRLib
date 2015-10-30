@@ -3,13 +3,15 @@ package net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.{Accepted, Parameter, Rejected}
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Used for injection.
  */
 trait ValidatorI {
-  def validateModifiedGraph[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+  def validateModifiedGraph[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X]]
     (parameters: Set[Parameter[L, R, C]],
     previousEstimates: Map[Parameter[L, R, C], Double],
     newLevel: L): (Set[Parameter[L, R, C]], Set[Parameter[L, R, C]], Map[Parameter[L, R, C], Double])
@@ -31,7 +33,7 @@ class Validator extends ValidatorI {
    * @return Two sets of parameters (accepting and rejecting) as well as every parameter mapped to its estimated value
    *         of the input level.
    */
-  def validateModifiedGraph[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+  def validateModifiedGraph[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X]]
   (parameters: Set[Parameter[L, R, C]],
    previousEstimates: Map[Parameter[L, R, C], Double],
    newLevel: L): (Set[Parameter[L, R, C]], Set[Parameter[L, R, C]], Map[Parameter[L, R, C], Double]) = {

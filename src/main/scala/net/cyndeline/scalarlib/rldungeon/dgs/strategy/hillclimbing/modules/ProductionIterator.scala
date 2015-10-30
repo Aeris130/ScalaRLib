@@ -7,16 +7,18 @@ import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidation
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Used for injection.
  */
 trait ProductionIteratorI {
-  def applyProductions[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+  def applyProductions[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
     (level: L,
      parameters: Set[Parameter[L, R, C]],
-     productions: RandomCollection[LevelProduction[L, R, C]],
+     productions: RandomCollection[LevelProduction[L, R, C, PV]],
      paramResponseValidation: ParameterResponderValidation[L, R, C]): L
 }
 
@@ -43,10 +45,10 @@ class ProductionIterator(implicit val bindingModule: BindingModule)
    *                                should be kept or discarded.
    * @return The modified level, or the input level if no modifications were accepted.
    */
-  def applyProductions[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+  def applyProductions[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
     (level: L,
     parameters: Set[Parameter[L, R, C]],
-    productions: RandomCollection[LevelProduction[L, R, C]],
+    productions: RandomCollection[LevelProduction[L, R, C, PV]],
     paramResponseValidation: ParameterResponderValidation[L, R, C]): L = {
 
     var currentProductions = productions.copy

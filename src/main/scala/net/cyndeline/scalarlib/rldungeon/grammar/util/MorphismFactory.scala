@@ -10,9 +10,10 @@ class MorphismFactory {
   /**
    * Builds a new morphism.
    * @param mapping Map with the left and right-hand side of the morphism.
-   * @tparam VType Type of vertex mapped in the morphism.
+   * @tparam LevelVertex Type of rooms used in level to apply production on.
+   * @tparam PatternVertex Vertex type used in pattern graphs.
    * @return A morphism wrapping the supplied map.
    */
-  def build[VType](mapping: Map[VType, VType]): Morphism[VType] = new Morphism(mapping)
+  def build[LevelVertex, PatternVertex](mapping: Map[PatternVertex, LevelVertex]): Morphism[LevelVertex, PatternVertex] = new Morphism(mapping)
 
 }

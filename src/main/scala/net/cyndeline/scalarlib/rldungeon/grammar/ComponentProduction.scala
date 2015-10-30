@@ -3,12 +3,15 @@ package net.cyndeline.scalarlib.rldungeon.grammar
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.util.Morphism
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Represents the right-hand side of a production rule, and modifies a level based on a morphism.
+ * @tparam PV Vertex type used in pattern graphs.
  */
-trait ComponentProduction[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]] {
+trait ComponentProduction[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV] {
 
   /**
    * Performs a modification of a level.
@@ -23,6 +26,6 @@ trait ComponentProduction[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]] {
    *              those checks in the negative condition inside the Production class.
    * @return a copy of the input level, modified by this production.
    */
-  def apply(morphism: Morphism[R], level: L): L
+  def apply(morphism: Morphism[R, PV], level: L): L
 
 }

@@ -10,13 +10,15 @@ import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
 
+import scala.language.higherKinds
 import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Contains productions and parameters that should be used for a single strategy.
  */
-class StrategyBuilder[L <: Level[L, V, E], V <: Room, E[X] <: UnDiEdge[X]] private
+class StrategyBuilder[L <: Level[L, V, E], V <: Room, E[X] <: EdgeLikeIn[X], PV] private
   (parameterResponseValidationOpt: ParameterResponderValidation[L, V, E],
    attempts: Int)(implicit val bindingModule: BindingModule) extends Injectable {
 
@@ -31,16 +33,16 @@ class StrategyBuilder[L <: Level[L, V, E], V <: Room, E[X] <: UnDiEdge[X]] priva
    * @return A strategy object that attempts to output a valid level.
    */
   def createStrategy(parameters: Vector[Parameter[L, V, E]],
-                     productions: Vector[(Double, LevelProduction[L, V, E])],
+                     productions: Vector[(Double, LevelProduction[L, V, E, PV])],
                      random: Random): Strategy[L, V, E] = {
-    require(!parameters.isEmpty, "Cannot create a strategy without supplying at least one parameter.")
-    require(!productions.isEmpty, "Cannot create a strategy without supplying at least one production.")
+    require(parameters.nonEmpty, "Cannot create a strategy without supplying at least one parameter.")
+    require(productions.nonEmpty, "Cannot create a strategy without supplying at least one production.")
 
-    val randomProducts = new ProbabilityCollection[LevelProduction[L, V, E]](random)
+    val randomProducts = new ProbabilityCollection[LevelProduction[L, V, E, PV]](random)
     for (kv <- productions)
       randomProducts.add(kv._1, kv._2)
 
-    new HillClimbing[L, V, E](parameters.toSet, randomProducts, parameterResponseValidationOpt, attempts)
+    new HillClimbing[L, V, E, PV](parameters.toSet, randomProducts, parameterResponseValidationOpt, attempts)
   }
 
 }

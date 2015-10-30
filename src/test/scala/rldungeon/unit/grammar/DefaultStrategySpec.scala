@@ -16,9 +16,9 @@ class DefaultStrategySpec extends SpecImports {
 
       Given("a default strategy with three productions that selects 2 productions, and a randomizer that selects the first and third production")
       val random = RandomMock()
-      val production1 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
-      val production2 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
-      val production3 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
+      val production1 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]
+      val production2 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]
+      val production3 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]
       val attempts = 1
       val derivations = 2
 
@@ -36,11 +36,11 @@ class DefaultStrategySpec extends SpecImports {
       When("executing the strategy, with the first production returning a graph with a vertex 1")
       val initialLevel = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
       val resultFromFirstProduction = GraphLevel(Graph[RoomVertex, CorridorEdge](room2))
-      (production1.apply _) expects(initialLevel) returns (Option(resultFromFirstProduction)) once()
+      production1.apply _ expects initialLevel returns Option(resultFromFirstProduction) once()
 
       Then("the third production should receive the produced graph")
       val resultFromThirdProduction = GraphLevel(Graph[RoomVertex, CorridorEdge](room2, room3))
-      (production3.apply _) expects(resultFromFirstProduction) returns (Option(resultFromThirdProduction)) once()
+      production3.apply _ expects resultFromFirstProduction returns Option(resultFromThirdProduction) once()
 
       /* Execute test. */
       val result = strategy.apply(initialLevel)

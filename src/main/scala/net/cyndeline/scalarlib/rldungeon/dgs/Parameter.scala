@@ -2,7 +2,9 @@ package net.cyndeline.scalarlib.rldungeon.dgs
 
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Represents an aspect of a level.
@@ -20,7 +22,7 @@ import scalax.collection.GraphEdge.UnDiEdge
  * @tparam R Room type used in the level.
  * @tparam C Corridor/connection type used in the level.
  */
-final class Parameter[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+final class Parameter[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X]]
   (val name: String,
    minValue: Double,
    maxValue: Double,

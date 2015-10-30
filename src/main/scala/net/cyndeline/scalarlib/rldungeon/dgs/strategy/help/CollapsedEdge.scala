@@ -25,7 +25,7 @@ class CollapsedEdge[N](nodes: Product, val originalFrom: Option[Int], val origin
   with EdgeCopy[CollapsedEdge]
   with OuterEdge[N, CollapsedEdge] {
 
-  override def copy[T](newNodes: Product) = new CollapsedEdge[T](newNodes, originalFrom, originalTo, isDummy)
+  override def copy[NN](newNodes: Product) = new CollapsedEdge[NN](newNodes, originalFrom, originalTo, isDummy)
 
   override def toString(): String = "\n" + this._1 + "~" + this._2 +
     (if (originalFrom.isDefined) " OF:" + originalFrom.get else "") +

@@ -1,6 +1,8 @@
 package net.cyndeline.scalarlib.rldungeon.common
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 import scalax.collection.immutable.Graph
 
 /**
@@ -12,7 +14,7 @@ import scalax.collection.immutable.Graph
  * @tparam R Class type representing rooms in the level.
  * @tparam C Class type representing corridors/connections in the level.
  */
-trait Level[L <: Level[L, R, C], R, C[X] <: UnDiEdge[X]] {
+trait Level[L <: Level[L, R, C], R, C[X] <: EdgeLikeIn[X]] {
 
   /**
    * @return The level represented as a graph. Any two rooms that allows traversal between them should be connected
@@ -44,16 +46,22 @@ trait Level[L <: Level[L, R, C], R, C[X] <: UnDiEdge[X]] {
    * Adds a connection between two rooms in the level.
    * @param from The first room to connect.
    * @param to The second room to connect.
+   * @param direction Used to specify if the connection should be undirected, or directed from -> to. Undirected by
+   *                  default.
    * @return A copy of this level with the connection added.
    */
-  def connectRooms(from: R, to: R): L
+  def connectRooms(from: R, to: R, direction: CorridorDirection = Undirected): L
 
   /**
    * Removes a connection between two connected rooms in the level.
    * @param from The first room to disconnect.
    * @param to The second room to disconnect.
+   * @param direction Specifies whether the edge to be removed is directed or undirected. Although this information
+   *                  isn't strictly necessary, it allows the implementation to quickly catch errors by removing any
+   *                  ambiguity with regards to if the edge sought is the undirected edge from~to or the directed edge
+   *                  from~>to.
    * @return A copy of this level with the connection removed.
    */
-  def disconnectRooms(from: R, to: R): L
+  def disconnectRooms(from: R, to: R, direction: CorridorDirection): L
 
 }

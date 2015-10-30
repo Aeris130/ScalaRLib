@@ -3,11 +3,12 @@ package net.cyndeline.scalarlib.rldungeon.grammar.util
 /**
  * Maps the relation between the vertices in a graph pattern, and the vertices in a graph the pattern matches.
  *
- * @tparam VType Type of vertex represented in the morphism.
+ * @tparam LevelVertex Type of rooms used in level to apply production on.
+ * @tparam PatternVertex Vertex type used in pattern graphs.
  */
-class Morphism[VType](mapping: Map[VType, VType]) {
+class Morphism[LevelVertex, PatternVertex](mapping: Map[PatternVertex, LevelVertex]) {
 
-  def this() = this(Map[VType, VType]())
+  def this() = this(Map())
 
   /**
    * @return The number of vertices in the morphism.
@@ -16,9 +17,11 @@ class Morphism[VType](mapping: Map[VType, VType]) {
 
   /**
    * Retrieves a vertex in the morphism, or fails fast with a message.
-   * @param v Vertex whose corresponding vertex should be retrieved.
+   * @param vertexInPattern Known vertex in a pattern, whose corresponding vertex in the level-graph should be
+   *                        retrieved.
    * @return The vertex mapped against the supplied vertex in the morphism.
    */
-  def getVertexCorrespondingTo(v: VType): VType = mapping.getOrElse(v, throw new NoSuchElementException("No morphism defined for vertex " + v))
+  def matching(vertexInPattern: PatternVertex): LevelVertex =
+    mapping.getOrElse(vertexInPattern, throw new NoSuchElementException("No morphism defined for vertex " + vertexInPattern))
 
 }

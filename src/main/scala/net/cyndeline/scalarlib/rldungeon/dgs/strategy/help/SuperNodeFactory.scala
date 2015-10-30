@@ -7,6 +7,7 @@ import net.cyndeline.scalarlib.rldungeon.common.Room
 
 import scala.Predef._
 import scala.collection.mutable
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
@@ -16,17 +17,14 @@ import scalax.collection.immutable.Graph
  * vertex in the original graph, or multiple vertices belonging to the same biconnected component.
  *
  * An exception is made if 2 or more biconnected components with more than 1 edge share the same vertex as articulation
- * point. In this case, the point will not be a member of either components collapsed node. Instead it will be given
- * its own node, and dummy edges will be added between it and all its components. The reason that the point will not
- * also be present in the original nodes is that doing so might cause the point to be submitted as an activator
- * candidate for multiple areas, giving the player no incentive to enter them and instead turn around after visiting
- * the cutpoint.
+ * point. In this case, the point will be a member of both components collapsed node. It will also be given
+ * its own node, and dummy edges will be added between it and all its components.
  *
  * @constructor Constructs a new factory for collapsing graphs into super-nodes.
  */
 class SuperNodeFactory extends SuperNodeFactoryInterface {
 
-  override def collapseCycles[R <: Room, C[X] <: UnDiEdge[X]](graph: Graph[R, C]): Graph[CollapsedNode, CollapsedEdge] = {
+  override def collapseCycles[R <: Room, C[X] <: EdgeLikeIn[X]](graph: Graph[R, C]): Graph[CollapsedNode, CollapsedEdge] = {
     val graphWithIds = idGraph(graph)
     val componentFinder: BiconnectedComponentsOperation[Int, UnDiEdge] = new DFSComponentSearch[Int, UnDiEdge]()
     val bicomAndArtPoints = componentFinder.componentsAndArticulationPoints(graphWithIds)
@@ -36,7 +34,7 @@ class SuperNodeFactory extends SuperNodeFactoryInterface {
       .map(entry => new MultiComponent(GraphCommons.outerVertices(entry._1).toSet, entry._2))
 
     // Special case if the graph contains a single room
-    if (bicomAndArtPoints.isEmpty && !graph.nodes.isEmpty) {
+    if (bicomAndArtPoints.isEmpty && graph.nodes.nonEmpty) {
       return Graph[CollapsedNode, CollapsedEdge](new CollapsedNode(graph.nodes.head.rid))
     }
 
@@ -44,10 +42,10 @@ class SuperNodeFactory extends SuperNodeFactoryInterface {
     // sharing it, to prepare for a dummy edge between the point and its components. Also remove such points from their
     // original component
     val dummyEdges = createDummies(multiEdgeComponents)
-    val dummyNodes = dummyEdges.map(_._1).distinct.map(r => r -> new CollapsedNode(r).asDummy).toMap
+    val dummyNodes: Map[Int, CollapsedNode] = dummyEdges.map(_._1).distinct.map(r => r -> new CollapsedNode(r).asDummy).toMap
 
     val roomToSuperNodeAndComponent = mapRoomToComponent(multiEdgeComponents)
-    val componentToNode = roomToSuperNodeAndComponent.map(_._2).map(kv => kv._2 -> kv._1)
+    val componentToNode = roomToSuperNodeAndComponent.values.map(kv => kv._2 -> kv._1).toMap
     val roomToSuperNode = roomToSuperNodeAndComponent.map(kv => kv._1 -> kv._2._1)
     val roomToSingleNode = createSingleNodes(bottleneckComponents, roomToSuperNode, dummyNodes) ++ dummyNodes
 
@@ -57,8 +55,8 @@ class SuperNodeFactory extends SuperNodeFactoryInterface {
       finalGraph += room
 
     for (edge <- bottleneckComponents) {
-      val from = roomToSuperNode.getOrElse(edge._1, roomToSingleNode(edge._1))
-      val to = roomToSuperNode.getOrElse(edge._2, roomToSingleNode(edge._2))
+      val from = dummyNodes.getOrElse(edge._1, roomToSuperNode.getOrElse(edge._1, roomToSingleNode(edge._1)))
+      val to = dummyNodes.getOrElse(edge._2, roomToSuperNode.getOrElse(edge._2, roomToSingleNode(edge._2)))
       val ce = connectNodes(from, to, graphWithIds)
       finalGraph += ce
     }
@@ -110,33 +108,24 @@ class SuperNodeFactory extends SuperNodeFactoryInterface {
     singleRooms.map(r => r -> new CollapsedNode(r)).toMap
   }
 
-  // Computes edges between a cutpoint and its multi-edge components. Also removes the cutpoint from them.
+  // Computes edges between a cutpoint and its multi-edge components.
   private def createDummies(multiNodeComponents: Vector[MultiComponent]): Vector[(Int, MultiComponent)] = {
     val componentsPerPoint = new mutable.HashMap[Int, mutable.HashSet[MultiComponent]]()
 
     // Map every cutpoint between multi-edge components to the components containing it
     for (c <- multiNodeComponents; ap <- c.articulationPoints) {
-      val currentComponents = componentsPerPoint.get(ap).getOrElse {
+      val currentComponents = componentsPerPoint.getOrElse(ap, {
         val s = mutable.HashSet[MultiComponent]()
-        componentsPerPoint put (ap, s)
+        componentsPerPoint put(ap, s)
         s
-      }
+      })
       currentComponents += c
-    }
-
-    // We don't care about all cutpoints, just the ones shared between multi-edge components. Any cutpoint that
-    // doesn't have 2+ such components can be ignored.
-    for (c <- multiNodeComponents; p <- c.cutPoints) {
-      if (componentsPerPoint(p).size < 2)
-        c.removePoint(p)
-      else
-        c.removeRoom(p)
     }
 
     for (cpp <- componentsPerPoint.toVector.filter(_._2.size > 1); component <- cpp._2) yield (cpp._1, component)
   }
 
-  private def idGraph[R <: Room, C[X] <: UnDiEdge[X]](graph: Graph[R, C]): Graph[Int, UnDiEdge] = {
+  private def idGraph[R <: Room, C[X] <: EdgeLikeIn[X]](graph: Graph[R, C]): Graph[Int, UnDiEdge] = {
     val nodes = GraphCommons.outerVertices(graph)
     val edges = graph.edges.map(_.toOuter).toVector
     var g = Graph[Int, UnDiEdge]()
@@ -144,8 +133,13 @@ class SuperNodeFactory extends SuperNodeFactoryInterface {
     for (n <- nodes)
       g += n.rid
 
-    for (e <- edges)
-      g += e._1.rid ~ e._2.rid
+    for (e <- edges) {
+      if (e.isDirected)
+        g += e._1.rid ~> e._2.rid
+      else
+        g += e._1.rid ~ e._2.rid
+    }
+
 
     g
   }
@@ -153,10 +147,6 @@ class SuperNodeFactory extends SuperNodeFactoryInterface {
   private class MultiComponent(vs: Set[Int], val articulationPoints: Set[Int]) {
     var rooms: Set[Int] = vs
     var cutPoints = articulationPoints
-
-    def removeRoom(r: Int) { rooms -= r }
-    def removePoint(p: Int) { cutPoints -= p }
-
   }
 
 }

@@ -9,7 +9,9 @@ import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.modules.{Prod
 import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Applies productions randomly in a hill-climbing fashion according to the following algorithm:
@@ -40,9 +42,9 @@ import scalax.collection.GraphEdge.UnDiEdge
  * @param attempts If the final level is not accepted, the algorithm starts over. This number controls how many times
  *                 that is allowed to happen before the hill climber gives up and returns None.
  */
-class HillClimbing[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+class HillClimbing[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
   (parameters: Set[Parameter[L, R, C]],
-  productions: RandomCollection[LevelProduction[L, R, C]],
+  productions: RandomCollection[LevelProduction[L, R, C, PV]],
   paramValidation: ParameterResponderValidation[L, R, C],
   attempts: Int)
   (implicit val bindingModule: BindingModule)
@@ -65,7 +67,7 @@ class HillClimbing[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
     while (attemptsLeft > 0) {
 
       // Either the input graph if no modifications passed, or the modified graph.
-      val finalLevel = productionIterator.applyProductions[L, R, C](level, parameters, productions, paramValidation)
+      val finalLevel = productionIterator.applyProductions[L, R, C, PV](level, parameters, productions, paramValidation)
 
       /* No more modifications ended up being approved by the parameters. Run a final check to see if the graph is
        * valid (exit) or not (try again). Note that this check only runs the graphs estimated value against
@@ -76,7 +78,7 @@ class HillClimbing[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
         if p.validate(finalLevel)
       } yield p
 
-      val rejectingParameters = (parameters diff acceptingParameters).toSet
+      val rejectingParameters = parameters diff acceptingParameters
       if (!rejectingParameters.exists(p => p.hasPriority) && paramValidation.levelModificationValidates(acceptingParameters.toSet, rejectingParameters))
         return Option(finalLevel)
       else

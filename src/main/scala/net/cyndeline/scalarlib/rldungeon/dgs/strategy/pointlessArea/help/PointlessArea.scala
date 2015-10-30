@@ -17,7 +17,7 @@ import scalax.collection.immutable.Graph
 case class PointlessArea(topology: Graph[CollapsedNode, CollapsedEdge], mainPathConnection: CollapsedNode) {
   require(topology.isConnected, "The pointless area must be connected")
   require(topology.contains(mainPathConnection), "The pointless area must contain the main path connection")
-  require(!(topology - mainPathConnection).isEmpty, "The pointless area must contain more than the main path connection.")
+  require((topology - mainPathConnection).nonEmpty, "The pointless area must contain more than the main path connection.")
 
   /**
    * Removes a path from the main connection to a target from this area. Doing so creates a number of new areas.

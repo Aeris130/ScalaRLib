@@ -3,7 +3,9 @@ package net.cyndeline.scalarlib.rldungeon.dgs.strategy
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 
 /**
  * Decides if a change to a level graph is considered valid by evaluating parameter responses to the change.
@@ -13,7 +15,7 @@ import scalax.collection.GraphEdge.UnDiEdge
  * generation. Otherwise the algorithm could be sent into an infinite loop by having two productions push the
  * map back and forth between the states A and B.
  */
-trait ParameterResponderValidation[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]] {
+trait ParameterResponderValidation[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X]] {
 
   /**
    * Decides if a level modification should be kept or discarded based on how parameters respond to the change.

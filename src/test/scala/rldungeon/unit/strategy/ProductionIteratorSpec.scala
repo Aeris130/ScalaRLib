@@ -25,18 +25,18 @@ class ProductionIteratorSpec extends SpecImports {
     val param2 = new Parameter("P2", 0, 1, 0.1, estimator2, false)
     val param3 = new Parameter("P3", 0, 1, 0.1, estimator3, false)
 
-    val production1 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
-    val production2 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]
+    val production1 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, String]]
+    val production2 = mock[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, String]]
 
     val room1 = new RoomVertex(1)
     val room2 = new RoomVertex(2)
 
-    val productionCollection = mock[RandomCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]]]
+    val productionCollection = mock[RandomCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, String]]]
 
     /* There's no need to chain multiple collection mocks using the copy method. Just add any subsequent
      * expectations to this mock.
      */
-    (productionCollection.copy _) expects() returns(productionCollection) anyNumberOfTimes()
+    productionCollection.copy _ expects() returns productionCollection anyNumberOfTimes()
 
     val responseValidator = mock[ParameterResponderValidation[GraphLevel, RoomVertex, CorridorEdge]]
 
@@ -53,17 +53,17 @@ class ProductionIteratorSpec extends SpecImports {
       import f._
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())
 
-      (production1.apply _) expects(*) returns(None) once()
-      (production2.apply _) expects(*) returns(None) once()
+      production1.apply _ expects * returns None once()
+      production2.apply _ expects * returns None once()
 
       When("iterating over the production set")
       setRandomCollectionNotEmpty(productionCollection, 2)
-      (productionCollection.next _) expects() returns(production1) once()
-      (productionCollection.next _) expects() returns(production2) once()
+      productionCollection.next _ expects() returns production1 once()
+      productionCollection.next _ expects() returns production2 once()
 
       Then("the production collection should remove every production in the set")
-      (productionCollection.remove _) expects(production1) returns() once()
-      (productionCollection.remove _) expects(production2) returns() once()
+      productionCollection.remove _ expects production1 returns() once()
+      productionCollection.remove _ expects production2 returns() once()
 
       // Start test
       val iterator = new ProductionIterator()
@@ -80,19 +80,19 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found
-      (productionCollection.next _) expects() returns(production1) once()
+      productionCollection.next _ expects() returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       When("a production yields a graph")
       val updatedGraph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (production1.apply _) expects(g) returns(Option(updatedGraph)) once()
+      production1.apply _ expects g returns Option(updatedGraph) once()
 
       Then("the validator should receive the entire parameter set and the new graph")
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(parameters, *, updatedGraph) returns((Set(), Set(), Map())) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(parameters, *, updatedGraph) returns((Set(), Set(), Map())) once()
 
       // Not a part of this test
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(false) once()
-      (productionCollection.remove _) expects(*) returns() anyNumberOfTimes()
+      responseValidator.levelModificationValidates _ expects(*, *) returns false once()
+      productionCollection.remove _ expects * returns() anyNumberOfTimes()
 
       // Start test
       val iterator = new ProductionIterator()
@@ -108,21 +108,21 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
       val acceptingParameters = Set(param1)
       val rejectingParameters = Set(param2)
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *) returns((acceptingParameters, rejectingParameters, Map())) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((acceptingParameters, rejectingParameters, Map())) once()
 
       // Only one production is found
-      (productionCollection.next _) expects() returns(production1) once()
+      productionCollection.next _ expects() returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       When("a production yields a graph")
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())
-      (production1.apply _) expects(g) returns(Option(g)) once()
+      production1.apply _ expects g returns Option(g) once()
 
       Then("the response validator should receive the accepting and rejecting parameter set")
-      (responseValidator.levelModificationValidates _) expects(acceptingParameters, rejectingParameters) returns(false) once()
+      responseValidator.levelModificationValidates _ expects(acceptingParameters, rejectingParameters) returns false once()
 
       // Not a part of this test
-      (productionCollection.remove _) expects(*) returns() anyNumberOfTimes()
+      productionCollection.remove _ expects * returns() anyNumberOfTimes()
 
       // Start test
       val iterator = new ProductionIterator()
@@ -141,17 +141,17 @@ class ProductionIteratorSpec extends SpecImports {
       val rejectingParameters = Set(prioParam)
 
       // Only one production is found, and it yields a result
-      (productionCollection.next _) expects() returns(production1) once()
+      productionCollection.next _ expects() returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())
-      (production1.apply _) expects(g) returns(Option(g)) once()
+      production1.apply _ expects g returns Option(g) once()
 
       When("the parameter validator sorts the priority parameter into the rejecting set and the response validator approves the result")
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *) returns((acceptingParameters, rejectingParameters, Map())) once()
-      (responseValidator.levelModificationValidates _) expects(acceptingParameters, rejectingParameters) returns(true) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((acceptingParameters, rejectingParameters, Map())) once()
+      responseValidator.levelModificationValidates _ expects(acceptingParameters, rejectingParameters) returns true once()
 
       Then("the production collection should still remove the production")
-      (productionCollection.remove _) expects(production1) returns() once()
+      productionCollection.remove _ expects production1 returns() once()
 
       // Start test
       val iterator = new ProductionIterator()
@@ -167,23 +167,23 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found, and it yields a result twice
-      (productionCollection.next _) expects() returns(production1) anyNumberOfTimes()
+      productionCollection.next _ expects() returns production1 anyNumberOfTimes()
       setRandomCollectionNotEmpty(productionCollection, 2)
 
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())
-      (production1.apply _) expects(g) returns(Option(g)) anyNumberOfTimes()
+      production1.apply _ expects g returns Option(g) anyNumberOfTimes()
 
       When("parameter validation computes estimates, sorts the parameters into sets, and the response validator approves the parameter result")
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(true) anyNumberOfTimes()
+      responseValidator.levelModificationValidates _ expects(*, *) returns true anyNumberOfTimes()
 
       val estimates = Map(param1 -> 1.0, param2 -> 3.0) // Content doesn't really matter
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *) returns((Set(), Set(), estimates)) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((Set(), Set(), estimates)) once()
 
       Then("the updates estimation should be sent to the parameter validator when evaluating the second modification")
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, estimates, *) returns((Set(), Set(), Map())) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, estimates, *) returns((Set(), Set(), Map())) once()
 
       // Not a part of this test
-      (productionCollection.size _) expects() returns(1) anyNumberOfTimes()
+      productionCollection.size _ expects() returns 1 anyNumberOfTimes()
 
       // Start test
       val iterator = new ProductionIterator()
@@ -198,18 +198,18 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found, and it yields a result once
-      (productionCollection.next _) expects() returns(production1) once()
+      productionCollection.next _ expects() returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (production1.apply _) expects(g) returns(Option(g)) once()
+      production1.apply _ expects g returns Option(g) once()
 
       // Not a part of this test
-      (productionCollection.size _) expects() returns(1) anyNumberOfTimes()
+      productionCollection.size _ expects() returns 1 anyNumberOfTimes()
 
       When("the parameter validator sorts the priority parameter into the rejecting set and the response validator approves the result")
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *) returns((Set(), Set(), Map())) once()
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(true) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((Set(), Set(), Map())) once()
+      responseValidator.levelModificationValidates _ expects(*, *) returns true once()
 
       Then("the resulting graph should be the one returned by the production")
       val iterator = new ProductionIterator()
@@ -224,12 +224,12 @@ class ProductionIteratorSpec extends SpecImports {
       val f = fixture
       import f._
 
-      (production1.apply _) expects(*) returns(None) once()
+      production1.apply _ expects * returns None once()
 
       When("no production resturns an accepted modification")
       setRandomCollectionNotEmpty(productionCollection, 1)
-      (productionCollection.next _) expects() returns(production1) once()
-      (productionCollection.remove _) expects(production1) returns() once()
+      productionCollection.next _ expects() returns production1 once()
+      productionCollection.remove _ expects production1 returns() once()
 
       Then("the returned graph should be the same as the input graph")
       val iterator = new ProductionIterator()
@@ -247,19 +247,19 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found, and it yields a result once
-      (productionCollection.next _) expects() returns(production1) once()
+      productionCollection.next _ expects() returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       val producedGraph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (production1.apply _) expects(*) returns(Option(producedGraph)) once()
+      production1.apply _ expects * returns Option(producedGraph) once()
 
       // Not a part of this test
-      (productionCollection.size _) expects() returns(1) anyNumberOfTimes()
-      (productionCollection.remove _) expects(*) returns() once()
+      productionCollection.size _ expects() returns 1 anyNumberOfTimes()
+      productionCollection.remove _ expects * returns() once()
 
       When("the parameter validator sorts the priority parameter into the rejecting set and the response validator rejects the result")
-      (parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *) returns((Set(), Set(), Map())) once()
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(false) once()
+      parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((Set(), Set(), Map())) once()
+      responseValidator.levelModificationValidates _ expects(*, *) returns false once()
 
       Then("the returned graph should be the same as the input graph")
       val iterator = new ProductionIterator()
@@ -271,12 +271,12 @@ class ProductionIteratorSpec extends SpecImports {
   }
   } // DI
 
-  private def setRandomCollectionNotEmpty(collectionMock: RandomCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]],
+  private def setRandomCollectionNotEmpty(collectionMock: RandomCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, String]],
                                           timesIsEmptyReturnsFalse: Int) {
     for(i <- 0 until timesIsEmptyReturnsFalse) {
-      (collectionMock.isEmpty _) expects() returns(false)
+      collectionMock.isEmpty _ expects() returns false
     }
 
-    (collectionMock.isEmpty _) expects() returns(true)
+    collectionMock.isEmpty _ expects() returns true
   }
 }

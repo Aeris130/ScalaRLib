@@ -7,7 +7,6 @@ object ScalarlibBuild extends Build {
   lazy val exampleProject = Project("ScalaRLib", file(".")) settings(
     version           := "1.0",
     scalaVersion      := "2.11.7",
-    scalaToolsVersion := "2.10",
     scalacOptions     := Seq("-deprecation"),
     organization      := "net.cyndeline",
     name              := "scalarlib",

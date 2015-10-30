@@ -5,13 +5,14 @@ import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
 import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}
 import net.cyndeline.scalarlib.rldungeon.grammar.production.{LevelProduction, SingleProduction}
-import net.cyndeline.scalarlib.rldungeon.grammar.util.TopologyProduction
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, TopologyProduction}
 import net.cyndeline.scalarlib.subcut.ProjectConfiguration
 import rldungeon.help._
 import rldungeon.help.parameters.RoomAmountEstimator
 import testHelpers.SpecImports
 
 import scala.util.Random
+import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 
 class HillClimbingSpec extends SpecImports {
@@ -21,12 +22,15 @@ class HillClimbingSpec extends SpecImports {
     def fixture = new {
       val edgeCopyFactory = new CorridorCopyFactory[RoomVertex]()
       val edgeFactory = new CorridorFactory[RoomVertex]()
-      val topologyProduction = new TopologyProduction[GraphLevel, RoomVertex, CorridorEdge]()
+      val topologyProduction = new TopologyProduction[GraphLevel, RoomVertex, CorridorEdge, Int]()
 
       val acceptsAllParameters = new ParameterAcceptRatio[GraphLevel, RoomVertex, CorridorEdge](0.00001) // Accepts anything, don't use with conflicting parameters
-      val intMatcher = new IdEquivalence()
       val roomAmountEstimator = new RoomAmountEstimator()
       val random = new Random()
+
+      val dummyRoom = new RoomVertex(-99)
+      val pattern = Graph[Int, UnDiEdge](-99)// Patterns can't be empty
+      val defaultMatcher = GraphMatcher.empty[RoomVertex, CorridorEdge, Int, UnDiEdge]()
     }
 
   describe("HillClimbing") {
@@ -38,11 +42,9 @@ class HillClimbingSpec extends SpecImports {
       import f._
       val parameter = new Parameter[GraphLevel, RoomVertex, CorridorEdge]("Room amount", 4, 7, roomAmountEstimator, false)
       val production_right = topologyProduction.addVertex(1)
-      val dummyRoom = new RoomVertex(-99) // Patterns can't be empty
-      val pattern = Graph[RoomVertex, CorridorEdge](dummyRoom)
 
-      val finalProduction = new SingleProduction(pattern, intMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]](random, (1.0, finalProduction))
+      val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
+      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](parameter)
@@ -68,11 +70,11 @@ class HillClimbingSpec extends SpecImports {
       val parameter = new Parameter("Room amount", 9, 10, roomAmountEstimator, false)
 
       /* If the above parameter were the only one, the graph would not be accepted. To ensure that the graph is accepted
-       * and that the amount of accepting prameters exceed the rejecting one, two dummy parameters are added that
+       * and that the amount of accepting parameters exceed the rejecting one, two dummy parameters are added that
        * accepts any graph.
        */
       val unconditionalEstimator = mock[ParameterEstimator[GraphLevel, RoomVertex, CorridorEdge]]
-      (unconditionalEstimator.value _) expects(*) returns(0) anyNumberOfTimes()
+      unconditionalEstimator.value _ expects * returns 0 anyNumberOfTimes()
       val unconditionalParameter1 = new Parameter("Room amount unconditional 1", 0, 1, unconditionalEstimator, false)
       val unconditionalParameter2 = new Parameter("Room amount unconditional 2", 0, 1, unconditionalEstimator, false)
 
@@ -84,11 +86,9 @@ class HillClimbingSpec extends SpecImports {
                               .addVertex(5)
                               .addVertex(6)
                               .addVertex(7)
-      val dummyRoom = new RoomVertex(-99) // Patterns can't be empty
-      val pattern = Graph[RoomVertex, CorridorEdge](dummyRoom)
 
-      val finalProduction = new SingleProduction(pattern, intMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]](random, (1.0, finalProduction))
+      val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
+      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](parameter, unconditionalParameter1, unconditionalParameter2)
@@ -114,11 +114,9 @@ class HillClimbingSpec extends SpecImports {
       val parameter2 = new Parameter("Room amount", 1, 1, roomAmountEstimator, false)
 
       val production_right = topologyProduction.addVertex(1)
-      val dummyRoom = new RoomVertex(-99) // Patterns can't be empty
-      val pattern = Graph[RoomVertex, CorridorEdge](dummyRoom)
 
-      val finalProduction = new SingleProduction(pattern, intMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]](random, (1.0, finalProduction))
+      val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
+      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](parameter1, parameter2)
@@ -137,20 +135,18 @@ class HillClimbingSpec extends SpecImports {
 
       Given("a set of 2 parameters that accept a production unconditionally, and a priority parameter that rejects a production unconditionally")
       val unconditionalEstimator1 = mock[ParameterEstimator[GraphLevel, RoomVertex, CorridorEdge]]
-      (unconditionalEstimator1.value _) expects(*) returns(0) anyNumberOfTimes()
+      unconditionalEstimator1.value _ expects * returns 0 anyNumberOfTimes()
       val acceptsUnconditionalParameter1 = new Parameter("Accepts room amount unconditional 1", 0, 1, unconditionalEstimator1, false)
       val acceptsUnconditionalParameter2 = new Parameter("Accepts room amount unconditional 2", 0, 1, unconditionalEstimator1, false)
 
       val unconditionalEstimator2 = mock[ParameterEstimator[GraphLevel, RoomVertex, CorridorEdge]]
-      (unconditionalEstimator2.value _) expects(*) returns(99) anyNumberOfTimes()
+      unconditionalEstimator2.value _ expects * returns 99 anyNumberOfTimes()
       val rejectsUnconditionalParameter = new Parameter("Rejects room amount unconditional 1", 0, 1, unconditionalEstimator2, true)
 
       val production_right = topologyProduction.addVertex(1)
-      val dummyRoom = new RoomVertex(-99) // Patterns can't be empty
-      val pattern = Graph[RoomVertex, CorridorEdge](dummyRoom)
 
-      val finalProduction = new SingleProduction(pattern, intMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge]](random, (1.0, finalProduction))
+      val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
+      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](acceptsUnconditionalParameter1, acceptsUnconditionalParameter2, rejectsUnconditionalParameter)

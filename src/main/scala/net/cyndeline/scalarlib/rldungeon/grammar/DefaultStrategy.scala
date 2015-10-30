@@ -4,8 +4,10 @@ import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 
 import scala.collection.mutable.ArrayBuffer
+import scala.language.higherKinds
 import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
+import scalax.collection.GraphPredef.EdgeLikeIn
 import scalax.collection.immutable.Graph
 
 /**
@@ -22,9 +24,9 @@ import scalax.collection.immutable.Graph
  *                    when the 'averageDerivations amount is reached, the strategy will have to increase the
  *                    amount of times a productions to be applied.
  */
-class DefaultStrategy[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
+class DefaultStrategy[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
         (random: Random,
-         productions: Vector[LevelProduction[L, R, C]],
+         productions: Vector[LevelProduction[L, R, C, PV]],
          averageDerivations: Int,
          attempts: Int,
          nonTerminal: Set[R]) extends Strategy[L, R, C] {
@@ -41,7 +43,7 @@ class DefaultStrategy[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
    *                 that can be applied, the graph must be reset to its initial state and have the process start over.
    *                 This value controls the number of times these resets occur before the strategy gives up.
    */
-  def this(productions: Vector[LevelProduction[L, R, C]],
+  def this(productions: Vector[LevelProduction[L, R, C, PV]],
            averageDerivations: Int,
            nonTerminal: Set[R],
            attempts: Int) = this(new Random(), productions, averageDerivations, attempts, nonTerminal)
@@ -104,8 +106,8 @@ class DefaultStrategy[L <: Level[L, R, C], R <: Room, C[X] <: UnDiEdge[X]]
    * such production exists.
    */
   private def applyProduction(level: L): Option[L] = {
-    val productionArray: ArrayBuffer[LevelProduction[L, R, C]] = ArrayBuffer(productions : _*)
-    while(!productionArray.isEmpty) {
+    val productionArray: ArrayBuffer[LevelProduction[L, R, C, PV]] = ArrayBuffer(productions : _*)
+    while(productionArray.nonEmpty) {
       val index = random.nextInt(productionArray.size)
       val resultingLevel = productionArray(index).apply(level)
 

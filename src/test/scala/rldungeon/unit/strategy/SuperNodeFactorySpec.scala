@@ -1,15 +1,17 @@
 package rldungeon.unit.strategy
 
-import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedEdgeAssoc, CollapsedNode, SuperNodeFactory}
+import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help._
 import rldungeon.help.RoomVertex
 import testHelpers.SpecImports
 
-import scalax.collection.GraphEdge.UnDiEdge
+import scala.language.implicitConversions
+import scalax.collection.GraphEdge.{DiEdge, UnDiEdge}
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
 
 class SuperNodeFactorySpec extends SpecImports {
-  private implicit def edge2CollapsedEdgeAssoc[A <: CollapsedNode](e: UnDiEdge[A]) = new CollapsedEdgeAssoc(e)
+  private implicit def edge2CollapsedEdgeAssoc[A <: CollapsedNode](e: UnDiEdge[A]): CollapsedEdgeAssoc[A] = new CollapsedEdgeAssoc(e)
+  private implicit def edge2DiCollapsedEdgeAssoc[A <: CollapsedNode](e: DiEdge[A]): DiCollapsedEdgeAssoc[A] = new DiCollapsedEdgeAssoc(e)
   private val factory = new SuperNodeFactory()
 
   def vertices = new {
@@ -94,9 +96,9 @@ class SuperNodeFactorySpec extends SpecImports {
       When("collapsing all cycles")
       val collapsedGraph = factory.collapseCycles(g)
 
-      Then("the resulting graph should contain two super-nodes without the common vertex, and two dummy edges joining them")
-      val node1 = new CollapsedNode(Set(n1.rid, n2.rid))
-      val node2 = new CollapsedNode(Set(n4.rid, n5.rid))
+      Then("the resulting graph should contain two super-nodes with the common vertex, and two dummy edges joining them")
+      val node1 = new CollapsedNode(Set(n1.rid, n2.rid, n3.rid))
+      val node2 = new CollapsedNode(Set(n4.rid, n5.rid, n3.rid))
       val dummy3 = new CollapsedNode(Set(n3.rid)).asDummy
       val dummyEdge1 = CollapsedEdge.dummyEdge(node1, dummy3)
       val dummyEdge2 = CollapsedEdge.dummyEdge(node2, dummy3)
@@ -267,8 +269,8 @@ class SuperNodeFactorySpec extends SpecImports {
       When("collapsing all cycles")
       val collapsedGraph = factory.collapseCycles(g)
 
-      Then("a super-node containing all vertices 3, 4, 9 should be created")
-      val mainNode = new CollapsedNode(Set(n3.rid, n4.rid, n9.rid))
+      Then("a super-node containing all vertices 1, 2, 3, 4, 9 should be created")
+      val mainNode = new CollapsedNode(Set(n1.rid, n2.rid, n3.rid, n4.rid, n9.rid))
 
       And("the super-node should contain a dummy edge to a single-node containing vertex 1, and another with vertex 2")
       val dummy1 = new CollapsedNode(Set(n1.rid)).asDummy
@@ -276,12 +278,12 @@ class SuperNodeFactorySpec extends SpecImports {
       val dummyEdge1 = CollapsedEdge.dummyEdge(dummy1, mainNode)
       val dummyEdge2 = CollapsedEdge.dummyEdge(dummy2, mainNode)
 
-      And("the single vertex 1 should contain a dummy edge to a super-node with vertices 5, 6")
-      val superN1 = new CollapsedNode(Set(n5.rid, n6.rid))
+      And("the single vertex 1 should contain a dummy edge to a super-node with vertices 1, 5, 6")
+      val superN1 = new CollapsedNode(Set(n1.rid, n5.rid, n6.rid))
       val dummyEdge3 = CollapsedEdge.dummyEdge(dummy1, superN1)
 
-      And("the single vertex 2 should contain a dummy edge to a super-node with vertices 7, 8")
-      val superN2 = new CollapsedNode(Set(n7.rid, n8.rid))
+      And("the single vertex 2 should contain a dummy edge to a super-node with vertices 2, 7, 8")
+      val superN2 = new CollapsedNode(Set(n2.rid, n7.rid, n8.rid))
       val dummyEdge4 = CollapsedEdge.dummyEdge(dummy2, superN2)
 
       collapsedGraph should equal (Graph(dummyEdge1, dummyEdge2, dummyEdge3, dummyEdge4))
@@ -300,8 +302,8 @@ class SuperNodeFactorySpec extends SpecImports {
       val dummy = new CollapsedNode(Set(n3.rid)).asDummy
 
       Then("the edge n6 -> dummy should not have original targets")
-      val superNode1 = new CollapsedNode(Set(n1.rid, n2.rid))
-      val superNode2 = new CollapsedNode(Set(n4.rid, n5.rid))
+      val superNode1 = new CollapsedNode(Set(n1.rid, n2.rid, n3.rid))
+      val superNode2 = new CollapsedNode(Set(n4.rid, n5.rid, n3.rid))
       val edgeToDummy = CollapsedEdge(cn6, dummy)
       val sn1ToDummy = CollapsedEdge.dummyEdge(dummy, superNode1)
       val sn2ToDummy = CollapsedEdge.dummyEdge(dummy, superNode2)
@@ -437,7 +439,7 @@ class SuperNodeFactorySpec extends SpecImports {
 
     }
 
-    it ("should connect biconnected componensts with multiple edges sharing a cutpoint with a dummy edge") {
+    it ("should connect biconnected components with multiple edges sharing a cutpoint with a dummy edge") {
 
       Given("three biconnected components sharing a single vertex (3)")
       val f = vertices
@@ -460,9 +462,47 @@ class SuperNodeFactorySpec extends SpecImports {
 
     }
 
+    it ("should preserve directed edges") {
+
+      Given("a graph with two nodes connected by a directed edge")
+      val f = vertices
+      import f._
+      val graph = Graph(n1~>n2)
+
+      When("collapsing all cycles")
+      val collapsedGraph = factory.collapseCycles(graph)
+
+      Then("the two collapsed nodes should be connected by a directed collapsed edge")
+      val cn1 = new CollapsedNode(1)
+      val cn2 = new CollapsedNode(2)
+      val edge: DiCollapsedEdge[CollapsedNode] = (cn1~>cn2).emptyEdge()
+      val expectedGraph = Graph[CollapsedNode, DiCollapsedEdge](edge)
+      collapsedGraph should be (expectedGraph)
+
+    }
+
+    ignore ("should preserve directed edges in both directions") {
+
+      Given("a graph with two nodes connected by two directed edges")
+      val f = vertices
+      import f._
+      val graph = Graph(n1~>n2, n2~>n1)
+
+      When("collapsing all cycles")
+      val collapsedGraph: Graph[CollapsedNode, CollapsedEdge] = factory.collapseCycles(graph)
+
+      Then("the two collapsed nodes should be connected by a directed collapsed edge")
+      val cn1 = new CollapsedNode(1)
+      val cn2 = new CollapsedNode(2)
+      val edge1 = (cn1~>cn2).emptyEdge()
+      val edge2 = (cn2~>cn1).emptyEdge()
+      val expectedGraph = Graph[CollapsedNode, CollapsedEdge](edge1, edge2)
+      collapsedGraph should be (expectedGraph)
+    }
+
   }
 
   private def edgeExists(g: Graph[CollapsedNode, CollapsedEdge], a: CollapsedNode, b: CollapsedNode): Boolean = {
-    g.edges.toOuter.toSet.exists(e => (e._1 == a && e._2 == b) || (e._2 == a && e._1 == b))
+    g.edges.toOuter.exists(e => (e._1 == a && e._2 == b) || (e._2 == a && e._1 == b))
   }
 }

@@ -52,13 +52,13 @@ class HillClimbingSpec extends SpecImports {
 
       When("applying the hill climbing algorithm to the graph")
       Then("the production iterator should receive the graph")
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(graph, *, *, *) returns(graph) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(graph, *, *, *) returns graph once()
 
       // Not a part of this test
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(true) anyNumberOfTimes()
+      responseValidator.levelModificationValidates _ expects(*, *) returns true anyNumberOfTimes()
 
       // Start the test
-      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge](Set(), null, responseValidator, 1)
+      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge, String](Set(), null, responseValidator, 1)
       hillClimber.apply(graph)
 
     }
@@ -69,19 +69,19 @@ class HillClimbingSpec extends SpecImports {
       val f = fixture
       import f._
       val graph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *, *) returns(graph) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(*, *, *, *) returns graph once()
 
       When("modifying a graph with parameters 1, 2 and 3")
       val parameters = Set(param1, param2, param3)
-      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge](parameters, null, responseValidator, 1)
+      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge, String](parameters, null, responseValidator, 1)
 
       Then("every algorithm parameter should evaluate the resulting graph")
-      (estimator1.value _) expects(graph) returns(1) once()
-      (estimator2.value _) expects(graph) returns(1) once()
-      (estimator3.value _) expects(graph) returns(1) once()
+      estimator1.value _ expects graph returns 1 once()
+      estimator2.value _ expects graph returns 1 once()
+      estimator3.value _ expects graph returns 1 once()
 
       // Not a part of this test
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(true) anyNumberOfTimes()
+      responseValidator.levelModificationValidates _ expects(*, *) returns true anyNumberOfTimes()
 
       // Start test
       hillClimber.apply(initialGraph)
@@ -94,21 +94,21 @@ class HillClimbingSpec extends SpecImports {
       val f = fixture
       import f._
       val graph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *, *) returns(graph) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(*, *, *, *) returns graph once()
 
       When("applying the hill climbing algorithm to the graph with 2 parameters that approve the result, 1 that rejects")
       val parameters = Set(param1, param2, param3)
 
       // All 4 parameters have a target between 0 and 2
-      (estimator1.value _) expects(*) returns(1)
-      (estimator2.value _) expects(*) returns(1)
-      (estimator3.value _) expects(*) returns(99) // Out of bounds = reject
+      estimator1.value _ expects * returns 1
+      estimator2.value _ expects * returns 1
+      estimator3.value _ expects * returns 99 // Out of bounds = reject
 
       Then("the parameter validator should receive parameters 1 and 2 as accepting, and 3 as rejecting")
-      (responseValidator.levelModificationValidates _) expects(Set(param1, param2), Set(param3)) returns(true) once()
+      responseValidator.levelModificationValidates _ expects(Set(param1, param2), Set(param3)) returns true once()
 
       // Start the test
-      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge](parameters, null, responseValidator, 1)
+      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge, String](parameters, null, responseValidator, 1)
       hillClimber.apply(graph)
 
     }
@@ -119,15 +119,15 @@ class HillClimbingSpec extends SpecImports {
       val f = fixture
       import f._
       val graph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *, *) returns(graph) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(*, *, *, *) returns graph once()
 
-      When("the responde validator accepts the graph")
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(true) once()
+      When("the response validator accepts the graph")
+      responseValidator.levelModificationValidates _ expects(*, *) returns true once()
 
       Then("the returned graph should be the one produces by the production iterator")
 
       // The parameter list is Nil, so no estimator mocks has to be set
-      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge](Set(), null, responseValidator, 1)
+      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge, String](Set(), null, responseValidator, 1)
       val result = hillClimber.apply(initialGraph)
 
       result should be (Option(graph))
@@ -140,15 +140,15 @@ class HillClimbingSpec extends SpecImports {
       val f = fixture
       import f._
       val graph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(*, *, *, *) returns(graph) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(*, *, *, *) returns graph once()
 
-      When("the responde validator rejects the graph")
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(false) once()
+      When("the response validator rejects the graph")
+      responseValidator.levelModificationValidates _ expects(*, *) returns false once()
 
       Then("the returned graph should be None")
 
       // The parameter list is Nil, so no estimator mocks has to be set
-      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge](Set(), null, responseValidator, 1)
+      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge, String](Set(), null, responseValidator, 1)
       val result = hillClimber.apply(initialGraph)
 
       result should be (None)
@@ -162,18 +162,18 @@ class HillClimbingSpec extends SpecImports {
       import f._
       val graph1 = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
       val graph2 = GraphLevel(Graph[RoomVertex, CorridorEdge](room2))
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(initialGraph, *, *, *) returns(graph1) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(initialGraph, *, *, *) returns graph1 once()
 
       When("the response validator rejects the first graph")
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(false) once()
+      responseValidator.levelModificationValidates _ expects(*, *) returns false once()
 
       Then("the iterator should receive another query")
-      (productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge] _) expects(initialGraph, *, *, *) returns(graph2) once()
+      productionIteratorMock.applyProductions[GraphLevel, RoomVertex, CorridorEdge, String] _ expects(initialGraph, *, *, *) returns graph2 once()
 
       // Not a part of the test
-      (responseValidator.levelModificationValidates _) expects(*, *) returns(false) once() // Needed during the second run, but not a part of the test
+      responseValidator.levelModificationValidates _ expects(*, *) returns false once() // Needed during the second run, but not a part of the test
 
-      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge](Set(), null, responseValidator, 2) // <- 2 runs
+      val hillClimber = new HillClimbing[GraphLevel, RoomVertex, CorridorEdge, String](Set(), null, responseValidator, 2) // <- 2 runs
       hillClimber.apply(initialGraph)
 
     }

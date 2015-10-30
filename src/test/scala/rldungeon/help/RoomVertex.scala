@@ -1,6 +1,6 @@
 package rldungeon.help
 
-import net.cyndeline.rlgraph.subgraph.isomorphism.ElementEquivalence
+import net.cyndeline.rlgraph.subgraph.isomorphism.{VertexCompare, ElementEquivalence}
 import net.cyndeline.scalarlib.rldungeon.common.Room
 
 import scalax.collection.immutable.Graph
@@ -22,19 +22,8 @@ class RoomVertex(override val rid: Int) extends Room(rid) {
 
 }
 
-class IdEquivalence extends ElementEquivalence[RoomVertex, CorridorEdge] {
-  def compares(e1: RoomVertex, e2: RoomVertex, contextForE1: Graph[RoomVertex, CorridorEdge], contextForE2: Graph[RoomVertex, CorridorEdge]): Boolean = e1.rid == e2.rid
-
-  /**
-   * Computes that hash code used when comparing this element, two elements that are equal (in regards to the values
-   * being sought after when performing an isomorphic search) should produce the same hash.
-   *
-   * Example: Assume a vertex element has two fields of type String and Int. If the isomorphic match only depends on
-   * the String, then only the String should be used to compute the hash.
-   *
-   * @return the hash code of the element.
-   */
-  def elementHash(element: RoomVertex): Int = element.rid
+class IdEquivalence extends VertexCompare[RoomVertex, Int] {
+  override def compareNode(v1: RoomVertex, v2: Int): Boolean = v1.rid == v2
 }
 
 /**

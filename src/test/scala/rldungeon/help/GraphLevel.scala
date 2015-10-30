@@ -1,7 +1,7 @@
 package rldungeon.help
 
 import net.cyndeline.rlcommon.util.IDPool
-import net.cyndeline.scalarlib.rldungeon.common.PointlessLevel
+import net.cyndeline.scalarlib.rldungeon.common.{Directed, Undirected, CorridorDirection, PointlessLevel}
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
 
 import scalax.collection.immutable.Graph
@@ -70,8 +70,12 @@ class GraphLevel private (val asGraph: Graph[RoomVertex, CorridorEdge],
    * @param to The second room to connect.
    * @return A copy of this level with the connection added.
    */
-  override def connectRooms(from: RoomVertex, to: RoomVertex): GraphLevel = {
-    new GraphLevel(asGraph + CorridorEdge(from, to), vertexIds, strt, gl, responderAmount, activatorAndResponders, rewards, activatorCapacity, responderCapacity, rewardCapacity, pointlessArea, mainPath)
+  override def connectRooms(from: RoomVertex, to: RoomVertex, direction: CorridorDirection): GraphLevel = {
+    val edge = direction match {
+      case Undirected => CorridorEdge(from, to)
+      case Directed => DiCorridorEdge(from, to)
+    }
+    new GraphLevel(asGraph + edge, vertexIds, strt, gl, responderAmount, activatorAndResponders, rewards, activatorCapacity, responderCapacity, rewardCapacity, pointlessArea, mainPath)
   }
 
   /**
@@ -80,8 +84,14 @@ class GraphLevel private (val asGraph: Graph[RoomVertex, CorridorEdge],
    * @param to The second room to disconnect.
    * @return A copy of this level with the connection removed.
    */
-  override def disconnectRooms(from: RoomVertex, to: RoomVertex): GraphLevel = {
-    new GraphLevel(asGraph - CorridorEdge(from, to), vertexIds, strt, gl, responderAmount, activatorAndResponders, rewards, activatorCapacity, responderCapacity, rewardCapacity, pointlessArea, mainPath)
+  override def disconnectRooms(from: RoomVertex, to: RoomVertex, direction: CorridorDirection): GraphLevel = {
+    val edge = asGraph.edges.find(e => e._1 == from && e._2 == to).getOrElse(throw new Error("Unavailable edge marked for deletion."))
+    if (edge.isDirected && direction == Undirected)
+      throw new Error("Attempted to remove undirected edge, but a directed edge is present.")
+    else if (!edge.isDirected && direction == Directed)
+      throw new Error("Attempted to remove directed edge, but an undirected edge is present.")
+
+    new GraphLevel(asGraph - edge, vertexIds, strt, gl, responderAmount, activatorAndResponders, rewards, activatorCapacity, responderCapacity, rewardCapacity, pointlessArea, mainPath)
   }
 
   override def equals(other: Any): Boolean = other match {
@@ -114,7 +124,7 @@ class GraphLevel private (val asGraph: Graph[RoomVertex, CorridorEdge],
    * @return The amount of additional activators that the room may be assigned.
    */
   override def remainingActivatorCapacity(room: RoomVertex): Int = {
-    activatorCapacity.get(room).getOrElse(1)
+    activatorCapacity.getOrElse(room, 1)
   }
 
   /**
@@ -122,7 +132,7 @@ class GraphLevel private (val asGraph: Graph[RoomVertex, CorridorEdge],
    * @return The amount of additional rewards that the room may be assigned.
    */
   override def remainingRewardCapacity(room: RoomVertex): Int = {
-    rewardCapacity.get(room).getOrElse(1)
+    rewardCapacity.getOrElse(room, 1)
   }
 
   /**
@@ -130,7 +140,7 @@ class GraphLevel private (val asGraph: Graph[RoomVertex, CorridorEdge],
    *         0 should be returned.
    */
   override def remainingResponderCapacity(connection: CorridorEdge[RoomVertex]): Int = {
-    responderCapacity.get(connection).getOrElse(1)
+    responderCapacity.getOrElse(connection, 1)
   }
 
   override def addActivatorAndResponder(rooms: Set[RoomVertex], connection: CorridorEdge[RoomVertex]): GraphLevel = {

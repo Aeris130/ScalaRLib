@@ -1,13 +1,13 @@
 package rldungeon.unit.grammar
 
 import helperClasses.RandomMock
-import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, NegativeCondition}
+import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, IsomorphicMapping, ElementEquivalence}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.production.SingleProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}
-import rldungeon.help.{CorridorEdge, GraphLevel, IsomorphicMappingMock, RoomVertex}
+import rldungeon.help.{CorridorEdge, GraphLevel, RoomVertex}
 import testHelpers.SpecImports
-
+import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
 
 class SingleProductionSpec extends SpecImports {
@@ -19,7 +19,6 @@ class SingleProductionSpec extends SpecImports {
       Given("a SingleProduction looking for a pattern using a matcher, with a negative condition, and an isomorphic matcher")
       val room1 = new RoomVertex(1)
       val room2 = new RoomVertex(2)
-      val room3 = new RoomVertex(3)
       val room4 = new RoomVertex(4)
       val room5 = new RoomVertex(5)
       val room6 = new RoomVertex(6)
@@ -27,12 +26,10 @@ class SingleProductionSpec extends SpecImports {
       val room8 = new RoomVertex(8)
       val room9 = new RoomVertex(9)
 
-      val pattern = Graph[RoomVertex, CorridorEdge](room1, room2, room3)
-      val matcherMock = mock[ElementEquivalence[RoomVertex, CorridorEdge]]
-      val negativeConditionMock = mock[NegativeCondition[RoomVertex, CorridorEdge]]
+      val pattern = Graph[Int, UnDiEdge](1, 2, 3)
 
       // Misc values that must be supplied
-      val componentMock = mock[ComponentProduction[GraphLevel, RoomVertex, CorridorEdge]]
+      val componentMock = mock[ComponentProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]
       val morphismMock = mock[MorphismFactory]
       val random = RandomMock()
 
@@ -40,23 +37,21 @@ class SingleProductionSpec extends SpecImports {
       val level = GraphLevel(Graph[RoomVertex, CorridorEdge](room4, room5, room6))
 
       Then("the isomorphism inspector should receive the pattern, graph, matcher, randomizer and negative condition")
-      val returnedMapping = Map[RoomVertex, RoomVertex](room1 -> room2) // Doesn't matter what this map contains
-      val expectedInData = ((pattern, level.asGraph, matcherMock, random, Option(negativeConditionMock)), returnedMapping)
-      val customMock = new IsomorphicMappingMock[RoomVertex, CorridorEdge](Vector(expectedInData) )
+      val returnedMapping = Map[Int, RoomVertex](1 -> room2) // Doesn't matter what this map contains
+      val isoMappingMock = mock[IsomorphicMapping[RoomVertex, CorridorEdge, Int, UnDiEdge]]
+      isoMappingMock.randomIsomorphicMapping _ expects(level.asGraph, pattern, random) returns Some(new IsomorphicMatch(returnedMapping)) once()
 
       And("the morphism factory should receive the mapping produced by the isomorphism mapper")
       val morphism = new Morphism(returnedMapping)
-      (morphismMock.build[RoomVertex](_)) expects(returnedMapping) returns(morphism) once()
+      morphismMock.build[RoomVertex, Int] _ expects returnedMapping returns morphism once()
 
       And("the ComponentProduction should receive the pattern, morphism and graph to apply production onto")
       val result = GraphLevel(Graph[RoomVertex, CorridorEdge](room7, room8, room9))
-      (componentMock.apply _) expects(morphism, level) returns (result) once()
+      componentMock.apply _ expects(morphism, level) returns result once()
 
       /* Execute test */
-      val singleProduction = new SingleProduction(pattern, matcherMock, negativeConditionMock, componentMock, random, customMock, morphismMock)
+      val singleProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, componentMock, random, isoMappingMock, morphismMock)
       singleProduction.apply(level) should equal (Some(result))
-
-      assert(customMock.hasMetExpectations)
 
     }
   }

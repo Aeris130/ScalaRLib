@@ -9,7 +9,7 @@ package net.cyndeline.scalarlib.rldungeon.dgs.strategy.help
  *                than 2 edges.
  */
 case class CollapsedNode(vertexCollection: Set[Int], isDummy: Boolean = false) {
-  require(!vertexCollection.isEmpty, "Attempted to initiate collapsed node with empty vertex set.")
+  require(vertexCollection.nonEmpty, "Attempted to initiate collapsed node with empty vertex set.")
 
   /**
    * Constructs a new collapsed node with a sequence of vertices it represents.

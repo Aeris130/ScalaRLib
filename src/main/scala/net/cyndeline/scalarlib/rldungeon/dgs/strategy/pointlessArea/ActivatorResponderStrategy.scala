@@ -9,6 +9,7 @@ import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.{Closes
 import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
 
+import scala.language.reflectiveCalls
 import scala.reflect.runtime.universe.TypeTag
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
@@ -110,7 +111,7 @@ class ActivatorResponderStrategy[L <: PointlessLevel[L, R, C], R <: Room : TypeT
     var updatedLevel = level
     var mainPath = MainPath(trimmed, findNode(level.start, trimmed), findNode(level.goal, trimmed))
 
-    while (responderLeftToAdd > 0 && !mainPath.pointlessAreas.isEmpty) {
+    while (responderLeftToAdd > 0 && mainPath.pointlessAreas.nonEmpty) {
       val nextAreaCandidate = mainPath.pointlessAreas.head
       val pathToAdd = pathfinder.computeLongestPath(nextAreaCandidate.topology, nextAreaCandidate.mainPathConnection)
       val roomsToAddActivatorTo = pathToAdd.stop
@@ -123,7 +124,7 @@ class ActivatorResponderStrategy[L <: PointlessLevel[L, R, C], R <: Room : TypeT
         val g = level.asGraph // this has to be specified, or the compiler chokes
         val from = roomIdMap(originalTargetsOfEdge._1)
         val to = roomIdMap(originalTargetsOfEdge._2)
-        val roomsInNode = roomsToAddActivatorTo.vertexCollection.map(roomIdMap)
+        val roomsInNode = removeCutpoints(roomsToAddActivatorTo, nextAreaCandidate.topology).map(roomIdMap)
         val regularEdge = g.get(from).edges.toVector.find(e => e.contains(to)).get
 
         // Update data
@@ -189,5 +190,10 @@ class ActivatorResponderStrategy[L <: PointlessLevel[L, R, C], R <: Room : TypeT
 
   private def markMainPath(level: L, mainPath: TreePath): L = {
     level.markMainPath(mainPath)
+  }
+
+  private def removeCutpoints(node: CollapsedNode, topology: Graph[CollapsedNode, CollapsedEdge]): Set[Int] = {
+    val cutpoints = GraphCommons.neighbors(node, topology).filter(_.isDummy).map(_.singleRepresentedVertex)
+    node.vertexCollection -- cutpoints
   }
 }
