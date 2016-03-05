@@ -16,21 +16,23 @@ import scalax.collection.GraphPredef.OuterEdge
  *                     Vertex 1 and 2 gets wrapped into collapsed nodes, and the collapsed node that represents 1 later
  *                     is folded into a super-node. This variable would then store the vertex 1.
  * @param originalTo Same as originalFrom, but for _2.
+ * @param mergesDirected True if this edge represents two directed edges (one in each direction), otherwise false.
  * @param isDummy True if this edge connects a single node (in either end) representing an articulation point between
  *                two (or more) biconnected components of a graph. This edge doesn't represent an actual edge in the
  *                graph, hence why it's a dummy.
  */
-class CollapsedEdge[N](nodes: Product, val originalFrom: Option[Int], val originalTo: Option[Int], val isDummy: Boolean = false) extends UnDiEdge[N](nodes)
+class CollapsedEdge[N](nodes: Product, val originalFrom: Option[Int], val originalTo: Option[Int], val mergesDirected: Boolean, val isDummy: Boolean = false) extends UnDiEdge[N](nodes)
   //with ExtendedKey[N]
   with EdgeCopy[CollapsedEdge]
   with OuterEdge[N, CollapsedEdge] {
 
-  override def copy[NN](newNodes: Product) = new CollapsedEdge[NN](newNodes, originalFrom, originalTo, isDummy)
+  override def copy[NN](newNodes: Product) = new CollapsedEdge[NN](newNodes, originalFrom, originalTo, mergesDirected, isDummy)
 
   override def toString(): String = "\n" + this._1 + "~" + this._2 +
     (if (originalFrom.isDefined) " OF:" + originalFrom.get else "") +
     (if (originalTo.isDefined) " OT:" + originalTo.get else "") +
-    (if (isDummy) "-dummy" else "")
+    (if (isDummy) "-dummy" else "") +
+    (if (mergesDirected) "-directed_merged" else "")
 
   /* Should be ok to only use nodes here, without extended key the original nodes won't be a part of equals,
    * and there won't be two edges between the same node pair anyway.
@@ -38,16 +40,20 @@ class CollapsedEdge[N](nodes: Product, val originalFrom: Option[Int], val origin
   override def hashCode(): Int = this._1.## ^ this._2.## ^ originalFrom.## ^ originalTo.## ^ isDummy.## << 32
 
   override def equals(other: Any): Boolean = other match {
-    case ce: CollapsedEdge[N] => ((ce._1 == this._1 && ce._2 == this._2) || (ce._1 == this._2 && ce._2 == this._1)) && ce.originalFrom == originalFrom && ce.originalTo == originalTo && ce.isDummy == isDummy
+    case ce: CollapsedEdge[CollapsedNode] => ((ce._1 == this._1 && ce._2 == this._2) || (ce._1 == this._2 && ce._2 == this._1)) &&
+      ce.originalFrom == originalFrom &&
+      ce.originalTo == originalTo &&
+      ce.isDummy == isDummy &&
+      ce.mergesDirected == mergesDirected
     case _ => false
   }
 
 }
 
 final class CollapsedEdgeAssoc[A <: CollapsedNode](val e: UnDiEdge[A]) {
-  def emptyEdge(): CollapsedEdge[A] = new CollapsedEdge(NodeProduct(e._1, e._2), None, None)
+  def emptyEdge(): CollapsedEdge[A] = new CollapsedEdge(NodeProduct(e._1, e._2), None, None, false)
   def setOriginalTargets(originalFrom: Option[Int], originalTo: Option[Int]): CollapsedEdge[A] =
-    new CollapsedEdge(NodeProduct(e._1, e._2), originalFrom, originalTo)
+    new CollapsedEdge(NodeProduct(e._1, e._2), originalFrom, originalTo, false)
 }
 
 /**
@@ -55,11 +61,17 @@ final class CollapsedEdgeAssoc[A <: CollapsedNode](val e: UnDiEdge[A]) {
  */
 object CollapsedEdge {
 
-  def apply(from: CollapsedNode, to: CollapsedNode): CollapsedEdge[CollapsedNode] = new CollapsedEdge(NodeProduct(from, to), None, None)
+  def apply(from: CollapsedNode, to: CollapsedNode): CollapsedEdge[CollapsedNode] = new CollapsedEdge(NodeProduct(from, to), None, None, false)
   def apply(from: CollapsedNode, to: CollapsedNode, originalFrom: Option[Int], originalTo: Option[Int]): CollapsedEdge[CollapsedNode] =
-    new CollapsedEdge(NodeProduct(from, to), originalFrom, originalTo)
+    new CollapsedEdge(NodeProduct(from, to), originalFrom, originalTo, false)
 
-  def dummyEdge(from: CollapsedNode, to: CollapsedNode): CollapsedEdge[CollapsedNode] = new CollapsedEdge(NodeProduct(from, to), None, None, true)
+  /**
+    * Let's the user specify whether the edge merges two directed edges or not.
+    */
+  def apply(from: CollapsedNode, to: CollapsedNode, originalFrom: Option[Int], originalTo: Option[Int], directMerge: Boolean): CollapsedEdge[CollapsedNode] =
+    new CollapsedEdge(NodeProduct(from, to), originalFrom, originalTo, directMerge)
+
+  def dummyEdge(from: CollapsedNode, to: CollapsedNode): CollapsedEdge[CollapsedNode] = new CollapsedEdge(NodeProduct(from, to), None, None, false, true)
 
   /**
    * Retrieves the represented targets (to/from .1/._2) of a collapsed edge. If the edge targets super-nodes,

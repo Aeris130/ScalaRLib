@@ -9,7 +9,10 @@ import scalax.collection.GraphPredef.OuterEdge
  * Connects two nodes in a Tree path. This edge doesn't represent a corridor in a level, it is only used to join
  * one aspect of a level (a room or corridor) with another in the order they're traversed.
  *
- * @param c A common cutpoint shared by two nodes representing biconnected components in the tree.
+ * @param c A common cutpoint shared by two nodes representing biconnected components in the tree. Example: Given a
+  *          branch between a node A representing a component C1 containing a room with id 2, and a node B representing
+  *          an edge from C1 to another component C2, with room 2 being the connected room in A, then the id 2 will
+  *          be used here.
  */
 class Branch[N](nodes: Product, c: Int) extends DiEdge[N](nodes)
   with EdgeCopy[Branch]

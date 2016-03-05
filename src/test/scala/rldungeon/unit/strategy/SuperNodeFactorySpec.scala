@@ -477,11 +477,11 @@ class SuperNodeFactorySpec extends SpecImports {
       val cn2 = new CollapsedNode(2)
       val edge: DiCollapsedEdge[CollapsedNode] = (cn1~>cn2).emptyEdge()
       val expectedGraph = Graph[CollapsedNode, DiCollapsedEdge](edge)
-      collapsedGraph should be (expectedGraph)
+      expectedGraph should be (collapsedGraph) // Important to compare directed to undirected and not vice versa
 
     }
 
-    ignore ("should preserve directed edges in both directions") {
+    it ("should preserve directed edges in both directions") {
 
       Given("a graph with two nodes connected by two directed edges")
       val f = vertices
@@ -491,13 +491,34 @@ class SuperNodeFactorySpec extends SpecImports {
       When("collapsing all cycles")
       val collapsedGraph: Graph[CollapsedNode, CollapsedEdge] = factory.collapseCycles(graph)
 
-      Then("the two collapsed nodes should be connected by a directed collapsed edge")
+      Then("the two collapsed nodes should be connected by an undirected edge merging the directed edges")
       val cn1 = new CollapsedNode(1)
       val cn2 = new CollapsedNode(2)
-      val edge1 = (cn1~>cn2).emptyEdge()
-      val edge2 = (cn2~>cn1).emptyEdge()
+      val edge1 = CollapsedEdge(cn1, cn2, None, None, true)
+      val expectedGraph = Graph[CollapsedNode, CollapsedEdge](edge1)
+      collapsedGraph should be (expectedGraph)
+
+    }
+
+    it ("should merge directed edges connected to a node with a regular undirected edge") {
+
+      Given("a graph with 3 nodes, with node 1 and 2 having directed edges in both directions and node 2 and 3 having an undirected edge")
+      val f = vertices
+      import f._
+      val graph = Graph(n1~>n2, n2~>n1, n2~n3)
+
+      When("collapsing all cycles")
+      val collapsedGraph: Graph[CollapsedNode, CollapsedEdge] = factory.collapseCycles(graph)
+
+      Then("the directed edges should be merged and the undirected edge stay undirected")
+      val cn1 = new CollapsedNode(1)
+      val cn2 = new CollapsedNode(2)
+      val cn3 = new CollapsedNode(3)
+      val edge1 = CollapsedEdge(cn1, cn2, None, None, true)
+      val edge2 = (cn2~cn3).emptyEdge()
       val expectedGraph = Graph[CollapsedNode, CollapsedEdge](edge1, edge2)
       collapsedGraph should be (expectedGraph)
+
     }
 
   }

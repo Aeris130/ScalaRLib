@@ -7,7 +7,7 @@ import scalax.collection.GraphPredef.OuterEdge
  * Directed version of collapsed edges.
  */
 class DiCollapsedEdge[N](nodes: Product, originalFrom: Option[Int], originalTo: Option[Int], isDummy: Boolean = false)
-  extends CollapsedEdge[N](nodes, originalFrom, originalTo, isDummy)
+  extends CollapsedEdge[N](nodes, originalFrom, originalTo, false, isDummy)
   with EdgeCopy[DiCollapsedEdge]
   with OuterEdge[N, DiCollapsedEdge]
   with DiEdgeLike[N] {
@@ -20,6 +20,8 @@ class DiCollapsedEdge[N](nodes: Product, originalFrom: Option[Int], originalTo: 
     case ce: DiCollapsedEdge[N] => ((ce._1 == this._1 && ce._2 == this._2) || (ce._1 == this._2 && ce._2 == this._1)) && ce.originalFrom == originalFrom && ce.originalTo == originalTo && ce.isDummy == isDummy
     case _ => false
   }
+
+  override def toString(): String = this._1 + "~>" + this._2
 }
 
 final class DiCollapsedEdgeAssoc[A <: CollapsedNode](val e: DiEdge[A]) {

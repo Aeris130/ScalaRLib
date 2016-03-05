@@ -365,6 +365,27 @@ class TopologyProductionSpec extends SpecImports {
 
     }
 
+    it ("should add a directed edge between a new vertex and a previous vertex") {
+
+      Given("a component that adds a new vertex to a graph with an old vertex, then adds a directed edge between them")
+      val f = vertices
+      import f._
+      val totalLevel = GraphLevel(Graph[RoomVertex, CorridorEdge](v3))
+      val vertexToAdd = new RoomVertex(v3.rid + 1)
+      val morphism = new Morphism[RoomVertex, String](Map(pa -> v3))
+
+      val prod = new TopologyProduction[GraphLevel, RoomVertex, CorridorEdge, String]()
+        .addVertex(1)
+        .addMixEdge(1, pa, Directed)
+
+      When("applying the production to the graph")
+      val result = prod.apply(morphism, totalLevel)
+
+      Then("the result should contain a directed edge between v3 and the added vertex")
+      result.asGraph should equal (Graph(DiCorridorEdge(vertexToAdd, v3)))
+
+    }
+
     it ("should add two directed edges between a previous vertex and a new vertex") {
 
       Given("a component that adds a new vertex to a graph with an old vertex, then adds two directed edges between them")
@@ -538,26 +559,33 @@ class TopologyProductionSpec extends SpecImports {
       Given("a graph with 4 vertices and a production that performs every modification")
       val f = vertices
       import f._
-      Graph[String, UnDiEdge](pa~pb, pa~pc, pc~pd) // Pattern. Not used, just displayed for readability
-      val totalLevel = GraphLevel(Graph[RoomVertex, CorridorEdge](v5~v6, v5~v7, v7~v8))
+      Graph[String, UnDiEdge](pa~>pb, pa~pc, pc~pd) // Pattern. Not used, just displayed for readability
+      val totalLevel = GraphLevel(Graph[RoomVertex, CorridorEdge](v5~>v6, v5~v7, v7~v8))
       val morphism = new Morphism[RoomVertex, String](Map(pa -> v5, pb -> v6, pc -> v7, pd -> v8))
       val vertexToAdd1 = new RoomVertex(9)
       val vertexToAdd2 = new RoomVertex(10)
+      val vertexToAdd3 = new RoomVertex(11)
 
       val prod = new TopologyProduction[GraphLevel, RoomVertex, CorridorEdge, String]()
         .addVertex(1) // Adds new vertex
         .addVertex(2)
+        .addVertex(3)
         .addNewEdge(1, 2) // Adds an edge between two new vertices
         .addMixEdge(2, pa) // Adds an edge between a new and an old vertex
         .addOldEdge(pa, pd) // Adds an edge between two old vertices
-        .removeVertex(pb) // Removes v3 and edges v1~v2
+        .removeEdge(pa, pb, Directed) // Remove a directed edge between v1 and v2
+        .removeVertex(pb) // Removes v3
         .removeEdge(pa, pc, Undirected) // removes edge between v1 and v3
+        .addNewEdge(2, 3, Directed) // adds directed edge between two new vertices
+        .addMixEdge(pa, 1, Directed) // adds mixed directed edge from old to new vertex
+        .addMixEdge(1, pa, Directed) // adds mixed directed edge from new to old vertex
+        .addOldEdge(pa, pc, Directed) // adds directed edge between old vertices
 
       When("applying the production to the graph")
       val result = prod.apply(morphism, totalLevel)
 
       Then("the result should have all rules applied")
-      result.asGraph should equal (Graph[RoomVertex, CorridorEdge](vertexToAdd1~vertexToAdd2, v5~vertexToAdd2, v7~v8, v5~v8))
+      result.asGraph should equal (Graph[RoomVertex, CorridorEdge](vertexToAdd1~vertexToAdd2, vertexToAdd2~>vertexToAdd3, v5~vertexToAdd2, v5~>vertexToAdd1, vertexToAdd1~>v5, v5~>v7, v7~v8, v5~v8))
 
     }
 

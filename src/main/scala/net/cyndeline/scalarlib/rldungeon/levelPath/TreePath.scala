@@ -7,6 +7,7 @@ import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, Colla
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
+import scala.language.{reflectiveCalls, higherKinds}
 import scala.reflect.runtime.universe._
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
@@ -61,7 +62,7 @@ class TreePath private (val mainPath: Path[TreeNode, Branch], val pointlessAreas
     val nl = System.getProperty("line.separator")
     builder ++= "-- Tree path --" + nl
     builder ++= "Main path: " + mainPath
-    if (!pointlessAreas.isEmpty) {
+    if (pointlessAreas.nonEmpty) {
       builder ++= "Pointless areas:"
       for (pa <- pointlessAreas)
         builder ++= " Area >> " + pa.toString
@@ -78,8 +79,9 @@ object TreePath {
 
   /**
    * @param level Level that the TreePath should represent.
-   * @param totalGraph The collapsed super-graph of the level.
-   * @param mainPath The final main path through the level.
+   * @param totalGraph The collapsed super-graph of the level. Connected vertex pairs outside the main path must either
+    *                   be connected using an undirected edge, or a pair of directed edges.
+   * @param mainPath The final main path through the level. May contain directed edges in one direction.
    * @tparam L Level type.
    * @tparam R Room type.
    * @tparam C Corridor type.
@@ -90,7 +92,7 @@ object TreePath {
     (level: Level[L, R, C],
      totalGraph: Graph[CollapsedNode, CollapsedEdge],
      mainPath: Path[CollapsedNode, CollapsedEdge]): TreePath = {
-
+    checkForIllegalDirectedEdges(totalGraph, mainPath)
     val idToRoom: Map[Int, R] = GraphCommons.outerVertices(level.asGraph).map(r => r.rid -> r).toMap
 
     /* Maps each collapsed node to the graph structure containing its underlying topology. */
@@ -257,6 +259,19 @@ object TreePath {
     }
 
     map.toMap
+  }
+
+  /* Checks if a bottleneck in a pointless area is directed, which would either prevent movement into the area, or
+   * prevent movement out of the area once entered.
+   */
+  private def checkForIllegalDirectedEdges(graph: Graph[CollapsedNode, CollapsedEdge], mainPath: Path[CollapsedNode, CollapsedEdge]): Unit = {
+    var pointlessGraph = graph
+    for (e <- mainPath.edges)
+      pointlessGraph -= e
+
+    for (e <- GraphCommons.outerEdges(pointlessGraph) if e.isDirected)
+      throw new IllegalArgumentException("A directed edge in a levels pointless area prohibits traversal from the area back to the main path.")
+
   }
 
 }

@@ -3,7 +3,7 @@ package rldungeon.unit.levelPath
 import net.cyndeline.rlgraph.pathfinding.{BFSPathfinder, Path}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode, SuperNodeFactory}
 import net.cyndeline.scalarlib.rldungeon.levelPath.{Branch, TreeNode, TreePath}
-import rldungeon.help.{CorridorEdge, CorridorEdgeAssoc, GraphLevel, RoomVertex}
+import rldungeon.help._
 import testHelpers.SpecImports
 
 import scalax.collection.GraphEdge.UnDiEdge
@@ -11,7 +11,7 @@ import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
 
 class TreePathSpec extends SpecImports {
-  private implicit def edge2Assoc(e: UnDiEdge[RoomVertex]) = new CorridorEdgeAssoc(e)
+  private implicit def edge2Assoc(e: UnDiEdge[RoomVertex]): CorridorEdgeAssoc[RoomVertex] = new CorridorEdgeAssoc(e)
   private val superNFactory = new SuperNodeFactory()
   private val pathfinder = new BFSPathfinder()
 
@@ -56,6 +56,20 @@ class TreePathSpec extends SpecImports {
 
     // Loops 1-2-3-4-3-2-5
     val mainPath = Path(findNode(collapsed, r1), Vector(ce1, ce2, ce3, ce3, ce2, ce4))
+  }
+
+  private def mainPathWithDirectedEdge = new {
+    val rms = rooms
+    import rms._
+
+    val e_1_2 = r1~r2 cid 1
+    val e_2_3 = r2~r3 cid 2
+    val e_3_4 = DiCorridorEdge(r3, r4, 3)
+    val e_4_5 = r4~r5 cid 4
+    val graph = Graph(e_1_2, e_2_3, e_3_4, e_4_5)
+    val level = GraphLevel(graph)
+    val collapsed = superNFactory.collapseCycles(graph)
+    val mainPath = pathfinder.computePath(findNode(collapsed, r1), findNode(collapsed, r5), collapsed).get
   }
 
   private def multieEdgeComponents = new {
@@ -219,6 +233,40 @@ class TreePathSpec extends SpecImports {
 
     }
 
+    it ("should handle directed edges along the main path") {
+
+      Given("a level with a path 1 -> 5 and a directed edge between rooms 3 and 4")
+      val f = mainPathWithDirectedEdge
+      import f._
+      import f.rms._
+
+      When("constructing a tree path")
+      val path = TreePath(level, collapsed, mainPath)
+
+      Then("the main path should contain 1 tree node for each edge and biconnected component)")
+      path.mainPath.vertices should have size 9
+      val n1 = TreeNode.roomNode(Graph[RoomVertex, CorridorEdge](r1))
+      val n2 = TreeNode.corridorNode[RoomVertex, CorridorEdge](e_1_2)
+      val n3 = TreeNode.roomNode(Graph[RoomVertex, CorridorEdge](r2))
+      val n4 = TreeNode.corridorNode[RoomVertex, CorridorEdge](e_2_3)
+      val n5 = TreeNode.roomNode(Graph[RoomVertex, CorridorEdge](r3))
+      val n6 = TreeNode.corridorNode[RoomVertex, CorridorEdge](e_3_4)
+      val n7 = TreeNode.roomNode(Graph[RoomVertex, CorridorEdge](r4))
+      val n8 = TreeNode.corridorNode[RoomVertex, CorridorEdge](e_4_5)
+      val n9 = TreeNode.roomNode(Graph[RoomVertex, CorridorEdge](r5))
+      val expectedNodes = Vector(n1, n2, n3, n4, n5, n6, n7, n8, n9)
+      path.mainPath.vertices should be (expectedNodes)
+
+      And("each node should be connected by an edge specifying the node pairs connection")
+      path.mainPath.edges should have size 8
+      val expectedEdges = Vector(Branch(n1, n2, r1.rid), Branch(n2, n3, r2.rid), Branch(n3, n4, r2.rid),
+        Branch(n4, n5, r3.rid), Branch(n5, n6, r3.rid), Branch(n6, n7, r4.rid),
+        Branch(n7, n8, r4.rid), Branch(n8, n9, r5.rid))
+      path.mainPath.edges should be (expectedEdges)
+
+    }
+
+
     /*
      * Pointless areas
      */
@@ -314,6 +362,28 @@ class TreePathSpec extends SpecImports {
       val branch6 = Branch(en3, n6, r6.rid)
 
       area should equal (Graph(branch1, branch2, branch3, branch4, branch5, branch6))
+
+    }
+
+    it ("should throw an error if a single-direction directed edge exists in a pointless area") {
+
+      Given("a graph with a main path 1 -> 3 and a pointless area 4, with an edge directed from 2 to 4")
+      val rms = rooms
+      import rms._
+      val edge1 = DiCorridorEdge(r2, r4, 3)
+      val area1 = Graph(edge1)
+      val graph = Graph(r1~r2 cid 1, r2~r3 cid 2) ++ area1
+      val level = GraphLevel(graph)
+      val collapsed = superNFactory.collapseCycles(graph)
+      val mainPath = pathfinder.computePath(findNode(collapsed, r1), findNode(collapsed, r3), collapsed).get
+
+      When("constructing a tree path")
+      Then("an exception should be thrown")
+      val thrown = intercept[IllegalArgumentException] {
+        TreePath(level, collapsed, mainPath)
+      }
+
+      thrown.getMessage should be ("A directed edge in a levels pointless area prohibits traversal from the area back to the main path.")
 
     }
 

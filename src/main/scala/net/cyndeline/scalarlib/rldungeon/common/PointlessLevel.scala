@@ -2,6 +2,7 @@ package net.cyndeline.scalarlib.rldungeon.common
 
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
 
 /**
@@ -47,6 +48,7 @@ trait PointlessLevel[P <: PointlessLevel[P, R, C], R, C[X] <: UnDiEdge[X]] exten
 
   /**
    * Marks rooms as a recipient of a reward.
+ *
    * @param rooms Rooms to assign rewards to.
    * @return A copy of this level with the specified rooms marked as receiving a reward (one each).
    */

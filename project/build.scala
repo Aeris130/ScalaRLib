@@ -12,7 +12,7 @@ object ScalarlibBuild extends Build {
     name              := "scalarlib",
 
     // Needed to access user classes
-    resolvers += Resolver.mavenLocal,
+    resolvers += Resolver.mavenLocal, //
 
     // Resolver for the archery R*Tree repository.
     resolvers += "bintray/meetup" at "http://dl.bintray.com/meetup/maven",

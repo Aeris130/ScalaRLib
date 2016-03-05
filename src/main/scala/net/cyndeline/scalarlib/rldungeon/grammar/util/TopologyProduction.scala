@@ -11,18 +11,14 @@ import scalax.collection.immutable.Graph
 /**
  * Generic ComponentProduction that modifies the topology of a graph. Supports:
  *
- *  # Adding vertices
- *  # Removing vertices (all connected edges are deleted)
- *  # Adding edges A ~ B where A and B are either a previous vertex, or a newly added vertex
- *  # Deleting edges A ~ B (A and B remains in the graph)
+ *  - Adding vertices
+ *  - Removing vertices (all connected edges are deleted)
+ *  - Adding edges A ~ B where A and B are either a previous vertex, or a newly added vertex. Edges may be directed or
+ *  undirected.
+ *  - Deleting edges A ~ B (A and B remains in the graph). Edges may be directed or undirected.
  *
  * Operations are performed in the following order: Vertex add, edge add, edge remove, vertex remove.
  */
-//TODO test adding all edges in all directions
-
-
-//TODO add Direction to edge removal, needed when removing undirected and adding directed and vice versa (exception casts)
-
 class TopologyProduction[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV] private
     (vertexAdd: Set[Int],
      vertexRemove: Set[PV],
