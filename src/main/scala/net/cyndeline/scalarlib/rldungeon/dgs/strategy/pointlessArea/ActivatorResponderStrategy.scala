@@ -9,7 +9,7 @@ import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.help.{Closes
 import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
 
-import scala.language.reflectiveCalls
+import scala.language.{higherKinds, reflectiveCalls}
 import scala.reflect.runtime.universe.TypeTag
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
@@ -35,7 +35,7 @@ import scalax.collection.immutable.Graph
  *
  * In order to guarantee that a responder between rooms A and B accurately blocks off all rooms beyond it, there cannot
  * be any other paths on the level from A to B (or vice versa) that is unblocked (if so the responder can be
- * circumvented). The runtime for finding all such paths has exponential runtime (first all paths from A to B must be
+ * circumvented). The algorithm for finding all such paths has exponential runtime (first all paths from A to B must be
  * found and blocked by a responder, then all paths from one node on those paths to another node on the same path must
  * be found to ensure that ''those'' responders cannot be circumvented, then all paths between ''those'' paths must be
  * found etc.). As this may lead to unacceptable runtimes for large levels, this strategy employs a heuristic that works
@@ -93,7 +93,7 @@ class ActivatorResponderStrategy[L <: PointlessLevel[L, R, C], R <: Room : TypeT
 
     val collapsedGraph = superNodeFactory.collapseCycles(level.asGraph)
     val initialMainPath = findMainPath(level, collapsedGraph)
-    val roomIdMap = mapRoomsToId(level)
+    val roomIdMap: Map[Int, R] = mapRoomsToId(level)
 
     // Special case, no responders can be placed since no edges are available
     if (initialMainPath.vertices.size == 1) {
@@ -110,25 +110,25 @@ class ActivatorResponderStrategy[L <: PointlessLevel[L, R, C], R <: Room : TypeT
     var responderLeftToAdd = level.responderAmount
     var updatedLevel = level
     var mainPath = MainPath(trimmed, findNode(level.start, trimmed), findNode(level.goal, trimmed))
+    val nodesInInitialMainPath = initialMainPath.vertices.toSet
 
     while (responderLeftToAdd > 0 && mainPath.pointlessAreas.nonEmpty) {
       val nextAreaCandidate = mainPath.pointlessAreas.head
       val pathToAdd = pathfinder.computeLongestPath(nextAreaCandidate.topology, nextAreaCandidate.mainPathConnection)
       val roomsToAddActivatorTo = pathToAdd.stop
-      val edgesToAddResponderTo = edgeSelection.findEdgeCandidates(mainPath.currentPath.vertices, mainPath.currentPath.edges, nextAreaCandidate.mainPathConnection)
-      val closestResult: Option[(CollapsedEdge[CollapsedNode], PointlessAreaData)] = edgeFinder.findEdge(edgesToAddResponderTo, areaData)
+      val candidatesToAddResponderTo = edgeSelection.findEdgeCandidates(mainPath.currentPath.vertices, mainPath.currentPath.edges, nextAreaCandidate.mainPathConnection, nodesInInitialMainPath)
+      val candidateEdges = candidatesToAddResponderTo
+      val edgeToCandidateMap = candidateEdges.map(c => c.edge -> c).toMap
+      val closestResult: Option[(CollapsedEdge[CollapsedNode], PointlessAreaData)] = edgeFinder.findEdge(candidateEdges.map(_.edge), areaData)
 
       if (closestResult.isDefined) {
         val edge = closestResult.get._1
-        val originalTargetsOfEdge = CollapsedEdge.targetsOfEdge(edge)
-        val g = level.asGraph // this has to be specified, or the compiler chokes
-        val from = roomIdMap(originalTargetsOfEdge._1)
-        val to = roomIdMap(originalTargetsOfEdge._2)
         val roomsInNode = removeCutpoints(roomsToAddActivatorTo, nextAreaCandidate.topology).map(roomIdMap)
-        val regularEdge = g.get(from).edges.toVector.find(e => e.contains(to)).get
+
+        val regularEdge = findOriginalEdge(edgeSelection)(level, edge, candidateEdges, roomIdMap)
 
         // Update data
-        updatedLevel = updatedLevel.addActivatorAndResponder(roomsInNode, regularEdge.toOuter)
+        updatedLevel = updatedLevel.addActivatorAndResponder(roomsInNode, regularEdge)
         areaData = closestResult.get._2
         mainPath = mainPath.appendPath(pathToAdd.stop, nextAreaCandidate)
         responderLeftToAdd -= 1
@@ -168,6 +168,24 @@ class ActivatorResponderStrategy[L <: PointlessLevel[L, R, C], R <: Room : TypeT
     graph.nodes.find(n => n.contains(representedVertex.rid)).getOrElse {
       throw new Error("The vertex " + representedVertex + " was not found in the collapsed graph " + graph)
     }
+  }
+
+  def findOriginalEdge(es: EdgeSelection)(level: L,
+                                          edge: CollapsedEdge[CollapsedNode],
+                                          candidates: Vector[es.EdgeCandidate],
+                                          roomIdMap: Map[Int, R]): C[R] = {
+    val edgeToCandidateMap = candidates.map(c => c.edge -> c).toMap
+    val candidate = edgeToCandidateMap(edge)
+    val g = level.asGraph // this has to be specified, or the compiler chokes
+    val originalTargetsOfEdge = CollapsedEdge.targetsOfEdge(edge)
+    val a = roomIdMap(originalTargetsOfEdge._1)
+    val b = roomIdMap(originalTargetsOfEdge._2)
+
+    val from = if (candidate.from.vertexCollection.contains(originalTargetsOfEdge._1)) a else b
+    val to = if (from.rid == a.rid) b else a
+    val innerFrom = g get from
+    val innerTo = g get to
+    innerFrom.outgoingTo(innerTo).head.toOuter
   }
 
   private def setupARData(level: L, data: PointlessAreaData): PointlessAreaData =  markActivatorNodes(level, markResponderEdges(level, data))

@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
-import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 
 /**
@@ -11,5 +11,5 @@ import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
  * @param area Start and stop coordinates for this room when drawn on a 2D grid.
  */
 case class ImmutableRoomContainer[RoomType](originalRoom: RoomType,
-                                            area: RectangleCoordinates
+                                            area: Rectangle
                                             ) extends DrawnRoom[RoomType]

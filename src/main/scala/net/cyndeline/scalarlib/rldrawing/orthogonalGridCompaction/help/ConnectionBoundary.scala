@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.AdjustableRectangle
 
 /**
  * Computes how much an area A connected to another area B is allowed to move along some side of B before A breaks
@@ -19,14 +19,15 @@ import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
  *                     freely across the area connected to, set this to any large value (for example, the maximum size
  *                     of the boundary areas sides).
  */
-class ConnectionBoundary(boundaryArea: RectangularArea, maxDeviation: Int) {
+class ConnectionBoundary(boundaryArea: AdjustableRectangle, maxDeviation: Int) {
 
   /**
    * Creates a connection boundary with 0 deviation.
+ *
    * @param boundaryArea The area with the boundary, ex: a room or corridor bend.
    * @return A connection boundary with 0 deviation.
    */
-  def this(boundaryArea: RectangularArea) = this(boundaryArea, 0)
+  def this(boundaryArea: AdjustableRectangle) = this(boundaryArea, 0)
 
   /**
    * Computes the start/stop coordinate along some axis that an area connecting to this boundary must stay inside.
@@ -37,7 +38,7 @@ class ConnectionBoundary(boundaryArea: RectangularArea, maxDeviation: Int) {
    * @return A pair of coordinates. The start coordinate of the connecting area must be >= than the first value,
    *         and the stop coordinate must be <= than the second value.
    */
-  def computeConnectionBoundary(connectingArea: RectangularArea, side: Direction): (Int, Int) = {
+  def computeConnectionBoundary(connectingArea: AdjustableRectangle, side: Direction): (Int, Int) = {
     val connectingAxisCoordinates = connectingArea.coordinatesOnSide(side)
     val boundaryCoordinates = boundaryArea.coordinatesOnSide(side)
 

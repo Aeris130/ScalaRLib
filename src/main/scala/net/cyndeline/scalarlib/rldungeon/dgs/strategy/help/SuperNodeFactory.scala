@@ -25,7 +25,7 @@ import scalax.collection.immutable.Graph
  * On directed edges: If two components are joined by a single directed edge, a directed collapsed edge will be added
  * between them in the resulting collapsed graph. If instead the nodes are connected by directed edges in both
  * directions, the collapsed graph will use an undirected edge instead since it's purpose is to provide a loop-free
- * data structure.
+ * data structure. This undirected edge will be marked as representing two directed edges.
  *
  * @constructor Constructs a new factory for collapsing graphs into super-nodes.
  */

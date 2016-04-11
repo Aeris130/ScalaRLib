@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.AreaRepresentation
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{FullCorridor, MutableArea, RectangularArea}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{AdjustableRectangle, FullCorridor, MutableArea}
 import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 /**
@@ -39,6 +40,7 @@ class RepresentationToDrawingConverter extends RepresentationToDrawingConverterI
 
   /**
    * Parses area data and original rooms into a drawn corridor.
+ *
    * @param originalCorridor The original user-submitted corridor object these areas are based on.
    * @param areaToRoom Since the FullCorridor objects doesn't contain references to the original rooms, this is needed.
    * @param corridor The areas of the corridor.
@@ -57,7 +59,7 @@ class RepresentationToDrawingConverter extends RepresentationToDrawingConverterI
 
     var fromConnection: Option[(Point, Point)] = None
     var connections = Vector[(Point, Point)]()
-    var segmentAreas = Vector[RectangleCoordinates]()
+    var segmentAreas = Vector[Rectangle]()
 
     // Does not contain room areas
     val corridorSegments = corridor.areas.iterator
@@ -86,7 +88,7 @@ class RepresentationToDrawingConverter extends RepresentationToDrawingConverterI
     ImmutableCorridorContainer(areaToRoom(corridor.from), areaToRoom(corridor.to), Connection(fromConnection.get), Connection(toConnectionPoints), segmentAreas.reverse, connections.reverse.map(Connection(_)), originalCorridor)
   }
 
-  private def getIntersection(a: RectangularArea, b: RectangularArea): RectangularArea = {
+  private def getIntersection(a: AdjustableRectangle, b: AdjustableRectangle): AdjustableRectangle = {
     val inter = a.intersection(b).getOrElse {
       throw new Error("The area " + a + " did not intersect with the corridor segment " + b)
     }
@@ -116,7 +118,7 @@ class RepresentationToDrawingConverter extends RepresentationToDrawingConverterI
     (lowestX, lowestY)
   }
 
-  private def adjustArea(area: RectangularArea, adjustOnXAndY: (Int, Int)): RectangularArea = {
+  private def adjustArea(area: AdjustableRectangle, adjustOnXAndY: (Int, Int)): AdjustableRectangle = {
     area.adjustCoordinates(West, adjustOnXAndY._1).adjustCoordinates(North, adjustOnXAndY._2)
   }
 

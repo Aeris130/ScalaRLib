@@ -1,14 +1,14 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Area, MutableArea, RectangularArea, RoomCorridorConnection}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Area, MutableArea, AdjustableRectangle, RoomCorridorConnection}
 import testHelpers.SpecImports
 
 class AreaSpec extends SpecImports {
 
-  class AreaClass(area: RectangularArea, intersect: Boolean = true) extends Area(area, intersect) {
+  class AreaClass(area: AdjustableRectangle, intersect: Boolean = true) extends Area(area, intersect) {
     override def isRoom: Boolean = ???
     override def isCorridor: Boolean = ???
     override def isBend: Boolean = ???
@@ -22,8 +22,8 @@ class AreaSpec extends SpecImports {
 
       Given("an area A with a connection to another area B, and a grid that returns B as adjacent to A")
       val grid = mock[PartitionedArea[MutableArea]]
-      val rectA = RectangularArea(Point(0, 0), Point(3, 3))
-      val rectB = RectangularArea(Point(3, 0), Point(5, 3))
+      val rectA = AdjustableRectangle(Point(0, 0), Point(3, 3))
+      val rectB = AdjustableRectangle(Point(3, 0), Point(5, 3))
       val A = new AreaClass(rectA)
       val B = new AreaClass(rectB)
       val AtoBConnection = mock[RoomCorridorConnection]

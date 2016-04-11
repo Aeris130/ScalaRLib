@@ -1,8 +1,9 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction
 
 import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.{Point, RandomElementFinder, RandomElementFinderInterface}
+import net.cyndeline.rlcommon.util.{RandomElementFinder, RandomElementFinderInterface}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.help.MovementMarker
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{GridDrawing, RepresentationToDrawingConverter, RepresentationToDrawingConverterI}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea

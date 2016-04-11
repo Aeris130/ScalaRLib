@@ -1,10 +1,11 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.{HeightConstraint, Point, WidthConstraint}
+import net.cyndeline.rlcommon.util.{HeightConstraint, WidthConstraint}
 import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.OrthogonalRepresentation
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help.ConnectionBoundary
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{RectangularArea, _}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{AdjustableRectangle, _}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{CorridorProperties, PartitionedArea}
 
 import scala.collection.mutable.ArrayBuffer
@@ -17,6 +18,7 @@ import scalax.collection.GraphEdge.UnDiEdge
  * straight segments that connect to a corridor bend area with width and height equal to the width of the corridor.
  *
  * Constructs a new orthogonal area factory with a user-supplied partition factory.
+ *
  * @param partitionFactory Factory responsible for producing the grid used in mutable areas when checking for
  *                         collisions.
  * @param intersect True if non-connected areas should be allowed to intersect each other at their borders, otherwise
@@ -36,6 +38,7 @@ class OrthogonalAreaFactory(partitionFactory: GridPartitionFactory[MutableArea],
 
   /**
    * Converts an orthogonal drawing into a set of connected areas on a grid.
+ *
    * @param drawing An orthogonal drawing of a map.
    * @tparam VType Room type in the map.
    * @tparam EType Corridor type in the map.
@@ -113,7 +116,7 @@ class OrthogonalAreaFactory(partitionFactory: GridPartitionFactory[MutableArea],
       val room = roomAndCoordinates._1
       val coordinate = (roomAndCoordinates._2, roomAndCoordinates._3)
       val startStop = computeRectangularAreaInMiddle(coordinate, room.elementWidth, room.elementHeight, largestRoomSide)
-      val roomArea = new RoomArea(RectangularArea(startStop._1, startStop._2), partitionedGrid, intersect)
+      val roomArea = new RoomArea(AdjustableRectangle(startStop._1, startStop._2), partitionedGrid, intersect)
 
       roomGrid(roomAndCoordinates._2)(roomAndCoordinates._3) = Option(roomArea)
       roomMap += (room -> roomArea)
@@ -153,7 +156,7 @@ class OrthogonalAreaFactory(partitionFactory: GridPartitionFactory[MutableArea],
 
         // The direction the corridor segment is outgoing from, seen from the previous area
         val connectDir = connectionDirection(Point(currentStart._1, currentStart._2), Point(bend._1, bend._2))
-        val newBendArea = new CorridorBend(RectangularArea(pointsOfBend._1, pointsOfBend._2), partitionedGrid, intersect)
+        val newBendArea = new CorridorBend(AdjustableRectangle(pointsOfBend._1, pointsOfBend._2), partitionedGrid, intersect)
 
         val corridorArea = corridorSegmentFactory.makeSegment(currentArea.area, connectDir, newBendArea.area, edge.originalEdge.elementWidth)
         val corridor = makeCorridorArea(corridorArea, partitionedGrid, connectDir, edge.originalEdge)
@@ -213,17 +216,17 @@ class OrthogonalAreaFactory(partitionFactory: GridPartitionFactory[MutableArea],
 
     // An area representing all tiles in the drawing coordinate, equal to the square size of the longest room side
     val lowerRight = Point((gridPoint.x * largestRoomSide) + largestRoomSide - 1, (gridPoint.y * largestRoomSide) + largestRoomSide - 1)
-    val gridArea = RectangularArea(upperLeft, lowerRight)
+    val gridArea = AdjustableRectangle(upperLeft, lowerRight)
     val connectionBoundaryAlg = new ConnectionBoundary(gridArea)
 
     // Width
     val widthStop = Point(upperLeft.x + areaWidth - 1, upperLeft.y)
-    val helpAreaWidth = RectangularArea(upperLeft, widthStop)
+    val helpAreaWidth = AdjustableRectangle(upperLeft, widthStop)
     val middleStartStopXAxis = connectionBoundaryAlg.computeConnectionBoundary(helpAreaWidth, North)
 
     // Height
     val heightStop = Point(upperLeft.x, upperLeft.y + areaHeight - 1)
-    val helpAreaHeight = RectangularArea(upperLeft, heightStop)
+    val helpAreaHeight = AdjustableRectangle(upperLeft, heightStop)
     val middleStartStopYAxis = connectionBoundaryAlg.computeConnectionBoundary(helpAreaHeight, West)
 
     val roomStart = Point(middleStartStopXAxis._1, middleStartStopYAxis._1)
@@ -248,7 +251,7 @@ class OrthogonalAreaFactory(partitionFactory: GridPartitionFactory[MutableArea],
    * Creates a corridor area and sets the minimum length to the length of the corridor if its length is less than
    * the original corridors specified minimum length.
    */
-  private def makeCorridorArea[VType, EType[X] <: UnDiEdge[X] with CorridorProperties](area: RectangularArea,
+  private def makeCorridorArea[VType, EType[X] <: UnDiEdge[X] with CorridorProperties](area: AdjustableRectangle,
                                                                                        grid: PartitionedArea[MutableArea],
                                                                                        direction: Direction,
                                                                                        original: EType[VType]): CorridorArea = {

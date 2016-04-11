@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction
 
-import net.cyndeline.rlcommon.util.Point
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.AdjustableRectangle
 
 import scala.util.Random
 
@@ -15,10 +15,11 @@ class RandomTargetFinder(random: Random) extends TargetFinder {
 
   /**
    * Computes a single point as compaction target.
+ *
    * @param area The area that the target point must lie within.
    * @return The compaction target coordinate.
    */
-  def findTarget(area: RectangularArea): Point = {
+  def findTarget(area: AdjustableRectangle): Point = {
     val highestX = area.stop.x
     val highestY = area.stop.y
     val lowestX = area.start.x

@@ -1,10 +1,10 @@
 package rldrawing.integration
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{RectangularArea, _}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{AdjustableRectangle, _}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.{GridPartitionFactory, OrthogonalAreaFactory}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util.GridPartition
 import rldrawing.help.{ConstraintEdge, ConstraintRoom}
@@ -119,14 +119,14 @@ class OrthogonalAreaFactorySpec extends SpecImports {
       val areaRepresentation = intersectingAreaFactory.convertToAreas(drawing)
 
       Then("there should be a corridor starting in room 1 and ending in room 2 with no bends and width 5")
-      val room1Area = RectangularArea(Point(0, 0), Point(4, 4))
-      val room2Area = RectangularArea(Point(5, 0), Point(9, 4))
+      val room1Area = AdjustableRectangle(Point(0, 0), Point(4, 4))
+      val room2Area = AdjustableRectangle(Point(5, 0), Point(9, 4))
       val corridor = areaRepresentation.corridors.find(c => c.from.area == room1Area && c.to.area == room2Area).getOrElse {
         fail("No rooms with areas " + room1Area + " and " + room2Area + " found in corridor set " + areaRepresentation.corridors)
       }
 
       corridor.areas should have size (1)
-      corridor.areas.head.area should be (RectangularArea(Point(4, 0), Point(5, 4)))
+      corridor.areas.head.area should be (AdjustableRectangle(Point(4, 0), Point(5, 4)))
 
     }
 
@@ -151,8 +151,8 @@ class OrthogonalAreaFactorySpec extends SpecImports {
       val areaRepresentation = intersectingAreaFactory.convertToAreas(drawing)
 
       Then("there should be a corridor from room 1 to a 3x3 bend at (0,0)")
-      val room1Area = RectangularArea(Point(5, 0), Point(9, 4)) // 5x5
-      val room2Area = RectangularArea(Point(1, 10), Point(3, 14)) // 3x5 area in a 5x5 grid, so it gets adjusted 1 step inward
+      val room1Area = AdjustableRectangle(Point(5, 0), Point(9, 4)) // 5x5
+      val room2Area = AdjustableRectangle(Point(1, 10), Point(3, 14)) // 3x5 area in a 5x5 grid, so it gets adjusted 1 step inward
       val corridor = areaRepresentation.corridors.find(c => c.from.area == room1Area && c.to.area == room2Area).getOrElse {
           fail("No rooms with areas " + room1Area + " and " + room2Area + " found in corridor set " + areaRepresentation.corridors)
         }

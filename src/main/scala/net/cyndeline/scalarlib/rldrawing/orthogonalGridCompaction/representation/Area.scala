@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
 
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
 
 /**
@@ -12,7 +12,7 @@ import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedAre
  *                            intersect its borders. If false, other areas will be considered obstructing as soon as
  *                            they're adjacent to this area.
  */
-abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) extends MutableArea {
+abstract class Area(rectArea: AdjustableRectangle, intersectingBorders: Boolean) extends MutableArea {
 
   /* Corridor connections. one for each side of the room. */
   var northCorridor: Option[RoomCorridorConnection] = None
@@ -38,7 +38,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
   /**
    * @return The area object representing position and dimensions of this room.
    */
-  def area: RectangularArea = mutableArea
+  def area: AdjustableRectangle = mutableArea
 
   /**
    * @return True if the area allows its borders to intersect with other areas.
@@ -47,6 +47,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
 
   /**
    * Connects another area to this one.
+ *
    * @param direction Which side of this rectangular area that the other area connects to.
    * @param connection The connection object.
    */
@@ -59,6 +60,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
 
   /**
    * Tags the area as being able to move in a specified direction.
+ *
    * @param direction Direction that the area should be moved in.
    */
   def markAsMoved(direction: Direction): Unit = {
@@ -81,6 +83,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
 
   /**
    * Retrieves the connection of a specified direction.
+ *
    * @param direction Direction of connection to retrieve.
    * @return The retrieved connection, or None if no connection exist for that direction.
    */
@@ -93,9 +96,10 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
 
   /**
    * Sets a new rectangle representing this area.
+ *
    * @param area New area to use.
    */
-  def setNewArea(area: RectangularArea) {
+  def setNewArea(area: AdjustableRectangle) {
     mutableArea = area
   }
 
@@ -115,7 +119,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
      * the coordinates need to be adjusted outward by 1.
      */
     val areaFromPoints = if (intersectingBorders) {
-      new RectangularArea(areaPoints._1, areaPoints._2)
+      new AdjustableRectangle(areaPoints._1, areaPoints._2)
     } else {
 
       /* Make sure the new coordinates doesn't go outside the grid. Since the purpose of this call is now to
@@ -124,7 +128,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
        *
        * Technically, this should never happen since a room shouldn't be asked to move outside the grid.
        */
-      val gridArea = new RectangularArea(grid.start, grid.stop)
+      val gridArea = new AdjustableRectangle(grid.start, grid.stop)
 
       direction match {
         // Doesn't matter which point is used since they're both on the same axis
@@ -133,7 +137,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
         case West => if (areaPoints._1.x <= gridArea.start.x) return Set()
         case East => if (areaPoints._1.x >= gridArea.stop.x) return Set()
       }
-      new RectangularArea(areaPoints._1, areaPoints._2).adjustCoordinates(direction, 1)
+      new AdjustableRectangle(areaPoints._1, areaPoints._2).adjustCoordinates(direction, 1)
     }
 
     /* Either contains all areas that might possibly intersect the border, or the ones that lie
@@ -144,7 +148,7 @@ abstract class Area(rectArea: RectangularArea, intersectingBorders: Boolean) ext
     val blockingAreas = for {
       mutableArea <- areasToExamine
       oppositeSideCoordinates = mutableArea.area.coordinatesForSide(direction.opposite)
-      coordinateArea = RectangularArea(oppositeSideCoordinates._1, oppositeSideCoordinates._2)
+      coordinateArea = AdjustableRectangle(oppositeSideCoordinates._1, oppositeSideCoordinates._2)
 
       if !mutableArea.movement.isDefined // No need to report areas that has already been confirmed to move
       if !areaIsConnection(mutableArea, direction)

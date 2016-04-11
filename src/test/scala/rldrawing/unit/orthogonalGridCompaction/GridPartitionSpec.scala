@@ -1,12 +1,13 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util.GridPartition
 import testHelpers.SpecImports
 
 class GridPartitionSpec extends SpecImports {
 
-  private case class Element(start: Point, stop: Point) extends RectangleCoordinates
+  private case class Element(start: Point, stop: Point) extends Rectangle
 
   describe("GridPartition") {
 

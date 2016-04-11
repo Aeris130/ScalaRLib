@@ -24,7 +24,7 @@ trait Level[L <: Level[L, R, C], R, C[X] <: EdgeLikeIn[X]] {
 
   /**
    * Creates a new room.
-   * @return The room that was created, as well as a copy of this level without the room added. Remember to use
+   * @return The room that was created, as well as a copy of this level (still without the room added). Remember to use
    *         addRoom if the room is to be added to the level. The reason for returning the level without the room
    *         is to allow updates of internal data structures, such as ID pools.
    */

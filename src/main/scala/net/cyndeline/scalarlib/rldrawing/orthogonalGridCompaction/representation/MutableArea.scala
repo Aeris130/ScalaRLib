@@ -1,13 +1,13 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Rectangle
 
 /**
  * An area representing the dimensions and positions of a piece of a map after it has been drawn orthogonally.
  * Contains methods to modify said properties.
  */
-trait MutableArea extends RectangleCoordinates {
+trait MutableArea extends Rectangle {
 
   /**
    * @return True if the area is a room, otherwise false.
@@ -27,7 +27,7 @@ trait MutableArea extends RectangleCoordinates {
   /**
    * @return The area covered.
    */
-  def area: RectangularArea
+  def area: AdjustableRectangle
 
   /**
    * @return True if the area allows its borders to intersect with other areas.

@@ -1,9 +1,9 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory
 
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help.ConnectionBoundary
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.AdjustableRectangle
 
 /**
  * Computes the coordinates and produces a corridor segment that connects two areas (either rooms or corridor bends)
@@ -15,6 +15,7 @@ class CorridorSegmentAreaFactory {
 
   /**
    * Computes a single corridor segment.
+ *
    * @param area1 A area to connect the segment to.
    * @param room1ConnectionSide The side of room 1 that the segment connects to.
    * @param area2 The second area to connect to, on the side opposite to 'room1ConnectionSide.
@@ -22,7 +23,7 @@ class CorridorSegmentAreaFactory {
    *              sides the segment should be connected to.
    * @return A corridor segment starting at room1 and ending at room2.
    */
-  def makeSegment(area1: RectangularArea, room1ConnectionSide: Direction, area2: RectangularArea, width: Int): RectangularArea = {
+  def makeSegment(area1: AdjustableRectangle, room1ConnectionSide: Direction, area2: AdjustableRectangle, width: Int): AdjustableRectangle = {
     if (width < 1) throw new Error("Corridor width must be higher than 0, currently " + width + ".")
 
     /* If the connection side is North/West, it means that area 2 is above or to the left of area 1. Rather than making
@@ -57,7 +58,7 @@ class CorridorSegmentAreaFactory {
       case South => area2.coordinatesOnSide(room1ConnectionSide.parallel)._1
     }
 
-    val corridorArea = RectangularArea(Point(segmentStartX, segmentStartY), Point(segmentStopX, segmentStopY))
+    val corridorArea = AdjustableRectangle(Point(segmentStartX, segmentStartY), Point(segmentStopX, segmentStopY))
 
     /* Use the boundary computation to compute absolute coordinates that the corridor must lie between if the margin of
      * deviation is 0 (i.e where the middle is). To ensure that the corridor ends up within the boundaries of both areas
@@ -100,6 +101,6 @@ class CorridorSegmentAreaFactory {
       case South => segmentStopY
     }
 
-    RectangularArea(Point(middleStartX, middleStartY), Point(middleStopX, middleStopY))
+    AdjustableRectangle(Point(middleStartX, middleStartY), Point(middleStopX, middleStopY))
   }
 }

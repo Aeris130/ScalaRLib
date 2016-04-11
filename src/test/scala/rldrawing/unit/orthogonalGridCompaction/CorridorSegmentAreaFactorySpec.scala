@@ -1,8 +1,8 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.AdjustableRectangle
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.CorridorSegmentAreaFactory
 import testHelpers.SpecImports
 
@@ -10,18 +10,18 @@ class CorridorSegmentAreaFactorySpec extends SpecImports {
   private val factory = new CorridorSegmentAreaFactory()
 
   def smallEqualSizeAreasHorizontal = new {
-    val area1 = RectangularArea(Point(1, 1), Point(3, 4))
-    val area2 = RectangularArea(Point(5, 1), Point(7, 4))
+    val area1 = AdjustableRectangle(Point(1, 1), Point(3, 4))
+    val area2 = AdjustableRectangle(Point(5, 1), Point(7, 4))
   }
 
   def smallEqualSizeAreasVertical = new {
-    val area1 = RectangularArea(Point(1, 1), Point(3, 4))
-    val area2 = RectangularArea(Point(1, 7), Point(3, 10))
+    val area1 = AdjustableRectangle(Point(1, 1), Point(3, 4))
+    val area2 = AdjustableRectangle(Point(1, 7), Point(3, 10))
   }
 
   def largeEqualSizeAreasHorizontal = new {
-    val area1 = RectangularArea(Point(1, 1), Point(6, 8))
-    val area2 = RectangularArea(Point(7, 1), Point(12, 8))
+    val area1 = AdjustableRectangle(Point(1, 1), Point(6, 8))
+    val area2 = AdjustableRectangle(Point(7, 1), Point(12, 8))
   }
 
   describe("CorridorSegmentAreaFactory") {
@@ -89,10 +89,10 @@ class CorridorSegmentAreaFactorySpec extends SpecImports {
     it ("should use the smallest boundary when computing segment position if the facing boundaries differ in size") {
 
       Given("an area with size 9 on the x axis")
-      val area1 = RectangularArea(Point(1, 1), Point(9, 4))
+      val area1 = AdjustableRectangle(Point(1, 1), Point(9, 4))
 
       When("connecting a segment with width 3 on its southern side to an area with size 3 on the x axis")
-      val area2 = RectangularArea(Point(2, 6), Point(4, 10))
+      val area2 = AdjustableRectangle(Point(2, 6), Point(4, 10))
       val corridorSegment = factory.makeSegment(area1, South, area2, 3)
 
       Then("the corridor should start and stop at the same x coordinates as the smaller area")
@@ -104,8 +104,8 @@ class CorridorSegmentAreaFactorySpec extends SpecImports {
     it ("should connect two areas that intersect with a corridor of length 1") {
 
       Given("two areas that intersect on the x axis with size 5")
-      val area2 = RectangularArea(Point(1, 1), Point(5, 6))
-      val area1 = RectangularArea(Point(1, 6), Point(5, 10)) // below area 2
+      val area2 = AdjustableRectangle(Point(1, 1), Point(5, 6))
+      val area1 = AdjustableRectangle(Point(1, 6), Point(5, 10)) // below area 2
 
       When("connecting the areas with a segment of width 5")
       val corridorSegment = factory.makeSegment(area1, North, area2, 5)

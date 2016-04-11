@@ -12,7 +12,7 @@ import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedAre
  * @param grid Grid containing all areas, including this one.
  * @param intersect True if this area should be allowed to intersect the borders of other areas, otherwise false.
  */
-class RoomArea(rectArea: RectangularArea, grid: PartitionedArea[MutableArea], intersect: Boolean) extends Area(rectArea, intersect) {
+class RoomArea(rectArea: AdjustableRectangle, grid: PartitionedArea[MutableArea], intersect: Boolean) extends Area(rectArea, intersect) {
   if (area.lengthOfSide(North) < 3) throw new IllegalArgumentException("Rooms must be of minimum size 3x3, currently the x axis has length " + area.lengthOfSide(North) + " in the area " + area)
   if (area.lengthOfSide(West) < 3) throw new IllegalArgumentException("Rooms must be of minimum size 3x3, currently the y axis has length " + area.lengthOfSide(West) + " in the area " + area)
 

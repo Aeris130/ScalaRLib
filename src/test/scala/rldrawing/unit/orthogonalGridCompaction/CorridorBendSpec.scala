@@ -1,8 +1,8 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{CorridorBend, RectangularArea, RoomCorridorConnection}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{CorridorBend, AdjustableRectangle, RoomCorridorConnection}
 import testHelpers.SpecImports
 
 class CorridorBendSpec extends SpecImports {
@@ -12,7 +12,7 @@ class CorridorBendSpec extends SpecImports {
     it ("should specify area type") {
 
       Given("a bend")
-      val area = RectangularArea(Point(0, 0), Point(3, 3))
+      val area = AdjustableRectangle(Point(0, 0), Point(3, 3))
       val bend = new CorridorBend(area, null, true)
 
       When("checking area type")
@@ -26,7 +26,7 @@ class CorridorBendSpec extends SpecImports {
     it ("should throw an exception when connecting a corridor opposite of another connection") {
 
       Given("a corridor bend")
-      val area = RectangularArea(Point(0, 0), Point(3, 3))
+      val area = AdjustableRectangle(Point(0, 0), Point(3, 3))
       val bend = new CorridorBend(area, null, true)
 
       When("attempting to add a connection and another connection opposite to it")

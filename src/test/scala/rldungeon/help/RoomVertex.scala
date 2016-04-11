@@ -1,6 +1,6 @@
 package rldungeon.help
 
-import net.cyndeline.rlgraph.subgraph.isomorphism.{VertexCompare, ElementEquivalence}
+import net.cyndeline.rlgraph.subgraph.isomorphism.VertexCompare
 import net.cyndeline.scalarlib.rldungeon.common.Room
 
 import scalax.collection.immutable.Graph

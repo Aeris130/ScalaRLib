@@ -1,9 +1,9 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.help.MovementMarker
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Area, MutableArea, RectangularArea}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Area, MutableArea, AdjustableRectangle}
 import testHelpers.SpecImports
 
 class MovementMarkerSpec extends SpecImports {
@@ -225,7 +225,7 @@ class MovementMarkerSpec extends SpecImports {
   private def createMarker(target: Point) = new MovementMarker(target, Point(0, 0), Point(99, 99))
 
   private def makeArea(start: (Int, Int), stop: (Int, Int), corridor: Boolean = false) = {
-    class TestArea extends Area(new RectangularArea(Point(start._1, start._2), Point(stop._1, stop._2)), false) {
+    class TestArea extends Area(new AdjustableRectangle(Point(start._1, start._2), Point(stop._1, stop._2)), false) {
       def isCorridor: Boolean = corridor
 
       // Don't need this for this test

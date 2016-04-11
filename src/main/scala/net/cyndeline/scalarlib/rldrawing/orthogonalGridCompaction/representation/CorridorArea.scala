@@ -17,7 +17,7 @@ import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedAre
  *                  The corridor will never shrink itself below this length when moving.
  * @param intersect True if this area should be allowed to intersect the borders of other areas, otherwise false.
  */
-class CorridorArea(rectArea: RectangularArea,
+class CorridorArea(rectArea: AdjustableRectangle,
                    grid: PartitionedArea[MutableArea],
                    val connectionDir: Direction,
                    val minLength: Int,
@@ -28,6 +28,7 @@ class CorridorArea(rectArea: RectangularArea,
 
   /**
    * Constructs a corridor with minimum length 1.
+ *
    * @param rectArea Rectangular coordinates for this area.
    * @param grid Grid containing all areas, including this one.
    * @param connectionDir Specifies which side of this corridor (and its opposite side) that can hold connections to
@@ -35,7 +36,7 @@ class CorridorArea(rectArea: RectangularArea,
    * @param intersect True if this area should be allowed to intersect the borders of other areas, otherwise false.
    * @return A corridor without minimum length.
    */
-  def this(rectArea: RectangularArea, grid: PartitionedArea[MutableArea], connectionDir: Direction, intersect: Boolean) =
+  def this(rectArea: AdjustableRectangle, grid: PartitionedArea[MutableArea], connectionDir: Direction, intersect: Boolean) =
     this(rectArea, grid, connectionDir, 1, intersect)
 
   /**
@@ -56,6 +57,7 @@ class CorridorArea(rectArea: RectangularArea,
   /**
    * Connects another area to this one. Corridors only allows two connections, and only in opposite
    * directions.
+ *
    * @param direction Which side of this rectangular area that the other area connects to.
    * @param connection The connection object.
    */

@@ -1,9 +1,9 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{RectangularArea, _}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{AdjustableRectangle, _}
 import testHelpers.SpecImports
 
 class CorridorAreaSpec extends SpecImports {
@@ -147,7 +147,7 @@ class CorridorAreaSpec extends SpecImports {
       corridor.move
 
       Then("the corridor should have its coordinates shifted north by 1")
-      corridor.area should be (RectangularArea(Point(3, 0), Point(6, 2)))
+      corridor.area should be (AdjustableRectangle(Point(3, 0), Point(6, 2)))
 
     }
 
@@ -170,7 +170,7 @@ class CorridorAreaSpec extends SpecImports {
       corridor.area.lengthOfSide(North) should be (4)
 
       And("its coordinates should be adjusted east by 1")
-      corridor.area should be (RectangularArea(Point(4, 1), Point(7, 3)))
+      corridor.area should be (AdjustableRectangle(Point(4, 1), Point(7, 3)))
 
     }
 
@@ -512,10 +512,10 @@ class CorridorAreaSpec extends SpecImports {
     corridor.connect(dir.opposite, connection)
   }
 
-  private def makeCorridor(start: Point, stop: Point, grid: PartitionedArea[MutableArea], dir: Direction) = new CorridorArea(RectangularArea(start, stop), grid, dir, true)
-  private def makeNonIntersectingCorridor(start: Point, stop: Point, grid: PartitionedArea[MutableArea], dir: Direction) = new CorridorArea(RectangularArea(start, stop), grid, dir, false)
+  private def makeCorridor(start: Point, stop: Point, grid: PartitionedArea[MutableArea], dir: Direction) = new CorridorArea(AdjustableRectangle(start, stop), grid, dir, true)
+  private def makeNonIntersectingCorridor(start: Point, stop: Point, grid: PartitionedArea[MutableArea], dir: Direction) = new CorridorArea(AdjustableRectangle(start, stop), grid, dir, false)
   private def makeCorridor(start: Point, stop: Point, grid: PartitionedArea[MutableArea], dir: Direction, minLength: Int) =
-    new CorridorArea(RectangularArea(start, stop), grid, dir, minLength, true)
+    new CorridorArea(AdjustableRectangle(start, stop), grid, dir, minLength, true)
 
   private def makeCorridorWithEmptyGrid(start: Point, stop: Point, dir: Direction) = {
     val grid = mock[PartitionedArea[MutableArea]]
@@ -531,10 +531,10 @@ class CorridorAreaSpec extends SpecImports {
     makeCorridor(start, stop, grid, dir, minLength)
   }
 
-  private def defaultCorridor(dir: Direction) = new CorridorArea(RectangularArea(Point(3, 3), Point(5, 6)), null, dir, true)
+  private def defaultCorridor(dir: Direction) = new CorridorArea(AdjustableRectangle(Point(3, 3), Point(5, 6)), null, dir, true)
 
   private def makeRoomWithGrid(start: Point, stop: Point, grid: PartitionedArea[MutableArea])
-  = new RoomArea(RectangularArea(start, stop), grid, true)
+  = new RoomArea(AdjustableRectangle(start, stop), grid, true)
 
   private def makeRoomWithEmptyGrid(start: Point, stop: Point) = {
     val grid = mock[PartitionedArea[MutableArea]]
@@ -548,7 +548,7 @@ class CorridorAreaSpec extends SpecImports {
     val mockArea = mock[MutableArea]
     (mockArea.start _) expects() returns(start) anyNumberOfTimes()
     (mockArea.stop _) expects() returns(stop) anyNumberOfTimes()
-    (mockArea.area _) expects() returns(RectangularArea(start, stop)) anyNumberOfTimes()
+    (mockArea.area _) expects() returns(AdjustableRectangle(start, stop)) anyNumberOfTimes()
     (mockArea.movement _) expects() returns(None) anyNumberOfTimes()
 
     mockArea
@@ -558,7 +558,7 @@ class CorridorAreaSpec extends SpecImports {
     val mockArea = mock[MutableArea]
     (mockArea.start _) expects() returns(start) anyNumberOfTimes()
     (mockArea.stop _) expects() returns(stop) anyNumberOfTimes()
-    (mockArea.area _) expects() returns(RectangularArea(start, stop)) anyNumberOfTimes()
+    (mockArea.area _) expects() returns(AdjustableRectangle(start, stop)) anyNumberOfTimes()
     (mockArea.movement _) expects() returns(Option(movement)) anyNumberOfTimes()
 
     mockArea

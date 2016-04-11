@@ -4,7 +4,7 @@ import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.RepresentationToDrawingConverter
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.OrthogonalAreaFactory
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, RectangularArea}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, AdjustableRectangle}
 import net.cyndeline.scalarlib.rldrawing.util.Connection
 import rldrawing.help.{ConstraintEdge, ConstraintRoom}
 import testHelpers.SpecImports
@@ -170,7 +170,7 @@ class RepresentationToDrawingConverterSpec extends SpecImports {
       Then("the room1 -> corridor connection coordinates should equal the intersection between the first room and the corridor segment")
       val room1Area = areaRepresentation.roomMap(room1).area
       val corridor = drawing.corridors.head
-      val corridorArea = RectangularArea(corridor.corridorSegments.head.start, corridor.corridorSegments.head.stop)
+      val corridorArea = AdjustableRectangle(corridor.corridorSegments.head.start, corridor.corridorSegments.head.stop)
 
       val startIntersection = corridorArea.intersection(room1Area).get
       corridor.startConnection should be (Connection(startIntersection.start, startIntersection.stop))

@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.util
 
-import net.cyndeline.rlcommon.util.{Intersection, Point}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.rlcommon.util.Intersection
 
 /**
  * Computes coordinates where two areas intersects each other (examples: Two adjacent room, or a room and a connected

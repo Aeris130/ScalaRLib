@@ -1,6 +1,7 @@
 package rldrawing.unit.orthogonalGridCompaction
 
-import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{DrawnCorridor, ImmutableGridDrawing}
 import testHelpers.SpecImports
@@ -147,7 +148,7 @@ class ImmutableGridDrawingSpec extends SpecImports {
 
   private def mockRoom(from: Point, to: Point): DrawnRoom[Int] = {
     val room = mock[DrawnRoom[Int]]
-    val area = mock[RectangleCoordinates]
+    val area = mock[Rectangle]
     (area.start _ ) expects() returns(from) anyNumberOfTimes()
     (area.stop _ ) expects() returns(to) anyNumberOfTimes()
     (room.area _) expects() returns(area) anyNumberOfTimes()
@@ -158,7 +159,7 @@ class ImmutableGridDrawingSpec extends SpecImports {
   private def mockCorridor(segments: (Point, Point)*): DrawnCorridor[Int, UnDiEdge[Int]] = {
     val corridor = mock[DrawnCorridor[Int, UnDiEdge[Int]]]
     val segmentMocks = segments.toVector.map(s => {
-      val m = mock[RectangleCoordinates]
+      val m = mock[Rectangle]
       (m.start _ ) expects() returns(s._1) anyNumberOfTimes()
       (m.stop _ ) expects() returns(s._2) anyNumberOfTimes()
       m

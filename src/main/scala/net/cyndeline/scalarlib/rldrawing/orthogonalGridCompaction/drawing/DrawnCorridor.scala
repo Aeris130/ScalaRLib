@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
-import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 /**
@@ -51,7 +51,7 @@ trait DrawnCorridor[RoomType, CorridorType] {
    *         corridor, and every other segment after that will be a rectangular bend. The segments are placed in
    *         the order they are visited when traversing the corridor from the start room to the stop room.
    */
-  def corridorSegments: Vector[RectangleCoordinates]
+  def corridorSegments: Vector[Rectangle]
 
   /**
    * @return If no bends are present, this list will be empty. Otherwise it will contain connection coordinates that

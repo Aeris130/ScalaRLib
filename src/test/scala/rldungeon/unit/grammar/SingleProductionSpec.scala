@@ -1,7 +1,7 @@
 package rldungeon.unit.grammar
 
 import helperClasses.RandomMock
-import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, IsomorphicMapping, ElementEquivalence}
+import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, IsomorphicMapping}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.production.SingleProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.util.{Morphism, MorphismFactory}

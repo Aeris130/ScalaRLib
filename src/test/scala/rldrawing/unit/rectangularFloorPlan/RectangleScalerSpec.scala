@@ -1,7 +1,8 @@
 package rldrawing.unit.rectangularFloorPlan
 
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.{Geom, Intersection, Point}
+import net.cyndeline.rlcommon.util.{Geom, Intersection}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.RectangleScaler
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.{FloorIntersection, RoomArea}
 import net.cyndeline.scalarlib.rldrawing.util.Connection

@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldungeon.grammar.production
 
-import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, ElementEquivalence, IsomorphicMapping}
+import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, IsomorphicMapping}
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, Morphism, MorphismFactory}
 import scala.language.higherKinds

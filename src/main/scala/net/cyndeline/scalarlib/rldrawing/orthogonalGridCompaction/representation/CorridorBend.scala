@@ -11,7 +11,7 @@ import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedAre
  * @param roomGrid The grid used when checking for collisions with other areas.
  * @param intersect True if this area should be allowed to intersect the borders of other areas, otherwise false.
  */
-class CorridorBend(rectArea: RectangularArea, roomGrid: PartitionedArea[MutableArea], intersect: Boolean) extends RoomArea(rectArea, roomGrid, intersect) {
+class CorridorBend(rectArea: AdjustableRectangle, roomGrid: PartitionedArea[MutableArea], intersect: Boolean) extends RoomArea(rectArea, roomGrid, intersect) {
 
   /**
    * @return True if the area is a room, otherwise false.

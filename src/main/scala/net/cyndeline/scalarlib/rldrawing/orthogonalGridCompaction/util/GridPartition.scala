@@ -1,6 +1,8 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.util
 
-import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.rlcommon.math.ClosestDivisor
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
 
 import scala.reflect.ClassTag
@@ -20,7 +22,7 @@ import scala.reflect.runtime.universe._
  * @param partitionRatio Percentage of the total grid size that each cell should represent, must be higher than
  *                       0 and less than or equal to 1.
  */
-class GridPartition[E <: RectangleCoordinates : ClassTag : TypeTag] (val gridStart: Point, val gridStop: Point, partitionRatio: Double)
+class GridPartition[E <: Rectangle : ClassTag : TypeTag] (val gridStart: Point, val gridStop: Point, partitionRatio: Double)
   extends PartitionedArea[E] {
   ratioIsValid(partitionRatio)
   areaIsPositive(gridStart, gridStop)
@@ -124,12 +126,12 @@ class GridPartition[E <: RectangleCoordinates : ClassTag : TypeTag] (val gridSta
   /**
    * @return The number of partitioned areas along the x axis of the grid.
    */
-  def partitionWidth: Int = grid.size
+  def partitionWidth: Int = grid.length
 
   /**
    * @return The number of partitioned areas along the y axis of the grid.
    */
-  def partitionHeight: Int = grid(0).size
+  def partitionHeight: Int = grid(0).length
 
   /**
    * @return The start coordinate for the grid.

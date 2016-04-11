@@ -1,7 +1,8 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan
 
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.{Geom, Intersection, Point}
+import net.cyndeline.rlcommon.util.{Geom, Intersection}
 import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
 import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
 import net.cyndeline.rlgraph.util.GraphCommons
@@ -10,6 +11,7 @@ import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
 
 /**
@@ -27,7 +29,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
   private val minimumIntersectionLength = 3
 
   /** Every room area in this drawing, mapped against every neighbors intersecting interval. */
-  val intersections: Map[RoomArea[V], Vector[FloorIntersection[V]]] = computeIntersections.toMap
+  val intersections: Map[RoomArea[V], Vector[FloorIntersection[V]]] = computeIntersections
 
   val maxX: Int = maxXYCoordinates._1._1
   val maxY: Int = maxXYCoordinates._1._2
@@ -37,6 +39,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
   /**
    * Rotates every coordinate in the drawing 90 degrees clockwise (assuming (0,0) is in the upper left corner of the
    * drawing).
+ *
    * @return A copy of this floor plan with every coordinate rotated 90 degrees around the lowest starting point in
    *         the original floor plan.
    */
@@ -63,6 +66,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
   /**
    * Rotates every coordinate in the drawing 90 degrees counter clockwise (assuming (0,0) is in the upper left corner
    * of the drawing).
+ *
    * @return A copy of this floor plan with every coordinate rotated 90 degrees CCW around the lowest starting point in
    *         the original floor plan.
    */
@@ -110,6 +114,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
 
   /**
    * Replaces areas in the floor plan with new ones.
+ *
    * @param roomUpdates Tuples with areas currently in the floor plan, paired against the coordinates to update
    *                    them with.
    * @return A new floor plan where the input areas have their coordinates adjusted.
@@ -280,6 +285,7 @@ object FloorPlan {
 
   /**
    * Computes a floor plan from a rectangular layout.
+ *
    * @param layout Layout to base floor plan on.
    * @return The constructed floor plan.
    */

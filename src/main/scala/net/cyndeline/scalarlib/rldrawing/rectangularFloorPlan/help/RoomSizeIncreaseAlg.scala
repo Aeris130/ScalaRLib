@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 
 import scala.collection.mutable.ListBuffer
 

@@ -1,9 +1,9 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help.ConnectionBoundary
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.RectangularArea
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.AdjustableRectangle
 import testHelpers.SpecImports
 
 class ConnectionBoundarySpec extends SpecImports {
@@ -13,8 +13,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should throw an exception if the connecting area already breaks the boundary start coordinate") {
 
       Given("a connecting area with start x coordinate 1 and a boundary with start x coordinate 2")
-      val boundary = new RectangularArea(Point(2, 2), Point(4, 4))
-      val connectingArea = new RectangularArea(Point(1, 1), Point(2, 4))
+      val boundary = new AdjustableRectangle(Point(2, 2), Point(4, 4))
+      val connectingArea = new AdjustableRectangle(Point(1, 1), Point(2, 4))
 
       When("computing connection boundaries")
       val connectionBoundary = new ConnectionBoundary(boundary)
@@ -29,8 +29,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should throw an exception if the connecting area already breaks the boundary stop coordinate") {
 
       Given("a connecting area with stop y coordinate 5 and a boundary with stop y coordinate 4")
-      val boundary = new RectangularArea(Point(2, 2), Point(4, 4))
-      val connectingArea = new RectangularArea(Point(1, 2), Point(2, 5))
+      val boundary = new AdjustableRectangle(Point(2, 2), Point(4, 4))
+      val connectingArea = new AdjustableRectangle(Point(1, 2), Point(2, 5))
 
       When("computing connection boundaries")
       val connectionBoundary = new ConnectionBoundary(boundary)
@@ -51,8 +51,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should compute the boundaries for two areas with identical odd sides to be the coordinates of the boundary") {
 
       Given("a boundary with a north side going from x = 2 to x = 4 (size 3) and a connecting area with the same x coordinates")
-      val connectingArea = new RectangularArea(Point(2, 0), Point(4, 3))
-      val boundary = new RectangularArea(Point(2, 3), Point(4, 6))
+      val connectingArea = new AdjustableRectangle(Point(2, 0), Point(4, 3))
+      val boundary = new AdjustableRectangle(Point(2, 3), Point(4, 6))
 
       When("computing connection boundaries")
       val connectionBoundary = new ConnectionBoundary(boundary)
@@ -66,8 +66,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should compute the boundaries for an area larger than the connecting area (both having odd size) to be the size of the connecting area + the max deviation") {
 
       Given("a boundary with its west side having size 11 (0 -> 10) and a connecting area with east size 3")
-      val connectingArea = new RectangularArea(Point(0, 0), Point(1, 2))
-      val boundary = new RectangularArea(Point(1, 0), Point(2, 10))
+      val connectingArea = new AdjustableRectangle(Point(0, 0), Point(1, 2))
+      val boundary = new AdjustableRectangle(Point(1, 0), Point(2, 10))
 
       When("computing connection boundaries with a deviation of 2")
       val deviation = 2
@@ -86,11 +86,11 @@ class ConnectionBoundarySpec extends SpecImports {
       Given("a boundary area with its west side having size 5 (1 -> 5) and a connecting area with size 3 (1 -> 3)")
       val connectStart = 1
       val connectStop = 3
-      val connectingArea = new RectangularArea(Point(0, connectStart), Point(1, connectStop))
+      val connectingArea = new AdjustableRectangle(Point(0, connectStart), Point(1, connectStop))
 
       val boundaryStart = 1
       val boundaryStop = 5
-      val boundary = new RectangularArea(Point(1, boundaryStart), Point(2, boundaryStop))
+      val boundary = new AdjustableRectangle(Point(1, boundaryStart), Point(2, boundaryStop))
 
       When("computing connection boundaries with a deviation of 1")
       val deviation = 1
@@ -105,8 +105,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should use the boundary coordinates if the connecting area size + deviation exceeds the boundary when both areas have odd size") {
 
       Given("a boundary with its west side having size 11 (0 -> 10) and a connecting area with east size 3")
-      val connectingArea = new RectangularArea(Point(0, 0), Point(1, 2))
-      val boundary = new RectangularArea(Point(1, 0), Point(2, 10))
+      val connectingArea = new AdjustableRectangle(Point(0, 0), Point(1, 2))
+      val boundary = new AdjustableRectangle(Point(1, 0), Point(2, 10))
 
       When("computing connection boundaries with a deviation of 99")
       val deviation = 99
@@ -127,8 +127,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should compute the boundaries for two areas with identical even sides to be the coordinates of the boundary") {
 
       Given("a boundary with a north side going from x = 1 to x = 4 (size 4) and a connecting area with the same x coordinates")
-      val connectingArea = new RectangularArea(Point(1, 0), Point(4, 3))
-      val boundary = new RectangularArea(Point(1, 3), Point(4, 6))
+      val connectingArea = new AdjustableRectangle(Point(1, 0), Point(4, 3))
+      val boundary = new AdjustableRectangle(Point(1, 3), Point(4, 6))
 
       When("computing connection boundaries")
       val connectionBoundary = new ConnectionBoundary(boundary)
@@ -142,8 +142,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should compute the boundaries for an area larger than the connecting area (both having even size) to be the size of the connecting area + the max deviation") {
 
       Given("a boundary with its west side having size 10 (1 -> 10) and a connecting area with east size 4 (1 -> 4)")
-      val connectingArea = new RectangularArea(Point(0, 1), Point(1, 4))
-      val boundary = new RectangularArea(Point(1, 1), Point(2, 10))
+      val connectingArea = new AdjustableRectangle(Point(0, 1), Point(1, 4))
+      val boundary = new AdjustableRectangle(Point(1, 1), Point(2, 10))
 
       When("computing connection boundaries with a deviation of 1")
       val deviation = 1
@@ -167,11 +167,11 @@ class ConnectionBoundarySpec extends SpecImports {
       Given("a boundary area with its west side having size 6 (1 -> 6) and a connecting area with size 4 (1 -> 4)")
       val connectStart = 1
       val connectStop = 4
-      val connectingArea = new RectangularArea(Point(0, connectStart), Point(1, connectStop))
+      val connectingArea = new AdjustableRectangle(Point(0, connectStart), Point(1, connectStop))
 
       val boundaryStart = 1
       val boundaryStop = 6
-      val boundary = new RectangularArea(Point(1, boundaryStart), Point(2, boundaryStop))
+      val boundary = new AdjustableRectangle(Point(1, boundaryStart), Point(2, boundaryStop))
 
       When("computing connection boundaries with a deviation of 1")
       val deviation = 1
@@ -186,8 +186,8 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should use the boundary coordinates if the connecting area size + deviation exceeds the boundary when both areas have even size") {
 
       Given("a boundary with its west side having size 10 (1 -> 10) and a connecting area with east size 4 (1 -> 4)")
-      val connectingArea = new RectangularArea(Point(0, 1), Point(1, 4))
-      val boundary = new RectangularArea(Point(1, 1), Point(2, 10))
+      val connectingArea = new AdjustableRectangle(Point(0, 1), Point(1, 4))
+      val boundary = new AdjustableRectangle(Point(1, 1), Point(2, 10))
 
       When("computing connection boundaries with a deviation of 99")
       val deviation = 99
@@ -210,11 +210,11 @@ class ConnectionBoundarySpec extends SpecImports {
       Given("a connecting area with a side of odd size 3 (1 -> 3) and a boundary area with a side of size 4 (1 -> 4)")
       val connectStart = 1
       val connectStop = 3
-      val connectingArea = new RectangularArea(Point(connectStart, 1), Point(connectStop, 4))
+      val connectingArea = new AdjustableRectangle(Point(connectStart, 1), Point(connectStop, 4))
 
       val boundaryStart = 1
       val boundaryStop = 4
-      val boundary = new RectangularArea(Point(boundaryStart, 4), Point(boundaryStop, 6))
+      val boundary = new AdjustableRectangle(Point(boundaryStart, 4), Point(boundaryStop, 6))
 
       When("computing connection boundaries")
       val connectionBoundary = new ConnectionBoundary(boundary)
@@ -230,11 +230,11 @@ class ConnectionBoundarySpec extends SpecImports {
       Given("a connecting area with a side of even size 4 (1 -> 4) and a boundary area with a side of size 5 (1 -> 5)")
       val connectStart = 1
       val connectStop = 4
-      val connectingArea = new RectangularArea(Point(connectStart, 1), Point(connectStop, 4))
+      val connectingArea = new AdjustableRectangle(Point(connectStart, 1), Point(connectStop, 4))
 
       val boundaryStart = 1
       val boundaryStop = 5
-      val boundary = new RectangularArea(Point(boundaryStart, 4), Point(boundaryStop, 6))
+      val boundary = new AdjustableRectangle(Point(boundaryStart, 4), Point(boundaryStop, 6))
 
       When("computing connection boundaries with no deviation")
       val connectionBoundary = new ConnectionBoundary(boundary)
@@ -250,11 +250,11 @@ class ConnectionBoundarySpec extends SpecImports {
       Given("a boundary with its west side having size 13 (1 -> 13) and a connecting area with east size 4 (1 -> 4)")
       val connectStart = 1
       val connectStop = 4
-      val connectingArea = new RectangularArea(Point(0, connectStart), Point(1, connectStop))
+      val connectingArea = new AdjustableRectangle(Point(0, connectStart), Point(1, connectStop))
 
       val boundaryStart = 1
       val boundaryStop = 13
-      val boundary = new RectangularArea(Point(1, boundaryStart), Point(2, boundaryStop))
+      val boundary = new AdjustableRectangle(Point(1, boundaryStart), Point(2, boundaryStop))
 
       When("computing connection boundaries with a deviation of 99")
       val deviation = 99
@@ -271,11 +271,11 @@ class ConnectionBoundarySpec extends SpecImports {
       Given("a boundary with its west side having size 12 (1 -> 12) and a connecting area with east size 3 (1 -> 3)")
       val connectStart = 1
       val connectStop = 3
-      val connectingArea = new RectangularArea(Point(0, connectStart), Point(1, connectStop))
+      val connectingArea = new AdjustableRectangle(Point(0, connectStart), Point(1, connectStop))
 
       val boundaryStart = 1
       val boundaryStop = 12
-      val boundary = new RectangularArea(Point(1, boundaryStart), Point(2, boundaryStop))
+      val boundary = new AdjustableRectangle(Point(1, boundaryStart), Point(2, boundaryStop))
 
       When("computing connection boundaries with a deviation of 99")
       val deviation = 99
@@ -290,10 +290,10 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should use coordinates closer to (0, 0) when the boundary cannot be evenly divided") {
 
       Given("a boundary with a western side of length 5")
-      val boundary = new RectangularArea(Point(1, 1), Point(5, 5))
+      val boundary = new AdjustableRectangle(Point(1, 1), Point(5, 5))
 
       When("computing connection boundaries with an area having an eastern side of size 4 and deviation 0")
-      val connectingArea = new RectangularArea(Point(1, 1), Point(1, 4))
+      val connectingArea = new AdjustableRectangle(Point(1, 1), Point(1, 4))
       val connectionBoundary = new ConnectionBoundary(boundary, 0)
       val coordinates = connectionBoundary.computeConnectionBoundary(connectingArea, West)
 
@@ -305,10 +305,10 @@ class ConnectionBoundarySpec extends SpecImports {
     it ("should use coordinates closer to (0, 0) when the connecting area cannot be evenly divided") {
 
       Given("a boundary with a northern side of size 6")
-      val boundary = new RectangularArea(Point(0, 5), Point(5, 9))
+      val boundary = new AdjustableRectangle(Point(0, 5), Point(5, 9))
 
       When("computing connection boundaries with an area having a southern side of size 3 and deviation 0")
-      val connectingArea = new RectangularArea(Point(0, 4), Point(2, 5))
+      val connectingArea = new AdjustableRectangle(Point(0, 4), Point(2, 5))
       val connectionBoundary = new ConnectionBoundary(boundary, 0)
       val coordinates = connectionBoundary.computeConnectionBoundary(connectingArea, North)
 

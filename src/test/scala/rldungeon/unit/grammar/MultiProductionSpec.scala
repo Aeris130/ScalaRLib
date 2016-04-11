@@ -2,7 +2,7 @@ package rldungeon.unit.grammar
 
 import helperClasses.RandomMock
 import net.cyndeline.rlcommon.util.RandomCollection
-import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, IsomorphicMapping, ElementEquivalence}
+import net.cyndeline.rlgraph.subgraph.isomorphism.{IsomorphicMatch, IsomorphicMapping}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.production.MultiProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, Morphism, MorphismFactory}

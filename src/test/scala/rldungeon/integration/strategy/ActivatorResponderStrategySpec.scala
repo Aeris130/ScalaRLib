@@ -5,15 +5,16 @@ import net.cyndeline.rlgraph.util.GraphCommons
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.{CollapsedEdge, CollapsedNode}
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.pointlessArea.ActivatorResponderStrategy
 import net.cyndeline.scalarlib.rldungeon.levelPath.TreePath
-import rldungeon.help.{CorridorEdge, CorridorEdgeAssoc, GraphLevel, RoomVertex}
+import rldungeon.help._
 import testHelpers.SpecImports
 
+import scala.language.{implicitConversions, postfixOps}
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef._
 import scalax.collection.immutable.Graph
 
 class ActivatorResponderStrategySpec extends SpecImports {
-  private implicit def undirectedToCorridorEdge(e: UnDiEdge[RoomVertex]) = new CorridorEdgeAssoc(e)
+  private implicit def undirectedToCorridorEdge(e: UnDiEdge[RoomVertex]): CorridorEdgeAssoc[RoomVertex] = new CorridorEdgeAssoc(e)
   private val strategy = new ActivatorResponderStrategy[GraphLevel, RoomVertex, CorridorEdge]()
 
   private def mainPath = new {
@@ -85,6 +86,24 @@ class ActivatorResponderStrategySpec extends SpecImports {
     val level = GraphLevel(main.path + (r2~pr1 empty) + (r3~pr2 empty), start, goal)
   }
 
+  // Pointless area connected to start node
+  private def mainPathWithDirectedEdge = new {
+    val start = new RoomVertex(1) // Start
+    val r2 = new RoomVertex(2)
+    val r3 = new RoomVertex(3)
+    val goal = new RoomVertex(4) // Goal
+
+    val r5 = new RoomVertex(5)
+
+    val edge1 = CorridorEdge(start, r2)
+    val edge2 = DiCorridorEdge(r2, r3)
+    val edge3 = CorridorEdge(r3, goal)
+    val edge4 = CorridorEdge(start, r5)
+
+    val path = Graph[RoomVertex, CorridorEdge](edge1, edge2, edge3) + edge4
+    val edges = GraphCommons.outerEdges(path).toSet
+    val level = GraphLevel(path, start, goal)
+  }
 
 
   describe("ActivatorResponderStrategy") {
@@ -222,6 +241,116 @@ class ActivatorResponderStrategySpec extends SpecImports {
 
       Then("no activator/responders should be placed")
       resultingLevel.activatorAndResponders should be ('empty)
+
+    }
+
+    it ("should not place responders on the path between a main area connection outside the initial main path, and the" +
+      "original main area connection on the main path") {
+
+      Given("a level with an initial main path 1 -> 6, and a pointless area 2-7, 7-8, 7-9 where every edge can carry responders")
+      val f = mainPath
+      import f._
+
+      val r7 = new RoomVertex(7)
+      val r8 = new RoomVertex(8)
+      val r9 = new RoomVertex(9)
+      val pe1 = r7~r8 empty
+      val pe2 = r7~r9 empty
+      val pointlessArea = Graph[RoomVertex, CorridorEdge](r2~r7 empty, pe1, pe2)
+      val g = path ++ pointlessArea
+      val level = GraphLevel(g, start, goal)
+
+      When("placing 2 activator/responder pairs")
+      val resultingLevel = strategy.apply(level.setResponderAmount(2)).get
+
+      Then("the first responder should be placed between 2 and 3")
+      resultingLevel.activatorAndResponders.map(_._2) should contain (edge2)
+
+      And("the second responder should be placed between either 7 and 8 or 7 and 9, depending on which room that got " +
+        "the first activator")
+
+      /* If the edge 2-3 has its activator on node 8, then 7-8 is now on the main path and will receive the activator
+       * for node 9. Vice versa if the first activator ended up on node 9.
+       */
+      val firstActivatorRoom: RoomVertex = resultingLevel.activatorAndResponders.find(_._2 == edge2).get._1.head
+      val secondPointlessEdge = if (firstActivatorRoom == r8) pe1 else pe2
+      resultingLevel.activatorAndResponders.map(_._2) should contain (secondPointlessEdge)
+
+    }
+
+    it ("should place responders on directed edges") {
+
+      Given("a main path 1-2->3-4, where the edge 1-2 cannot hold responders")
+      val f = mainPathWithDirectedEdge
+      import f._
+      val levelWithResponderRestrictions = level.setResponderCapacity(edge1, 0)
+
+      When("placing 1 activator/responder pair using node 1 as the main area connection")
+      val resultingLevel = strategy.apply(levelWithResponderRestrictions.setResponderAmount(1)).get
+
+      Then("the directed edge 2->3 should receive a responder")
+      resultingLevel.activatorAndResponders should have size 1
+      resultingLevel.activatorAndResponders.head._1.head should be (r5)
+      resultingLevel.activatorAndResponders.head._2 should be (edge2)
+
+    }
+
+    it("should not place responders beyond a directed edge along the original main path") {
+
+      Given("a main path 1-2->3-4, where edges 1-2 and 2-3 cannot hold responders")
+      val f = mainPathWithDirectedEdge
+      import f._
+      val levelWithResponderRestrictions = level.setResponderCapacity(edge1, 0).setResponderCapacity(edge2, 0)
+
+      When("placing 1 activator/responder pair using node 1 as the main area connection")
+      val resultingLevel = strategy.apply(levelWithResponderRestrictions.setResponderAmount(1)).get
+
+      Then("no activator/responder pair should be placed")
+      resultingLevel.activatorAndResponders should be ('empty)
+
+    }
+
+    it ("should place responders on a directed edge that has another directed edge going in the opposite direction") {
+
+      Given("a path 1<->2<->3<->4 with three pointless areas connected to room 1")
+      val start = new RoomVertex(1) // Start
+      val r2 = new RoomVertex(2)
+      val r3 = new RoomVertex(3)
+      val goal = new RoomVertex(4) // Goal
+
+      val r5 = new RoomVertex(5)
+      val r6 = new RoomVertex(6)
+      val r7 = new RoomVertex(7)
+
+      val edge1 = DiCorridorEdge(start, r2)
+      val edge1_2 = DiCorridorEdge(r2, start)
+      val edge2 = DiCorridorEdge(r2, r3)
+      val edge2_2 = DiCorridorEdge(r3, r2)
+      val edge3 = DiCorridorEdge(r3, goal)
+      val edge3_2 = DiCorridorEdge(goal, r3)
+
+      val edge4 = CorridorEdge(start, r5)
+      val edge5 = CorridorEdge(start, r6)
+      val edge6 = CorridorEdge(start, r7)
+
+      val path = Graph[RoomVertex, CorridorEdge](edge1, edge1_2, edge2, edge2_2, edge3, edge3_2) + edge4 + edge5 + edge6
+      val edges = GraphCommons.outerEdges(path).toSet
+
+      // No responders allowed outside the initial main path
+      val level = GraphLevel(path, start, goal)
+        .setResponderCapacity(edge4, 0)
+        .setResponderCapacity(edge5, 0)
+        .setResponderCapacity(edge6, 0)
+
+      When("placing 3 activator/responder pairs using node 1 as the main area connection")
+      val resultingLevel = strategy.apply(level.setResponderAmount(3)).get
+
+      Then("1->2, 2->3 and 3->4 should receive a responder, and not the ones going in the opposite direction")
+      val edgesWithResponders = resultingLevel.activatorAndResponders.map(_._2)
+      edgesWithResponders should have size 3
+      edgesWithResponders should contain (edge1)
+      edgesWithResponders should contain (edge2)
+      edgesWithResponders should contain (edge3)
 
     }
 

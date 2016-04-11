@@ -1,18 +1,18 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.ConnectionFactory
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, RectangularArea, RoomArea}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, AdjustableRectangle, RoomArea}
 import testHelpers.SpecImports
 
 class ConnectionFactorySpec extends SpecImports {
   private val factory = new ConnectionFactory()
 
   def twoAreasAndACorridor = new {
-    val area1 = new RoomArea(RectangularArea(Point(0, 0), Point(4, 4)), null, true)
-    val area2 = new RoomArea(RectangularArea(Point(5, 0), Point(9, 4)), null, true)
-    val corridor = new CorridorArea(RectangularArea(Point(4, 0), Point(5, 4)), null, West, 1, true)
+    val area1 = new RoomArea(AdjustableRectangle(Point(0, 0), Point(4, 4)), null, true)
+    val area2 = new RoomArea(AdjustableRectangle(Point(5, 0), Point(9, 4)), null, true)
+    val corridor = new CorridorArea(AdjustableRectangle(Point(4, 0), Point(5, 4)), null, West, 1, true)
   }
 
   describe("ConnectionFactory") {

@@ -1,6 +1,7 @@
 package rldrawing.unit
 
-import net.cyndeline.rlcommon.util.{Intersection, Point, RectangleCoordinates}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.rlcommon.util.{Intersection, Rectangle}
 import testHelpers.SpecImports
 
 class IntersectionSpec extends SpecImports {
@@ -96,7 +97,7 @@ class IntersectionSpec extends SpecImports {
     }
   }
 
-  private def rectangle(x1: Int, y1: Int, x2: Int, y2: Int) = new RectangleCoordinates {
+  private def rectangle(x1: Int, y1: Int, x2: Int, y2: Int) = new Rectangle {
     def start: Point = Point(x1, y1)
     def stop: Point = Point(x2, y2)
   }

@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing
 
-import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.util.Connection
 
 /**
@@ -22,7 +22,7 @@ case class ImmutableCorridorContainer[RoomType, CorridorType](start: RoomType,
                                                               stop: RoomType,
                                                               startConnection: Connection,
                                                               stopConnection: Connection,
-                                                              corridorSegments: Vector[RectangleCoordinates],
+                                                              corridorSegments: Vector[Rectangle],
                                                               corridorConnections: Vector[Connection],
                                                               originalCorridor: CorridorType
                                                               ) extends DrawnCorridor[RoomType, CorridorType]

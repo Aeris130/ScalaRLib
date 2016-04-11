@@ -1,8 +1,8 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, RectangularArea, RoomArea}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{Connection, CorridorArea, AdjustableRectangle, RoomArea}
 import testHelpers.SpecImports
 
 class ConnectionSpec extends SpecImports {
@@ -372,6 +372,6 @@ class ConnectionSpec extends SpecImports {
 
   }
 
-  private def makeRoom(start: Point, stop: Point): RoomArea = new RoomArea(RectangularArea(start, stop), null, true)
-  private def makeCorridor(start: Point, stop: Point, dir: Direction) = new CorridorArea(RectangularArea(start, stop), null, dir, true)
+  private def makeRoom(start: Point, stop: Point): RoomArea = new RoomArea(AdjustableRectangle(start, stop), null, true)
+  private def makeCorridor(start: Point, stop: Point, dir: Direction) = new CorridorArea(AdjustableRectangle(start, stop), null, dir, true)
 }

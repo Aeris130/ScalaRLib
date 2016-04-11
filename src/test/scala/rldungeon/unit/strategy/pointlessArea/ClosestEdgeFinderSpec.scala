@@ -55,7 +55,7 @@ class ClosestEdgeFinderSpec extends SpecImports {
       Given("a sequence with a single valid edge")
       val f = edges
       import f._
-      val seq = Vector(Vector(ve1))
+      val seq = Vector(ve1)
 
       When("finding a valid edge candidate")
       val edge = edgeFinder.findEdge(seq, areaData).get._1
@@ -70,7 +70,7 @@ class ClosestEdgeFinderSpec extends SpecImports {
       Given("a single sequence with two valid edges")
       val f = edges
       import f._
-      val seq = Vector(Vector(ve1, ve2))
+      val seq = Vector(ve1, ve2)
 
       When("finding a valid edge candidate")
       val edge = edgeFinder.findEdge(seq, areaData).get._1
@@ -85,7 +85,7 @@ class ClosestEdgeFinderSpec extends SpecImports {
       Given("a sequence with a dummy edge followed by a regular edge")
       val f = edges
       import f._
-      val seq = Vector(Vector(de1, ve1))
+      val seq = Vector(de1, ve1)
 
       When("finding a valid edge candidate")
       val edge = edgeFinder.findEdge(seq, areaData).get._1
@@ -100,7 +100,7 @@ class ClosestEdgeFinderSpec extends SpecImports {
       Given("a single sequence with no valid edges")
       val f = edges
       import f._
-      val seq = Vector(Vector(ive1, ive2))
+      val seq = Vector(ive1, ive2)
 
       When("finding a valid edge candidate")
       val edge = edgeFinder.findEdge(seq, areaData)
@@ -110,27 +110,12 @@ class ClosestEdgeFinderSpec extends SpecImports {
 
     }
 
-    it ("should return the edge closest to the beginning of a sequence if multiple sequences with valid edges exist") {
-
-      Given("two sequences, were the first sequence has a valid edge at position 3, and the second has a valid edge at position 2")
-      val f = edges
-      import f._
-      val seq = Vector(Vector(de1, de2, ve1), Vector(de3, ve2))
-
-      When("finding a valid edge candidate")
-      val edge = edgeFinder.findEdge(seq, areaData).get._1
-
-      Then("the edge should be the second edge in the second sequence")
-      edge should be (ve2)
-
-    }
-
     it ("should update the data object if an edge is found") {
 
       Given("a sequence with a single valid edge")
       val f = edges
       import f._
-      val seq = Vector(Vector(ve1))
+      val seq = Vector(ve1)
       val from = ve1._1.singleRepresentedVertex
       val to = ve1._2.singleRepresentedVertex
       val initialResponderCapacity = areaData.getResponderCapacity(from, to)

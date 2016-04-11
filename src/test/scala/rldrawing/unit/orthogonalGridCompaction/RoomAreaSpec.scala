@@ -1,9 +1,9 @@
 package rldrawing.unit.orthogonalGridCompaction
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlcommon.util.Point
+import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
-import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, RectangularArea, RoomArea, RoomCorridorConnection}
+import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, AdjustableRectangle, RoomArea, RoomCorridorConnection}
 import testHelpers.SpecImports
 
 class RoomAreaSpec extends SpecImports {
@@ -31,7 +31,7 @@ class RoomAreaSpec extends SpecImports {
     it ("should throw an exception whe attempting to create a room with less than 3 width") {
 
       Given("a rectangular area with width 2")
-      val area = RectangularArea(Point(1, 2), Point(2, 4))
+      val area = AdjustableRectangle(Point(1, 2), Point(2, 4))
 
       When("creating a new room")
       Then("an exception should be thrown")
@@ -44,7 +44,7 @@ class RoomAreaSpec extends SpecImports {
     it ("should throw an exception whe attempting to create a room with less than 3 height") {
 
       Given("a rectangular area with height 2")
-      val area = RectangularArea(Point(1, 2), Point(5, 3))
+      val area = AdjustableRectangle(Point(1, 2), Point(5, 3))
 
       When("creating a new room")
       Then("an exception should be thrown")
@@ -57,7 +57,7 @@ class RoomAreaSpec extends SpecImports {
     it ("should supply start/stop coordinates based on its rectangular area") {
 
       Given("a room with area between (1, 2) and (3, 4)")
-      val room = new RoomArea(RectangularArea(Point(1, 2), Point(3, 4)), null, true)
+      val room = new RoomArea(AdjustableRectangle(Point(1, 2), Point(3, 4)), null, true)
 
       When("retrieving start/stop values")
       val start = room.start
@@ -609,12 +609,12 @@ class RoomAreaSpec extends SpecImports {
 
   }
 
-  private def makeDefaultRoom = new RoomArea(RectangularArea(Point(0, 0), Point(2, 2)), null, true)
+  private def makeDefaultRoom = new RoomArea(AdjustableRectangle(Point(0, 0), Point(2, 2)), null, true)
   private def makeNonIntersectingRoomWithGrid(start: Point, stop: Point, grid: PartitionedArea[MutableArea])
-  = new RoomArea(RectangularArea(start, stop), grid, false)
+  = new RoomArea(AdjustableRectangle(start, stop), grid, false)
 
   private def makeRoomWithGrid(start: Point, stop: Point, grid: PartitionedArea[MutableArea])
-  = new RoomArea(RectangularArea(start, stop), grid, true)
+  = new RoomArea(AdjustableRectangle(start, stop), grid, true)
 
   private def makeRoomWithEmptyGrid(start: Point, stop: Point) = {
     val grid = mock[PartitionedArea[MutableArea]]
@@ -627,7 +627,7 @@ class RoomAreaSpec extends SpecImports {
     val mockArea = mock[MutableArea]
     (mockArea.start _) expects() returns(start) anyNumberOfTimes()
     (mockArea.stop _) expects() returns(stop) anyNumberOfTimes()
-    (mockArea.area _) expects() returns(RectangularArea(start, stop)) anyNumberOfTimes()
+    (mockArea.area _) expects() returns(AdjustableRectangle(start, stop)) anyNumberOfTimes()
     (mockArea.movement _) expects() returns(None) anyNumberOfTimes()
 
     mockArea
@@ -637,7 +637,7 @@ class RoomAreaSpec extends SpecImports {
     val mockArea = mock[MutableArea]
     (mockArea.start _) expects() returns(start) anyNumberOfTimes()
     (mockArea.stop _) expects() returns(stop) anyNumberOfTimes()
-    (mockArea.area _) expects() returns(RectangularArea(start, stop)) anyNumberOfTimes()
+    (mockArea.area _) expects() returns(AdjustableRectangle(start, stop)) anyNumberOfTimes()
     (mockArea.movement _) expects() returns(Option(movement)) anyNumberOfTimes()
 
     mockArea

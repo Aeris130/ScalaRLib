@@ -1,6 +1,6 @@
 package net.cyndeline.scalarlib.rldrawing.common
 
-import net.cyndeline.rlcommon.util.RectangleCoordinates
+import net.cyndeline.rlcommon.util.Rectangle
 
 /**
  * A single room on the game map, along with the coordinates it occupies on the final map grid.
@@ -15,6 +15,6 @@ trait DrawnRoom[RoomType] {
   /**
    * @return A rectangular area represented by a start and stop coordinate (both inclusive).
    */
-  def area: RectangleCoordinates
+  def area: Rectangle
 
 }

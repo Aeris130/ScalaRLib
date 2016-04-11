@@ -2,7 +2,7 @@ package net.cyndeline.scalarlib.rldungeon.grammar.production
 
 import net.cyndeline.rlcommon.util.{ProbabilityCollection, RandomCollection}
 import net.cyndeline.rlgraph.subgraph.isomorphism.proofProcess.VF2IMatcher
-import net.cyndeline.rlgraph.subgraph.isomorphism.{ElementEquivalence, IsomorphicMapping}
+import net.cyndeline.rlgraph.subgraph.isomorphism.IsomorphicMapping
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, Morphism, MorphismFactory}

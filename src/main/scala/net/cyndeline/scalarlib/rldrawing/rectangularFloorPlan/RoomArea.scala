@@ -1,6 +1,7 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan
 
-import net.cyndeline.rlcommon.util.{Point, RectangleCoordinates}
+import net.cyndeline.rlcommon.math.geom.Point
+import net.cyndeline.rlcommon.util.Rectangle
 import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
 
 /**
@@ -10,13 +11,13 @@ import net.cyndeline.scalarlib.rldrawing.common.DrawnRoom
  *                 is a gate resulting from an edge split.
  * @param gate The original vertices connected to this gate, or None if this is a regular area.
  */
-class RoomArea[V] private (original: Option[V], gate: Option[(V, V)], override val start: Point, override val stop: Point) extends DrawnRoom[V] with RectangleCoordinates {
+class RoomArea[V] private (original: Option[V], gate: Option[(V, V)], override val start: Point, override val stop: Point) extends DrawnRoom[V] with Rectangle {
   require(stop.x - start.x > 0 || stop.y - start.y > 0, this  + "Cannot cover only a single coordinate: " + start + " to " + stop)
 
   /** True if this area is not based on one of the original vertices in the graph, but instead was added to make the
     * graph valid for dualization.
     */
-  val isGate: Boolean = !original.isDefined
+  val isGate: Boolean = original.isEmpty
 
   /** True if this room area belongs to one of the original vertices in the graph. */
   val isRoom: Boolean = original.isDefined
@@ -43,7 +44,7 @@ class RoomArea[V] private (original: Option[V], gate: Option[(V, V)], override v
   /**
    * @return A rectangular area represented by a start and stop coordinate (both inclusive).
    */
-  override def area: RectangleCoordinates = this
+  override def area: Rectangle = this
 
   override val toString: String = {
     val builder = new StringBuilder()
@@ -59,7 +60,7 @@ class RoomArea[V] private (original: Option[V], gate: Option[(V, V)], override v
   }
 
   override def equals(other: Any): Boolean = other match {
-    case ra: RoomArea[V] => {
+    case ra: RoomArea[V] =>
       if (isRoom != ra.isRoom || isGate != ra.isGate) {
         false
       } else {
@@ -71,8 +72,6 @@ class RoomArea[V] private (original: Option[V], gate: Option[(V, V)], override v
           originalRoom == ra.originalRoom
         }
       }
-
-    }
     case _ => false
   }
 

@@ -9,6 +9,7 @@ import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.{RAlgorithmSettings,
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.FloorPlan
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.{ChocoMinSize, MinimumSizeIncrease, SegmentReducer}
 
+import scala.language.{reflectiveCalls, higherKinds}
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe.TypeTag
 import scalax.collection.GraphEdge.UnDiEdge
