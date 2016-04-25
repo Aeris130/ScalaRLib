@@ -5,7 +5,7 @@ import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
 import net.cyndeline.rlgraph.cartogram.rectangular.evolution.EvolutionaryOptimization
 import net.cyndeline.rlgraph.cartogram.rectangular.evolution.metrics.{AspectRatio, CartographicError}
 import net.cyndeline.rlgraph.cartogram.rectangular.segmentHeuristic.SegmentHeuristic
-import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.{RAlgorithmSettings, RectangularDualAlgorithm}
+import net.cyndeline.rlgraph.drawings.planar.rectangular.{RAlgorithmSettings, RectangularDualAlgorithm}
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.FloorPlan
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.{ChocoMinSize, MinimumSizeIncrease, SegmentReducer}
 

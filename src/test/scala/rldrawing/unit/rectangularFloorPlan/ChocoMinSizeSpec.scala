@@ -1,7 +1,7 @@
 package rldrawing.unit.rectangularFloorPlan
 
 import net.cyndeline.rlcommon.util.Intersection
-import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import net.cyndeline.rlgraph.drawings.planar.rectangular.RectangularLayout
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.ChocoMinSize
 import testHelpers.SpecImports
 

@@ -4,7 +4,7 @@ import helperClasses.RandomMock
 import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.rlcommon.util.RandomElementFinderInterface
-import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
+import net.cyndeline.rlgraph.drawings.planar.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.compaction.{AreaCompaction, TargetFinder}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.{ImmutableGridDrawing, RepresentationToDrawingConverterI}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.MutableArea

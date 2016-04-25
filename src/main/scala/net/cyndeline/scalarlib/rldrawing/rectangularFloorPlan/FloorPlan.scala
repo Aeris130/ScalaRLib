@@ -4,7 +4,7 @@ import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.rlcommon.util.{Geom, Intersection}
 import net.cyndeline.rlgraph.cartogram.rectangular.common.MapArea
-import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import net.cyndeline.rlgraph.drawings.planar.rectangular.RectangularLayout
 import net.cyndeline.rlgraph.util.GraphCommons
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.ModifiedCoordinates
 import net.cyndeline.scalarlib.rldrawing.util.Connection

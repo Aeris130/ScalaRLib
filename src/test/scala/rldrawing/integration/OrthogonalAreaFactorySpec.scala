@@ -2,7 +2,7 @@ package rldrawing.integration
 
 import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.rlcommon.math.geom.Point
-import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
+import net.cyndeline.rlgraph.drawings.planar.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.PartitionedArea
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{AdjustableRectangle, _}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.{GridPartitionFactory, OrthogonalAreaFactory}

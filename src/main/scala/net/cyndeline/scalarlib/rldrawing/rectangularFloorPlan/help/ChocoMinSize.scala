@@ -1,11 +1,12 @@
 package net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help
 
 import net.cyndeline.rlgraph.cartogram.rectangular.common.{Constraint, _}
-import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import net.cyndeline.rlgraph.drawings.planar.rectangular.RectangularLayout
 import solver.constraints.{IntConstraintFactory => ICF}
 import solver.variables.{IntVar, VariableFactory => VF}
 import solver.{ResolutionPolicy, Solver}
 
+import scala.language.higherKinds
 import scalax.collection.GraphEdge.UnDiEdge
 
 /**
@@ -43,10 +44,10 @@ class ChocoMinSize extends MinimumSizeIncrease {
     solverX.findOptimalSolution(ResolutionPolicy.MINIMIZE, objectiveX)
     solverY.findOptimalSolution(ResolutionPolicy.MINIMIZE, objectiveY)
 
-    for (i <- 0 until verticalVariables.size)
+    for (i <- verticalVariables.indices)
       segmentMap.verticalSegments(i).value = verticalVariables(i).getValue
 
-    for (i <- 0 until horizontalVariables.size)
+    for (i <- horizontalVariables.indices)
       segmentMap.horizontalSegments(i).value = horizontalVariables(i).getValue
 
     segmentMap.constructNewDrawingFromSegments
@@ -72,31 +73,27 @@ class ChocoMinSize extends MinimumSizeIncrease {
 
       if (!r.isVertex || (r.isVertex && !exceptions.contains(rToV(r)))) {
         axis match {
-          case X_Axis => {
+          case X_Axis =>
             val lower = s.left
             val upper = s.right
             val minWidth = Math.max(upper.value - lower.value, minSize)
             solver.post(ICF.arithm(variables(upper.variableIndex), "-", variables(lower.variableIndex), ">=", minWidth))
-          }
-          case Y_Axis => {
+          case Y_Axis =>
             val lower = s.top
             val upper = s.bottom
             val minHeight = Math.max(upper.value - lower.value, minSize)
             solver.post(ICF.arithm(variables(upper.variableIndex), "-", variables(lower.variableIndex), ">=", minHeight))
-          }
         }
       } else {
         axis match {
-          case X_Axis => {
+          case X_Axis =>
             val lower = s.left
             val upper = s.right
             solver.post(ICF.arithm(variables(upper.variableIndex), ">", variables(lower.variableIndex)))
-          }
-          case Y_Axis => {
+          case Y_Axis =>
             val lower = s.top
             val upper = s.bottom
             solver.post(ICF.arithm(variables(upper.variableIndex), ">", variables(lower.variableIndex)))
-          }
         }
       }
     }

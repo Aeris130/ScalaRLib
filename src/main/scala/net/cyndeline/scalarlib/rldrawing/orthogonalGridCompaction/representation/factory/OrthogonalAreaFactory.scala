@@ -3,7 +3,7 @@ package net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representatio
 import net.cyndeline.rlcommon.math.geom.Point
 import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.rlcommon.util.{HeightConstraint, WidthConstraint}
-import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.OrthogonalRepresentation
+import net.cyndeline.rlgraph.drawings.planar.orthogonal.OrthogonalRepresentation
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.help.ConnectionBoundary
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{AdjustableRectangle, _}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.{CorridorProperties, PartitionedArea}

@@ -1,7 +1,7 @@
 package rldrawing.integration
 
 import net.cyndeline.rlcommon.util.Direction._
-import net.cyndeline.rlgraph.planarGraphDrawing.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
+import net.cyndeline.rlgraph.drawings.planar.orthogonal.drawing.{DrawnEdge, OrthogonalLayout}
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.drawing.RepresentationToDrawingConverter
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.factory.OrthogonalAreaFactory
 import net.cyndeline.scalarlib.rldrawing.orthogonalGridCompaction.representation.{MutableArea, AdjustableRectangle}

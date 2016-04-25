@@ -2,7 +2,7 @@ package rldrawing.unit.rectangularFloorPlan
 
 import net.cyndeline.rlcommon.util.Direction._
 import net.cyndeline.rlcommon.math.geom.Point
-import net.cyndeline.rlgraph.planarGraphDrawing.rectangular.RectangularLayout
+import net.cyndeline.rlgraph.drawings.planar.rectangular.RectangularLayout
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.FloorPlan
 import net.cyndeline.scalarlib.rldrawing.rectangularFloorPlan.help.ModifiedCoordinates
 import rldrawing.help.ConstraintRoom
