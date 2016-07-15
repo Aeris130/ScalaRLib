@@ -44,11 +44,11 @@ class HillClimbingSpec extends SpecImports {
       val production_right = topologyProduction.addVertex(1)
 
       val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
+      val productionCollection = ProbabilityCollection.from[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]((1, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](parameter)
-      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1)
+      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1, random)
       val level = GraphLevel(Graph[RoomVertex, CorridorEdge](dummyRoom))
       val resultingLevel = hillClimber.apply(level)
 
@@ -88,11 +88,11 @@ class HillClimbingSpec extends SpecImports {
                               .addVertex(7)
 
       val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
+      val productionCollection = ProbabilityCollection.from[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]((1, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](parameter, unconditionalParameter1, unconditionalParameter2)
-      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1)
+      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1, random)
       val level = GraphLevel(Graph[RoomVertex, CorridorEdge](dummyRoom))
       val resultingLevel = hillClimber.apply(level).get
 
@@ -116,11 +116,11 @@ class HillClimbingSpec extends SpecImports {
       val production_right = topologyProduction.addVertex(1)
 
       val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
+      val productionCollection = ProbabilityCollection.from[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]((1, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](parameter1, parameter2)
-      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1)
+      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1, random)
       val level = GraphLevel(Graph[RoomVertex, CorridorEdge](dummyRoom))
       val resultingLevel = hillClimber.apply(level)
 
@@ -146,11 +146,11 @@ class HillClimbingSpec extends SpecImports {
       val production_right = topologyProduction.addVertex(1)
 
       val finalProduction = SingleProduction[GraphLevel, RoomVertex, CorridorEdge, Int, UnDiEdge](pattern, defaultMatcher, production_right, random)
-      val productionCollection = new ProbabilityCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]](random, (1.0, finalProduction))
+      val productionCollection = ProbabilityCollection.from[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, Int]]((1, finalProduction))
 
       When("applying the hill climber onto a graph using the room parameter")
       val parameters = Set[Parameter[GraphLevel, RoomVertex, CorridorEdge]](acceptsUnconditionalParameter1, acceptsUnconditionalParameter2, rejectsUnconditionalParameter)
-      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1)
+      val hillClimber = new HillClimbing(parameters, productionCollection, acceptsAllParameters, 1, random)
       val level = GraphLevel(Graph[RoomVertex, CorridorEdge](dummyRoom))
       val resultingLevel = hillClimber.apply(level)
 

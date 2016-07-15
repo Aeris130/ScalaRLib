@@ -33,16 +33,16 @@ class StrategyBuilder[L <: Level[L, V, E], V <: Room, E[X] <: EdgeLikeIn[X], PV]
    * @return A strategy object that attempts to output a valid level.
    */
   def createStrategy(parameters: Vector[Parameter[L, V, E]],
-                     productions: Vector[(Double, LevelProduction[L, V, E, PV])],
+                     productions: Vector[(Int, LevelProduction[L, V, E, PV])],
                      random: Random): Strategy[L, V, E] = {
     require(parameters.nonEmpty, "Cannot create a strategy without supplying at least one parameter.")
     require(productions.nonEmpty, "Cannot create a strategy without supplying at least one production.")
 
-    val randomProducts = new ProbabilityCollection[LevelProduction[L, V, E, PV]](random)
+    var randomProducts = new ProbabilityCollection[LevelProduction[L, V, E, PV]]()
     for (kv <- productions)
-      randomProducts.add(kv._1, kv._2)
+      randomProducts = randomProducts.add(kv._1, kv._2)
 
-    new HillClimbing[L, V, E, PV](parameters.toSet, randomProducts, parameterResponseValidationOpt, attempts)
+    new HillClimbing[L, V, E, PV](parameters.toSet, randomProducts, parameterResponseValidationOpt, attempts, random)
   }
 
 }

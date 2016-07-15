@@ -8,6 +8,7 @@ import net.cyndeline.scalarlib.rldungeon.dgs.strategy.ParameterResponderValidati
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 
 import scala.language.higherKinds
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef.EdgeLikeIn
 
@@ -19,7 +20,8 @@ trait ProductionIteratorI {
     (level: L,
      parameters: Set[Parameter[L, R, C]],
      productions: RandomCollection[LevelProduction[L, R, C, PV]],
-     paramResponseValidation: ParameterResponderValidation[L, R, C]): L
+     paramResponseValidation: ParameterResponderValidation[L, R, C],
+     r: Random): L
 }
 
 /**
@@ -43,20 +45,22 @@ class ProductionIterator(implicit val bindingModule: BindingModule)
    * @param productions Objects that modifies a level.
    * @param paramResponseValidation Takes the set of rejecting and accepting parameters and decides if a modification
    *                                should be kept or discarded.
+   * @param r Random object used to select productions.
    * @return The modified level, or the input level if no modifications were accepted.
    */
   def applyProductions[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
     (level: L,
     parameters: Set[Parameter[L, R, C]],
     productions: RandomCollection[LevelProduction[L, R, C, PV]],
-    paramResponseValidation: ParameterResponderValidation[L, R, C]): L = {
+    paramResponseValidation: ParameterResponderValidation[L, R, C],
+    r: Random): L = {
 
-    var currentProductions = productions.copy
+    var currentProductions = productions
     var currentLevel = level
     var estimates: Map[Parameter[L, R, C], Double] = (for (p <- parameters) yield p -> 0.0).toMap
 
     while (!currentProductions.isEmpty) {
-      val productionToTry = currentProductions.next
+      val productionToTry = currentProductions.next(r)
       val modification: Option[L] = productionToTry.apply(currentLevel)
 
       if (modification.isDefined) {
@@ -75,12 +79,12 @@ class ProductionIterator(implicit val bindingModule: BindingModule)
 
           // Reset the production collection if one or more elements has been removed
           if (currentProductions.size < productions.size)
-            currentProductions = productions.copy
+            currentProductions = productions
         } else {
-          currentProductions.remove(productionToTry)
+          currentProductions = currentProductions.remove(productionToTry)
         }
       } else {
-        currentProductions.remove(productionToTry)
+        currentProductions = currentProductions.remove(productionToTry)
       }
     }
 

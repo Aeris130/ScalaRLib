@@ -33,11 +33,6 @@ class ProductionIteratorSpec extends SpecImports {
 
     val productionCollection = mock[RandomCollection[LevelProduction[GraphLevel, RoomVertex, CorridorEdge, String]]]
 
-    /* There's no need to chain multiple collection mocks using the copy method. Just add any subsequent
-     * expectations to this mock.
-     */
-    productionCollection.copy _ expects() returns productionCollection anyNumberOfTimes()
-
     val responseValidator = mock[ParameterResponderValidation[GraphLevel, RoomVertex, CorridorEdge]]
 
     val parameterValidator = mock[ValidatorI]
@@ -58,16 +53,16 @@ class ProductionIteratorSpec extends SpecImports {
 
       When("iterating over the production set")
       setRandomCollectionNotEmpty(productionCollection, 2)
-      productionCollection.next _ expects() returns production1 once()
-      productionCollection.next _ expects() returns production2 once()
+      productionCollection.next _ expects * returns production1 once()
+      productionCollection.next _ expects * returns production2 once()
 
       Then("the production collection should remove every production in the set")
-      productionCollection.remove _ expects production1 returns() once()
-      productionCollection.remove _ expects production2 returns() once()
+      productionCollection.remove _ expects production1 returns productionCollection once()
+      productionCollection.remove _ expects production2 returns productionCollection once()
 
       // Start test
       val iterator = new ProductionIterator()
-      iterator.applyProductions(g, Set(param1), productionCollection, responseValidator)
+      iterator.applyProductions(g, Set(param1), productionCollection, responseValidator, null)
 
     }
 
@@ -80,7 +75,7 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found
-      productionCollection.next _ expects() returns production1 once()
+      productionCollection.next _ expects * returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       When("a production yields a graph")
@@ -92,11 +87,11 @@ class ProductionIteratorSpec extends SpecImports {
 
       // Not a part of this test
       responseValidator.levelModificationValidates _ expects(*, *) returns false once()
-      productionCollection.remove _ expects * returns() anyNumberOfTimes()
+      productionCollection.remove _ expects * returns productionCollection anyNumberOfTimes()
 
       // Start test
       val iterator = new ProductionIterator()
-      iterator.applyProductions(g, parameters, productionCollection, responseValidator)
+      iterator.applyProductions(g, parameters, productionCollection, responseValidator, null)
 
     }
 
@@ -111,7 +106,7 @@ class ProductionIteratorSpec extends SpecImports {
       parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((acceptingParameters, rejectingParameters, Map())) once()
 
       // Only one production is found
-      productionCollection.next _ expects() returns production1 once()
+      productionCollection.next _ expects * returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       When("a production yields a graph")
@@ -122,11 +117,11 @@ class ProductionIteratorSpec extends SpecImports {
       responseValidator.levelModificationValidates _ expects(acceptingParameters, rejectingParameters) returns false once()
 
       // Not a part of this test
-      productionCollection.remove _ expects * returns() anyNumberOfTimes()
+      productionCollection.remove _ expects * returns productionCollection anyNumberOfTimes()
 
       // Start test
       val iterator = new ProductionIterator()
-      iterator.applyProductions(g, parameters, productionCollection, responseValidator)
+      iterator.applyProductions(g, parameters, productionCollection, responseValidator, null)
 
     }
 
@@ -141,7 +136,7 @@ class ProductionIteratorSpec extends SpecImports {
       val rejectingParameters = Set(prioParam)
 
       // Only one production is found, and it yields a result
-      productionCollection.next _ expects() returns production1 once()
+      productionCollection.next _ expects * returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())
       production1.apply _ expects g returns Option(g) once()
@@ -151,11 +146,11 @@ class ProductionIteratorSpec extends SpecImports {
       responseValidator.levelModificationValidates _ expects(acceptingParameters, rejectingParameters) returns true once()
 
       Then("the production collection should still remove the production")
-      productionCollection.remove _ expects production1 returns() once()
+      productionCollection.remove _ expects production1 returns productionCollection once()
 
       // Start test
       val iterator = new ProductionIterator()
-      iterator.applyProductions(g, parameters, productionCollection, responseValidator)
+      iterator.applyProductions(g, parameters, productionCollection, responseValidator, null)
 
     }
 
@@ -167,7 +162,7 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found, and it yields a result twice
-      productionCollection.next _ expects() returns production1 anyNumberOfTimes()
+      productionCollection.next _ expects * returns production1 anyNumberOfTimes()
       setRandomCollectionNotEmpty(productionCollection, 2)
 
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge]())
@@ -187,7 +182,7 @@ class ProductionIteratorSpec extends SpecImports {
 
       // Start test
       val iterator = new ProductionIterator()
-      iterator.applyProductions(g, parameters, productionCollection, responseValidator)
+      iterator.applyProductions(g, parameters, productionCollection, responseValidator, null)
     }
 
     it ("should return the modified graph if any modifications were accepted") {
@@ -198,7 +193,7 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found, and it yields a result once
-      productionCollection.next _ expects() returns production1 once()
+      productionCollection.next _ expects * returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
@@ -213,7 +208,7 @@ class ProductionIteratorSpec extends SpecImports {
 
       Then("the resulting graph should be the one returned by the production")
       val iterator = new ProductionIterator()
-      val resultingGraph = iterator.applyProductions(g, parameters, productionCollection, responseValidator)
+      val resultingGraph = iterator.applyProductions(g, parameters, productionCollection, responseValidator, null)
       resultingGraph should be (g)
 
     }
@@ -226,15 +221,15 @@ class ProductionIteratorSpec extends SpecImports {
 
       production1.apply _ expects * returns None once()
 
-      When("no production resturns an accepted modification")
+      When("no production returns an accepted modification")
       setRandomCollectionNotEmpty(productionCollection, 1)
-      productionCollection.next _ expects() returns production1 once()
-      productionCollection.remove _ expects production1 returns() once()
+      productionCollection.next _ expects * returns production1 once()
+      productionCollection.remove _ expects production1 returns productionCollection once()
 
       Then("the returned graph should be the same as the input graph")
       val iterator = new ProductionIterator()
       val g = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
-      val resultingGraph = iterator.applyProductions(g, Set(param1), productionCollection, responseValidator)
+      val resultingGraph = iterator.applyProductions(g, Set(param1), productionCollection, responseValidator, null)
       resultingGraph should be (g)
 
     }
@@ -247,7 +242,7 @@ class ProductionIteratorSpec extends SpecImports {
       val parameters = Set(param1, param2)
 
       // Only one production is found, and it yields a result once
-      productionCollection.next _ expects() returns production1 once()
+      productionCollection.next _ expects * returns production1 once()
       setRandomCollectionNotEmpty(productionCollection, 1)
 
       val producedGraph = GraphLevel(Graph[RoomVertex, CorridorEdge](room1))
@@ -255,7 +250,7 @@ class ProductionIteratorSpec extends SpecImports {
 
       // Not a part of this test
       productionCollection.size _ expects() returns 1 anyNumberOfTimes()
-      productionCollection.remove _ expects * returns() once()
+      productionCollection.remove _ expects * returns productionCollection once()
 
       When("the parameter validator sorts the priority parameter into the rejecting set and the response validator rejects the result")
       parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((Set(), Set(), Map())) once()
@@ -264,7 +259,7 @@ class ProductionIteratorSpec extends SpecImports {
       Then("the returned graph should be the same as the input graph")
       val iterator = new ProductionIterator()
       val inputGraph = GraphLevel(Graph[RoomVertex, CorridorEdge](room2))
-      val resultingGraph = iterator.applyProductions(inputGraph, parameters, productionCollection, responseValidator)
+      val resultingGraph = iterator.applyProductions(inputGraph, parameters, productionCollection, responseValidator, null)
       resultingGraph should be (inputGraph)
 
     }

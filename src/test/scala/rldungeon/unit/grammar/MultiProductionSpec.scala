@@ -51,11 +51,11 @@ class MultiProductionSpec extends SpecImports {
       morphismMock.build[RoomVertex, Int] _ expects returnedMapping.nodes returns morphism once()
 
       And("the random collection should be built using the supplied component productions")
-      val productions = Vector[(ComponentProduction[GraphLevel, RoomVertex, CorridorEdge, Int], Double)]((componentMock, 1.0))
-      randomCollection.add _ expects(1.0, componentMock) once()
+      val productions = Vector[(ComponentProduction[GraphLevel, RoomVertex, CorridorEdge, Int], Int)]((componentMock, 1))
+      randomCollection.add _ expects(1, componentMock) returns randomCollection once()
 
       And("the random collection should be polled for a ComponentProduction once")
-      randomCollection.next _ expects() returns componentMock once()
+      randomCollection.next _ expects * returns componentMock once()
 
       And("the ComponentProduction should receive the pattern, morphism and graph to apply production onto")
       val result = GraphLevel(Graph[RoomVertex, CorridorEdge](room7, room8, room9))

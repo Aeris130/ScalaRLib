@@ -10,6 +10,7 @@ import net.cyndeline.scalarlib.rldungeon.grammar.Strategy
 import net.cyndeline.scalarlib.rldungeon.grammar.production.LevelProduction
 
 import scala.language.higherKinds
+import scala.util.Random
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef.EdgeLikeIn
 
@@ -41,12 +42,14 @@ import scalax.collection.GraphPredef.EdgeLikeIn
  * @param paramValidation Validator responsible for deciding if a change to the map should be kept or discarded.
  * @param attempts If the final level is not accepted, the algorithm starts over. This number controls how many times
  *                 that is allowed to happen before the hill climber gives up and returns None.
+ * @param r Object used to select modifications for the level.
  */
 class HillClimbing[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
   (parameters: Set[Parameter[L, R, C]],
   productions: RandomCollection[LevelProduction[L, R, C, PV]],
   paramValidation: ParameterResponderValidation[L, R, C],
-  attempts: Int)
+  attempts: Int,
+  r: Random)
   (implicit val bindingModule: BindingModule)
   extends Strategy[L, R, C]
   with Injectable {
@@ -67,7 +70,7 @@ class HillClimbing[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV]
     while (attemptsLeft > 0) {
 
       // Either the input graph if no modifications passed, or the modified graph.
-      val finalLevel = productionIterator.applyProductions[L, R, C, PV](level, parameters, productions, paramValidation)
+      val finalLevel = productionIterator.applyProductions[L, R, C, PV](level, parameters, productions, paramValidation, r)
 
       /* No more modifications ended up being approved by the parameters. Run a final check to see if the graph is
        * valid (exit) or not (try again). Note that this check only runs the graphs estimated value against

@@ -5,12 +5,9 @@ import net.cyndeline.rlgraph.subgraph.isomorphism.proofProcess.VF2IMatcher
 import net.cyndeline.rlgraph.subgraph.isomorphism.IsomorphicMapping
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
-import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, Morphism, MorphismFactory}
+import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, MorphismFactory}
 import scala.language.higherKinds
-import scala.reflect.ClassTag
-import scala.reflect.runtime.universe._
 import scala.util.Random
-import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.GraphPredef.EdgeLikeIn
 import scalax.collection.immutable.Graph
 
@@ -32,14 +29,20 @@ import scalax.collection.immutable.Graph
  */
 final class MultiProduction[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV, PE[X] <: EdgeLikeIn[X]] private
                                                              (pattern: Graph[PV, PE],
-                                                              compProductions: Vector[(ComponentProduction[L, R, C, PV], Double)],
+                                                              compProductions: Vector[(ComponentProduction[L, R, C, PV], Int)],
                                                               random: Random,
                                                               isomorphismMapper: IsomorphicMapping[R, C, PV, PE],
                                                               morphismFactory: MorphismFactory,
                                                               probabilitySelector: RandomCollection[ComponentProduction[L, R, C, PV]]
                                                               ) extends Production[L, R, C, PV, PE](pattern, random, isomorphismMapper, morphismFactory) {
-  val productionProbabilitySelector = probabilitySelector
-  compProductions.foreach(kv => productionProbabilitySelector.add(kv._2, kv._1))
+  val productionProbabilitySelector = {
+    var current = probabilitySelector
+    for (kv <- compProductions)
+      current = current.add(kv._2, kv._1)
+
+    current
+  }
+
 
   /**
    * Modifies a level.
@@ -49,7 +52,7 @@ final class MultiProduction[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X
    */
   def apply(level: L): Option[L] = {
     val matchingVertices = getMatch(level)
-    val compProduction = productionProbabilitySelector.next
+    val compProduction = productionProbabilitySelector.next(random)
 
     if (matchingVertices.isDefined) {
       Some(compProduction.apply(matchingVertices.get, level))
@@ -70,8 +73,8 @@ object MultiProduction {
   def apply[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV, PE[X] <: EdgeLikeIn[X]]
           (pattern: Graph[PV, PE],
            matcher: GraphMatcher[R, C, PV, PE],
-           compProductions: Vector[(ComponentProduction[L, R, C, PV], Double)],
-           random: Random): MultiProduction[L, R, C, PV, PE] = new MultiProduction(pattern, compProductions, random, createIsomorphInspector(matcher), new MorphismFactory(), new ProbabilityCollection[ComponentProduction[L, R, C, PV]](random))
+           compProductions: Vector[(ComponentProduction[L, R, C, PV], Int)],
+           random: Random): MultiProduction[L, R, C, PV, PE] = new MultiProduction(pattern, compProductions, random, createIsomorphInspector(matcher), new MorphismFactory(), new ProbabilityCollection[ComponentProduction[L, R, C, PV]]())
 
   /**
    * Constructs a new multi production with default isomorphism and morphism factory, and the probability of each
@@ -84,7 +87,7 @@ object MultiProduction {
           (pattern: Graph[PV, PE],
            matcher: GraphMatcher[R, C, PV, PE],
            random: Random,
-           compProductions: ComponentProduction[L, R, C, PV]*): MultiProduction[L, R, C, PV, PE] = apply(pattern, matcher, compProductions.map(p => (p, 1.0)).toVector, random)
+           compProductions: ComponentProduction[L, R, C, PV]*): MultiProduction[L, R, C, PV, PE] = apply(pattern, matcher, compProductions.map(p => (p, 1)).toVector, random)
 
   /**
    * Constructs a new multi production by having the user specify all helper algorithms.
@@ -103,7 +106,7 @@ object MultiProduction {
    */
   def customSetup[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV, PE[X] <: EdgeLikeIn[X]]
             (pattern: Graph[PV, PE],
-            compProductions: Vector[(ComponentProduction[L, R, C, PV], Double)],
+            compProductions: Vector[(ComponentProduction[L, R, C, PV], Int)],
             random: Random,
             isomorphismMapper: IsomorphicMapping[R, C, PV, PE],
             morphismFactory: MorphismFactory,
