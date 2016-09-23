@@ -9,8 +9,6 @@ import scala.collection.mutable.ListBuffer
 
 class EntityManagerSpec extends SpecImports {
 
-
-
   def entityManager = new {
     val handlerMock = mock[EventHandlerSetup]
     (handlerMock.setSystemBuffer _) expects(*) returns() anyNumberOfTimes()
@@ -206,6 +204,26 @@ class EntityManagerSpec extends SpecImports {
 
     }
 
+    it ("should assemble entities using components with null data") {
+
+      Given("a manager and a component with a var containing null")
+      val manager = entityManager.manager
+      val cType = manager.componentType(classOf[NullComponent])
+      val dataComponent = new NullComponent()
+
+      When("registering the component to an assemblage")
+      val assemblage = manager.registerAssemblage("Assemblage", "description", Set(), Set(dataComponent))
+
+      Then("new entities should be created with the data component")
+      val entity = manager.assembleEntity(assemblage)
+      manager.hasComponent(entity, cType) should be (true)
+
+      And("the data of the component should be null")
+      val newComponent = manager.getComponent(entity, cType)
+      newComponent.nullData should be (null)
+
+    }
+
     it ("should store component data in the scope of extended classes") {
 
       Given("a manager and a component that extends another component")
@@ -229,9 +247,9 @@ class EntityManagerSpec extends SpecImports {
 
     }
 
-    it ("should invoke clone() on the components public var datastructures that implements the scala Cloneable trait") {
+    it ("should invoke clone() on the components public var data structures that implements the scala Cloneable trait") {
 
-      Given("a manager and a component with a public list extending scalas Clonable trait")
+      Given("a manager and a component with a public list extending scala's Clonable trait")
       val manager = entityManager.manager
       val component = new ComponentWithScalaCloneData()
       val cType = manager.componentType(classOf[ComponentWithScalaCloneData])
@@ -704,6 +722,10 @@ class ComponentWithScalaCloneData extends Component {
   }
   def getPrivateList = privateVarList
   private var privateVarList = new ListBuffer[String]()
+}
+
+class NullComponent extends Component {
+  var nullData: ListBuffer[String] = _
 }
 
 class ExtendingComp extends TestComponent {

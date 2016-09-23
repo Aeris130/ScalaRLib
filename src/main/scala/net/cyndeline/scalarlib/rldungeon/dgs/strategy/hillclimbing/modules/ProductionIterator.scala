@@ -72,8 +72,7 @@ class ProductionIterator(implicit val bindingModule: BindingModule)
          * outnumbers the ones that didn't by a set percentage. If a priority-parameter rejects the new graph,
          * discard it regardless.
          */
-        if (paramResponseValidation.levelModificationValidates(acceptingParams, rejectingParams)
-          && !rejectingParams.exists(p => p.hasPriority)) {
+        if (!rejectingParams.exists(p => p.hasPriority) && paramResponseValidation.levelModificationValidates(acceptingParams, rejectingParams)) {
           estimates = validatingParameters._3
           currentLevel = modification.get
 

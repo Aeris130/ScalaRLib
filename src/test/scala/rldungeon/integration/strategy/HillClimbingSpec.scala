@@ -1,6 +1,6 @@
 package rldungeon.integration.strategy
 
-import net.cyndeline.rlcommon.util.ProbabilityCollection
+import net.cyndeline.rlcommon.collections.ProbabilityCollection
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.hillclimbing.HillClimbing
 import net.cyndeline.scalarlib.rldungeon.dgs.{Parameter, ParameterEstimator}

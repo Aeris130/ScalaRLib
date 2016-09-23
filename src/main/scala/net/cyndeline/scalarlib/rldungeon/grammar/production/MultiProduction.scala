@@ -1,11 +1,13 @@
 package net.cyndeline.scalarlib.rldungeon.grammar.production
 
-import net.cyndeline.rlcommon.util.{ProbabilityCollection, RandomCollection}
+import net.cyndeline.rlcommon.collections.ProbabilityCollection
+import net.cyndeline.rlcommon.util.RandomCollection
 import net.cyndeline.rlgraph.subgraph.isomorphism.proofProcess.VF2IMatcher
 import net.cyndeline.rlgraph.subgraph.isomorphism.IsomorphicMapping
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.grammar.ComponentProduction
 import net.cyndeline.scalarlib.rldungeon.grammar.util.{GraphMatcher, MorphismFactory}
+
 import scala.language.higherKinds
 import scala.util.Random
 import scalax.collection.GraphPredef.EdgeLikeIn
@@ -29,7 +31,7 @@ import scalax.collection.immutable.Graph
  */
 final class MultiProduction[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV, PE[X] <: EdgeLikeIn[X]] private
                                                              (pattern: Graph[PV, PE],
-                                                              compProductions: Vector[(ComponentProduction[L, R, C, PV], Int)],
+                                                              compProductions: Vector[(ComponentProduction[L, R, C, PV], Double)],
                                                               random: Random,
                                                               isomorphismMapper: IsomorphicMapping[R, C, PV, PE],
                                                               morphismFactory: MorphismFactory,
@@ -73,7 +75,7 @@ object MultiProduction {
   def apply[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV, PE[X] <: EdgeLikeIn[X]]
           (pattern: Graph[PV, PE],
            matcher: GraphMatcher[R, C, PV, PE],
-           compProductions: Vector[(ComponentProduction[L, R, C, PV], Int)],
+           compProductions: Vector[(ComponentProduction[L, R, C, PV], Double)],
            random: Random): MultiProduction[L, R, C, PV, PE] = new MultiProduction(pattern, compProductions, random, createIsomorphInspector(matcher), new MorphismFactory(), new ProbabilityCollection[ComponentProduction[L, R, C, PV]]())
 
   /**
@@ -87,7 +89,7 @@ object MultiProduction {
           (pattern: Graph[PV, PE],
            matcher: GraphMatcher[R, C, PV, PE],
            random: Random,
-           compProductions: ComponentProduction[L, R, C, PV]*): MultiProduction[L, R, C, PV, PE] = apply(pattern, matcher, compProductions.map(p => (p, 1)).toVector, random)
+           compProductions: ComponentProduction[L, R, C, PV]*): MultiProduction[L, R, C, PV, PE] = apply(pattern, matcher, compProductions.map(p => (p, 1.0)).toVector, random)
 
   /**
    * Constructs a new multi production by having the user specify all helper algorithms.
@@ -106,7 +108,7 @@ object MultiProduction {
    */
   def customSetup[L <: Level[L, R, C], R <: Room, C[X] <: EdgeLikeIn[X], PV, PE[X] <: EdgeLikeIn[X]]
             (pattern: Graph[PV, PE],
-            compProductions: Vector[(ComponentProduction[L, R, C, PV], Int)],
+            compProductions: Vector[(ComponentProduction[L, R, C, PV], Double)],
             random: Random,
             isomorphismMapper: IsomorphicMapping[R, C, PV, PE],
             morphismFactory: MorphismFactory,

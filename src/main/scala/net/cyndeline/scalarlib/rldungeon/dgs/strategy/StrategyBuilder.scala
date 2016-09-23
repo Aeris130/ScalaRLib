@@ -1,7 +1,7 @@
 package net.cyndeline.scalarlib.rldungeon.dgs.strategy
 
 import com.escalatesoft.subcut.inject.{BindingModule, Injectable}
-import net.cyndeline.rlcommon.util.ProbabilityCollection
+import net.cyndeline.rlcommon.collections.ProbabilityCollection
 import net.cyndeline.scalarlib.rldungeon.common.{Level, Room}
 import net.cyndeline.scalarlib.rldungeon.dgs.Parameter
 import net.cyndeline.scalarlib.rldungeon.dgs.strategy.help.ParameterAcceptRatio
@@ -33,7 +33,7 @@ class StrategyBuilder[L <: Level[L, V, E], V <: Room, E[X] <: EdgeLikeIn[X], PV]
    * @return A strategy object that attempts to output a valid level.
    */
   def createStrategy(parameters: Vector[Parameter[L, V, E]],
-                     productions: Vector[(Int, LevelProduction[L, V, E, PV])],
+                     productions: Vector[(Double, LevelProduction[L, V, E, PV])],
                      random: Random): Strategy[L, V, E] = {
     require(parameters.nonEmpty, "Cannot create a strategy without supplying at least one parameter.")
     require(productions.nonEmpty, "Cannot create a strategy without supplying at least one production.")

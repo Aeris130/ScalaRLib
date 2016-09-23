@@ -31,6 +31,9 @@ object ScalarlibBuild extends Build {
       "com.assembla.scala-incubator" % "graph-core_2.11" % "1.9.4",
       "org.jgrapht" % "jgrapht-core" % "0.9.0",
 
+      // Rational class, https://github.com/non/spire
+      "org.spire-math" %% "spire" % "0.11.0",
+
       // Dependency injection
       "com.escalatesoft.subcut" % "subcut_2.10" % "2.0",
 

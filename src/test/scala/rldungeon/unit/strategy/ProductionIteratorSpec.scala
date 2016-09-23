@@ -143,7 +143,7 @@ class ProductionIteratorSpec extends SpecImports {
 
       When("the parameter validator sorts the priority parameter into the rejecting set and the response validator approves the result")
       parameterValidator.validateModifiedGraph[GraphLevel, RoomVertex, CorridorEdge] _ expects(*, *, *) returns((acceptingParameters, rejectingParameters, Map())) once()
-      responseValidator.levelModificationValidates _ expects(acceptingParameters, rejectingParameters) returns true once()
+      responseValidator.levelModificationValidates _ expects(acceptingParameters, rejectingParameters) returns true anyNumberOfTimes()
 
       Then("the production collection should still remove the production")
       productionCollection.remove _ expects production1 returns productionCollection once()
