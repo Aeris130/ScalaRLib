@@ -10,7 +10,7 @@ import net.cyndeline.rlcommon.util.Intersection
 class Connection private (val start: Point, val stop: Point) {
   require(start.x == stop.x || start.y == stop.y, "Cannot create area connection that spans more than 1 coordinate on both axises.")
 
-  /*** @return Iterates over every coordinate in the connection starting from the top/left. */
+  /** @return Iterates over every coordinate in the connection starting from the top/left. */
   def iterator: Iterator[Point] = if (start.x == stop.x) {
     (for (i <- start.y to stop.y) yield Point(start.x, i)).iterator
   } else {

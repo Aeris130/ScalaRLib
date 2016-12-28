@@ -87,7 +87,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
       r._1.withNewCoordinates(Point(newStart.x, newStop.y), Point(newStop.x, newStart.y))
     })
 
-    new FloorPlan(newRooms.toVector, rLayout)
+    new FloorPlan(newRooms, rLayout)
   }
 
   /**
@@ -109,7 +109,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
       flipped._1.withNewCoordinates(Point(newStart.x, newStop.y), Point(newStop.x, newStart.y))
     })
 
-    new FloorPlan(newRooms.toVector, rLayout)
+    new FloorPlan(newRooms, rLayout)
   }
 
   /**
@@ -243,8 +243,8 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
       val n1 = gate.gateNeighbors._1
       val n2 = gate.gateNeighbors._2
 
-      val n1Set = map.get(n1).getOrElse(Set())
-      val n2Set = map.get(n2).getOrElse(Set())
+      val n1Set = map.getOrElse(n1, Set())
+      val n2Set = map.getOrElse(n2, Set())
 
       map += n1 -> (n1Set + n2)
       map += n2 -> (n2Set + n1)
@@ -255,7 +255,7 @@ class FloorPlan[V <: MapArea, E[X] <: UnDiEdge[X]] private (val roomAreas: Vecto
   // Throws exceptions if two areas intersect by more than their borders
   private def checkForIntersectionOverlap() {
     var unprocessedRooms = roomAreas
-    while (!unprocessedRooms.isEmpty) {
+    while (unprocessedRooms.nonEmpty) {
       val room = unprocessedRooms.head
       unprocessedRooms = unprocessedRooms.drop(1)
 
