@@ -15,11 +15,11 @@ class ContinentFactorySpec extends SpecImports {
   private val allWater = 1
 
   private def buildSquareFactory(waterMass: Double) = {
-    new ContinentFactory(ContinentSettings(waterMass, 0.01, 0.5, 16, false))
+    new ContinentFactory(ContinentSettings(waterMass, 0.01, 0.5, 16, false).withHiddenLakes)
   }
 
   private def buildRoundFactory(waterMass: Double) = {
-    new ContinentFactory(ContinentSettings(waterMass, 0.01, 0.5, 16, true))
+    new ContinentFactory(ContinentSettings(waterMass, 0.01, 0.5, 16, true).withHiddenLakes)
   }
 
   describe("ContinentFactory") {

@@ -1,7 +1,7 @@
 package rldrawing.unit.forceGrid
 
 import net.cyndeline.rlcommon.math.geom.{Point, Rectangle}
-import net.cyndeline.scalarlib.rldrawing.forceGrid.ForceGridLayout
+import net.cyndeline.scalarlib.rldrawing.ForceGridLayout
 import testHelpers.SpecImports
 
 class ForceGridLayoutSpec extends SpecImports {

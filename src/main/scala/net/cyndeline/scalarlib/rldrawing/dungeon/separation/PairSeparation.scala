@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.rldrawing.forceGrid.separation
+package net.cyndeline.scalarlib.rldrawing.dungeon.separation
 
 import net.cyndeline.rlcommon.math.geom.Rectangle
 
@@ -67,7 +67,7 @@ class PairSeparation {
   }
 
   /*
-   * Given that degree 0 points to the right, returns the degre that, if moving a rectangle in it, causes the rectangle
+   * Given that degree 0 points to the right, returns the degree that, if moving a rectangle in it, causes the rectangle
    * to move towards negative coordinates on a graph where the y axis increases upwards.
    */
   private def degreeLower(xAxis: Boolean): Double = if (xAxis) 180 /* Left */ else 270 /* Down */

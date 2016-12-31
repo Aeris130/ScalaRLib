@@ -1,4 +1,4 @@
-package net.cyndeline.scalarlib.rldrawing.forceGrid.separation
+package net.cyndeline.scalarlib.rldrawing.dungeon.separation
 
 import net.cyndeline.rlcommon.collections.SpatialMultiMap
 import net.cyndeline.rlcommon.math.geom.{Point, Rectangle}

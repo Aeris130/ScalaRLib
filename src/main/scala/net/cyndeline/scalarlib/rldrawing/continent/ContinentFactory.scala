@@ -2,9 +2,8 @@ package net.cyndeline.scalarlib.rldrawing.continent
 
 import net.cyndeline.rlcommon.math.geom.{Point, Rectangle}
 import net.cyndeline.rlcommon.util.Matrix2DOp
-import net.cyndeline.scalarlib.rldrawing.MapLayout
+import net.cyndeline.scalarlib.rldrawing.{ForceGridLayout, MapLayout}
 import net.cyndeline.scalarlib.rldrawing.common.RRoom
-import net.cyndeline.scalarlib.rldrawing.forceGrid.ForceGridLayout
 import net.cyndeline.scalarlib.rldrawing.util.noise.{DistanceMask, FBMotion, Simplex2D}
 
 import scala.collection.mutable
@@ -19,6 +18,8 @@ import scalax.collection.immutable.Graph
   * simplex noise, generated with fractal brownian motion to create the organic randomness that is sought after when
   * producing noise-based maps. A radial gradient drop-off is then used to filter out land towards the edges of the map,
   * creating a continent in the center.
+  *
+  * See the ContinentSettings class for information regarding individual parameters.
   */
 class ContinentFactory(settings: ContinentSettings) {
 
@@ -32,7 +33,7 @@ class ContinentFactory(settings: ContinentSettings) {
   def build(width: Int, height: Int, seed: Int, areaSize: Int = 3): MapLayout[RRoom] = {
     require(width > 0 && height > 0, "Map width and height must be > 0.")
     require(width < Int.MaxValue - 1 && height < Int.MaxValue - 1,
-      "Width and height must be <= Int.Max - 2, in order to save a coordinates water margin on all four sides of the island.")
+      "Width and height must be <= Int.Max - 2, in order to save a coordinates water margin on all four sides of the continent.")
     require(areaSize >= 3, "Area size must be >= 3.")
 
     // Add 2 coordinates to width and height to leave a strand of water outside the map
@@ -40,7 +41,9 @@ class ContinentFactory(settings: ContinentSettings) {
     val finalHeight = height + 2
     val noiseGrid = generateNoise(finalWidth, finalHeight, seed)
     val grid = Array.ofDim[Int](finalWidth, finalHeight) // 1 = land, 0 = water, -1 = final water (see below)
-    val visited = Array.ofDim[Boolean](finalWidth, finalHeight)
+
+    /* All coordinates marked as land initially. Every index marked as true will be considered water. */
+    val visited = Array.fill[Boolean](finalWidth, finalHeight)(false)
 
     /* Start by generating the noise used to determine of a coordinate should contain land or water. If the noise
      * on a given coordinate is greater than the water height, it becomes land.
@@ -51,7 +54,6 @@ class ContinentFactory(settings: ContinentSettings) {
     val requiredHeight = computeWaterHeight(noiseGrid)
     applyMask(noiseGrid)
     def setLandType(v: Int, x: Int, y: Int): Int = {
-      visited(x)(y) = false
       if (x == 0 || y == 0 || x == finalWidth - 1 || y == finalHeight - 1) { // Border case
         -1 // Will be water in the final step
 
@@ -63,29 +65,10 @@ class ContinentFactory(settings: ContinentSettings) {
     }
     Matrix2DOp.modify(grid, setLandType _)
 
-    /* The noise will generate water inside the island as well. To find the contour, do a floodfill from a corner, since
-     * they're guaranteed to have water on them. Any water found this way gets marked -1. After that, any remaining
-     * bodies of water are marked as land.
-     *
-     * Scala's graph library is utilized for this. A BFS traversal is done starting at (0,0), which is guaranteed to
-     * be connected to the outer water since a margin of 1 coordinate was added around the map. Every node not visited
-     * from (0,0) is either land, or water surrounded by land (i.e not the outer ocean) and is marked as land.
-     */
-    def landFilter(d: (Int, Int)): Boolean = grid(d._1)(d._2) != 1 // Keeps land from being added
-
-    val edges = new ArrayBuffer[UnDiEdge[(Int, Int)]]()
-    for (i <- 0 until finalWidth; j <- 0 until finalHeight if grid(i)(j) != 1) {
-      val a = (i, j)
-      val neighbors: Vector[(Int, Int)] = allDirections(finalWidth, finalHeight)(i, j, landFilter)
-      for (n <- neighbors)
-        edges += a~n
-    }
-    val mapGraph = Graph.from(Nil, edges)
-    val root = mapGraph get (0, 0)
-    val bfsTraverser = root.outerNodeTraverser(Parameters.Bfs(Successors, Integer.MAX_VALUE))
-    for (waterCoordinate <- bfsTraverser) {
-      visited(waterCoordinate._1)(waterCoordinate._2) = true
-    }
+    if (settings.hideLakes)
+      findOuterContour(visited, grid, finalWidth, finalHeight)
+    else
+      markWater(visited, grid)
 
     /* Remove any landmasses whose mass is less than X% of the largest mass. This removes stray island artifacts. */
     val landmasses = computeLandmasses(visited)
@@ -113,9 +96,11 @@ class ContinentFactory(settings: ContinentSettings) {
     val indexGrid = Array.fill(finalWidth, finalHeight)(-1)
     val originalCoords = new ArrayBuffer[(Int, Int)]()
 
-    // Create areas from every non-visited coordinate
+    /* Create areas from every non-visited coordinate */
     var currentIndex = 0
-    val areas = (for (i <- 0 until finalWidth; j <- 0 until finalHeight if i > 0 && j > 0 && i < finalWidth - 1 && j < finalHeight - 1 && !visited(i)(j)) yield {
+    val areas = (for (i <- 0 until finalWidth;
+                      j <- 0 until finalHeight
+                      if i > 0 && j > 0 && i < finalWidth - 1 && j < finalHeight - 1 && !visited(i)(j)) yield {
       val x = indexToCoordinate(i, areaSize)
       val y = indexToCoordinate(j, areaSize)
       val start = Point(x, y)
@@ -263,6 +248,53 @@ class ContinentFactory(settings: ContinentSettings) {
     landmasses.toVector
   }
 
+  /**
+    * Marks indices in a matrix as water, such that any bode of water that appears inside a continent remains as land.
+    * @param water A matrix with all values set to false (= no water). This matrix will have its values adjusted.
+    * @param terrain 1 = land, 0 = water, -1 = final water
+    */
+  private def findOuterContour(water: Array[Array[Boolean]], terrain: Array[Array[Int]], width: Int, height: Int): Unit = {
+
+    /* The noise will generate water inside the island as well. To find the contour, do a flood fill from a corner,
+     * since they're guaranteed to have water on them. Any water found this way gets marked -1. After that, any
+     * remaining bodies of water are marked as land.
+     *
+     * Scala's graph library is utilized for this. A BFS traversal is done starting at (0,0), which is guaranteed to
+     * be connected to the outer water since a margin of 1 coordinate was added around the map. Every node not visited
+     * from (0,0) is either land, or water surrounded by land (i.e not the outer ocean) and is marked as land.
+     */
+    def landFilter(d: (Int, Int)): Boolean = terrain(d._1)(d._2) != 1 // Keeps land from being added
+
+    val edges = new ArrayBuffer[UnDiEdge[(Int, Int)]]()
+    for (i <- 0 until width; j <- 0 until height if terrain(i)(j) != 1) {
+      val a = (i, j)
+      val neighbors: Vector[(Int, Int)] = allDirections(width, height)(i, j, landFilter)
+      for (n <- neighbors)
+        edges += a~n
+    }
+    val mapGraph = Graph.from(Nil, edges)
+    val root = mapGraph get (0, 0)
+    val bfsTraverser = root.outerNodeTraverser(Parameters.Bfs(Successors, Integer.MAX_VALUE))
+    for (waterCoordinate <- bfsTraverser) {
+      water(waterCoordinate._1)(waterCoordinate._2) = true
+    }
+  }
+
+  /**
+    * Simply marks all indices with noise values below the water level as water.
+    * @param water Matrix to be modified.
+    * @param terrain 1 = land, 0 = water, -1 = final water
+    */
+  private def markWater(water: Array[Array[Boolean]], terrain: Array[Array[Int]]): Unit = {
+    def mark(v: Boolean, x: Int, y: Int): Boolean = {
+      if (terrain(x)(y) < 1)
+        true
+      else
+        false
+    }
+    Matrix2DOp.modify(water, mark _)
+  }
+
   /* Subtract index to make rectangles share a border */
   private def indexToCoordinate(index: Int, areaSize: Int): Int = if (areaSize > 1) index * areaSize - index else index
 
@@ -281,9 +313,14 @@ class ContinentFactory(settings: ContinentSettings) {
   * Settings for generating continents. The three elevation parameters controls the island border mask (a, b, c),
   * see DistanceMask class for description.
   *
-  * Note that when using island masks, the mask will remove land areas, causing the water-to-land ratio to exceed
-  * the specified water mass parameter. Otherwise there may arise situations where the map receives a square shape
-  * due to not enough water-spaces being available.
+  * Several parameters are affected by the choice to apply an island mask to the border:
+  *
+  * When using island masks, the mask will remove land areas, causing the water-to-land ratio to exceed the specified
+  * water mass parameter. Otherwise there may arise situations where the map receives a square shape due to not enough
+  * water-spaces being available. The water mass is instead used to keep land away from the map border.
+  *
+  * Choosing not to hide internal lakes will also have limited effect, since the coordinates closest to the border
+  * will have substantially lower values than inside the continent. Border masks thus limits the availability of lakes.
   *
   * @param waterMass A value in the range [0, 1] that determines approximately how much of the final level that
   *                  should be water. 0 = no water, 1 = all water.
@@ -300,7 +337,9 @@ class ContinentFactory(settings: ContinentSettings) {
   *                      possible island mass compared to the largest landmass. Example: If the value is 0.3 and the
   *                      largest landmass has 1000 areas in it, islands smaller than 300 (30% of 1000) will be removed.
   * @param frequency Controls how fine the noise pattern is, relative to the scale of the map. A larger frequency
-  *                  results in smaller extremites, but also a more blob-like map if the island mask is active.
+  *                  results in smaller extremities, but also a more blob-like map if the island mask is active.
+  * @param hideLakes If set to true, any body of water inside a landmass (not reachable from the border of the map)
+  *                  will be turned into land instead.
   * @param elevationIncrease a, see DistanceMask class.
   * @param elevationDecrease b, see DistanceMask class.
   * @param elevationDropOff c, see DistanceMask class.
@@ -313,9 +352,12 @@ class ContinentSettings(val waterMass: Double,
                         val removeIslands: Boolean,
                         val minIslandMass: Double,
                         val frequency: Double,
+                        val hideLakes: Boolean,
                         val elevationIncrease: Double,
                         val elevationDecrease: Double,
                         val elevationDropOff: Double) {
+
+  def withHiddenLakes = new ContinentSettings(waterMass, scale, persistence, iterations, maskBorder, removeIslands, minIslandMass, frequency, true, elevationIncrease, elevationDecrease, elevationDropOff)
 
   require(waterMass >= 0 && waterMass <= 1, "Water mass must be in the range [0, 1].")
   require(minIslandMass >= 0 && minIslandMass <= 1, "Island mass must be in the range [0, 1].")
@@ -323,10 +365,11 @@ class ContinentSettings(val waterMass: Double,
 
 object ContinentSettings {
   private val defaultFrequency = 1
+  private val defaultHideLakes = false
   private val defaultElevationIncrease = 0.05
   private val defaultElevationDecrease = 1
   private val defaultElevationDropOff = 1.5
 
   def apply(waterMass: Double, scale: Double, persistence: Double, iterations: Int, maskBorders: Boolean) =
-    new ContinentSettings(waterMass, scale, persistence, iterations, false, false, 1, defaultFrequency, defaultElevationIncrease, defaultElevationDecrease, defaultElevationDropOff)
+    new ContinentSettings(waterMass, scale, persistence, iterations, false, false, 1, defaultFrequency, defaultHideLakes, defaultElevationIncrease, defaultElevationDecrease, defaultElevationDropOff)
 }

@@ -7,6 +7,7 @@ import net.cyndeline.rlcommon.math.geom.{Point, Rectangle}
 import net.cyndeline.rlcommon.math.geom.spatialIndex.kdTree.KDTree
 import net.cyndeline.scalarlib.rldrawing.common._
 
+import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -40,6 +41,7 @@ class StraightConnection(val connectionDistance: Int,
     var currentIteration = 0
 
     val result = new ArrayBuffer[Rectangle]()
+    val resultSet = new mutable.HashSet[Rectangle]()
     val directions = Seq(North, West, South, East)
     val connectionsIt = connectionRooms.iterator
 
@@ -49,7 +51,7 @@ class StraightConnection(val connectionDistance: Int,
 
       while (dIt.hasNext) {
         val d = dIt.next()
-        val newAreas = connectSide(room, tree, d)
+        val newAreas = connectSide(room, tree, d, resultSet)
         val areaIt = newAreas.iterator
 
         while (areaIt.hasNext) {
@@ -63,6 +65,7 @@ class StraightConnection(val connectionDistance: Int,
         }
 
         result ++= newAreas
+        resultSet ++= newAreas
       }
     }
 
@@ -74,9 +77,13 @@ class StraightConnection(val connectionDistance: Int,
     * @param r Rectangle to connect.
     * @param tree Tree with all rectangles in it, including rectangles added by the algorithm.
     * @param side Side to connect to neighbors on.
+    * @param prevConnections Set containing all rectangles that were previously added as connections.
     * @return All connections made.
     */
-  private def connectSide(r: Rectangle, tree: KDTree[Rectangle, Rectangle], side: Direction): Vector[Rectangle] = {
+  private def connectSide(r: Rectangle,
+                          tree: KDTree[Rectangle, Rectangle],
+                          side: Direction,
+                          prevConnections: mutable.HashSet[Rectangle]): Vector[Rectangle] = {
     val result = new ArrayBuffer[Rectangle]()
     val neighbors = {
       val sorted = findNeighbors(r, tree, side).sortBy(n => DirectionProperty.coordinate(n, side))
@@ -94,7 +101,7 @@ class StraightConnection(val connectionDistance: Int,
     val rCover = DirectionProperty.interval(r, side)
 
     /* This interval tree keeps track of which intervals on the axis parallel with the current direction that
-     * have already been convered by a neighbor and connected to R.
+     * have already been covered by a neighbor and connected to R.
      */
     var intervals = IntervalTree.empty[Int](ElementProperty.intProperty)
 
@@ -134,7 +141,9 @@ class StraightConnection(val connectionDistance: Int,
           val visibleIt = visibleFromR.iterator
           while (visibleIt.hasNext) {
             val i = visibleIt.next()
-            result += join(r, neighbor, side, i.from, i.to)
+
+            if (!prevConnections.contains(neighbor))
+              result += join(r, neighbor, side, i.from, i.to)
           }
         }
       }
